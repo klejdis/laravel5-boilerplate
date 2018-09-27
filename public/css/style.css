@@ -184,6 +184,9 @@ a.dark:hover{
 .mr10 {
     margin-right: 10px;
 }
+.mr5 {
+    margin-right: 5px;
+}
 .mr-1 {
     margin-right: -1px !important;
 }
@@ -817,6 +820,7 @@ a.dark:hover{
     border-top: 1px solid #fff;
     border-bottom-right-radius:0px;
     border-bottom-left-radius:0px;
+    overflow-x: hidden;
 }
 .panel-primary{
     background-color:#1672B9;

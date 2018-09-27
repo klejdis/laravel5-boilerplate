@@ -91,3 +91,14 @@ if (!function_exists('js_anchor')) {
     }
 
 }
+
+if (!function_exists('getPublicUrlFromPath')){
+    function getPublicUrlFromPath($path = null){
+        if ($path !== null){
+            $exists = \Illuminate\Support\Facades\Storage::disk('public')->has($path);
+            if ($exists){
+                return asset('storage/'.$path);
+            }
+        }
+    }
+}

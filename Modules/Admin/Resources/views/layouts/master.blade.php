@@ -91,6 +91,7 @@
         ));
         ?>
 
+        @stack('stylesheets')
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -145,7 +146,6 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 //load message notifications
-
                 var messageOptions = {},
                     notificationOptions = {},
                     $messageIcon = $("#message-notification-icon"),
@@ -191,6 +191,13 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+
+                        <li class="main">
+                            <a href="#">
+                                <i class="fa fa-wrench"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div><!-- sidebar menu end -->
@@ -224,5 +231,6 @@
                 }
             ?>
         </script>
+        @stack('jsScripts')
     </body>
 </html>

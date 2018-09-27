@@ -1,5 +1,8 @@
 <?php
 
 return [
-    'name' => 'Admin'
+    'name' => 'Admin',
+    'langs' => [
+      'en' => 'English'
+    ],
 ];
