@@ -13,11 +13,11 @@
             AppHelper.baseUrl = "{{URL::to('/')}}";
             AppHelper.assetsDirectory = "{{URL::to('/public')}}";
             AppHelper.settings = {};
-            AppHelper.settings.firstDayOfWeek = 0;
+            AppHelper.settings.firstDayOfWeek = {{ Setting::get('app-first-day-of-week')  }} || 1;
             AppHelper.settings.currencySymbol = "$";
             AppHelper.settings.currencyPosition = "left";
-            AppHelper.settings.decimalSeparator = ".";
-            AppHelper.settings.thousandSeparator = ",";
+            AppHelper.settings.decimalSeparator = {{ Setting::get('app-decimal-separator')  }} || '.';
+            AppHelper.settings.thousandSeparator = {{ Setting::get('app-thousands-separator')  }} || ',';
             AppHelper.settings.displayLength = 25;
             AppHelper.settings.timeFormat = "small";
             AppHelper.settings.scrollbar = "jquery";

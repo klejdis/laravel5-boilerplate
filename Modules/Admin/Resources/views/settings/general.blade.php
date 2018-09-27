@@ -106,6 +106,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            {!! Form::label('app-decimal-separator', 'Decimal Separator' , ['class'=> 'col-sm-3']) !!}
+                            <div class="col-sm-9">
+                                {!! Form::text('app-decimal-separator',Setting::get('app-decimal-separator') , ['class'=> 'form-control']) !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('app-thousands-separator', 'Thousands Separator' , ['class'=> 'col-sm-3']) !!}
+                            <div class="col-sm-9">
+                                {!! Form::text('app-thousands-separator',Setting::get('app-thousands-separator') , ['class'=> 'form-control']) !!}
+                            </div>
+                        </div>
+
 
                     </div>
                     <div class="panel-footer">
