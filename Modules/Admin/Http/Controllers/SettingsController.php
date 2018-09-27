@@ -31,8 +31,7 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request){
-        //dd($request);
-        foreach ($request->all() as $key => $value) {
+        foreach ($request->except(['_token']) as $key => $value) {
 
             switch ($key) {
                 case 'activation-type':
@@ -61,10 +60,7 @@ class SettingsController extends Controller
         }
 
         return redirect()->back()->with([
-            'toastr' => json_encode([
-                'type' => 'success',
-                'message' => 'Saved Succesfully'
-            ])
+            'success_message' => 'Saved Succesfully'
         ]);
     }
 

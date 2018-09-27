@@ -87,7 +87,7 @@
             "js/magnific-popup/jquery.magnific-popup.min.js",
             "js/notificatoin_handler.js",
             "js/general_helper.js",
-            "js/app.min.js"
+            "js/app.js"
         ));
         ?>
 
@@ -218,7 +218,7 @@
                 $success_message = false;
 
                 if(Session::has('error_message')){ $error_message =   Session::get('error_message');}
-                if(Session::has('error_message')){ $success_message =   Session::get('success_message');}
+                if(Session::has('success_message')){ $success_message =   Session::get('success_message');}
 
                 if (isset($error)) {
                     echo 'appAlert.error("' . $error . '");';

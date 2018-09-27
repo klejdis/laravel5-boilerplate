@@ -2,29 +2,7 @@
 
 @section('content')
         <div class="p20 row">
-            <div class="col-sm-3 col-lg-2">
-                <h4><i class="fa fa-wrench"></i> App Settings </h4>
-
-                <ul class="nav nav-tabs vertical" role="tablist">
-                    <li role="presentation" class="{{active(['admin/settings/general'])}}">
-                        <a href="{{route('admin.setting.index' , ['tab' => 'general'])}}">
-                            General
-                        </a>
-                    </li>
-
-                    <li role="presentation" class="{{active(['admin/settings/auth'])}}">
-                        <a href="{{route('admin.setting.index' , ['tab' => 'auth'])}}">
-                            Auth
-                        </a>
-                    </li>
-
-                    <li role="presentation" class="{{active(['admin/settings/service'])}}">
-                        <a href="{{route('admin.setting.index' , ['tab' => 'service'])}}">
-                            Service
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @include('admin::settings.tabs')
 
             <div class="col-sm-9 col-lg-10">
                 {!! Form::open(['route' => 'admin.setting.store' , 'class' => 'form-horizontal general-form dashed-row']) !!}
