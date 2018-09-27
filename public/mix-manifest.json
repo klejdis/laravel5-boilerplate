@@ -1,0 +1,11 @@
+{
+    "/js/admin.js": "/js/admin.js",
+    "/css/admin.css": "/css/admin.css",
+    "/admin/js/admin.js": "/admin/js/admin.js",
+    "/admin/css/admin.css": "/admin/css/admin.css",
+    "/public/admin/js/all.js": "/public/admin/js/all.js",
+    "/admin/js/all.js": "/admin/js/all.js",
+    "/admin/js/vendor.js": "/admin/js/vendor.js",
+    "/admincss/vendor.css": "/admincss/vendor.css",
+    "/admin/css/vendor.css": "/admin/css/vendor.css"
+}

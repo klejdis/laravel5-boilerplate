@@ -16,8 +16,8 @@
             AppHelper.settings.firstDayOfWeek = {{ Setting::get('app-first-day-of-week')  }} || 1;
             AppHelper.settings.currencySymbol = "$";
             AppHelper.settings.currencyPosition = "left";
-            AppHelper.settings.decimalSeparator = {{ Setting::get('app-decimal-separator')  }} || '.';
-            AppHelper.settings.thousandSeparator = {{ Setting::get('app-thousands-separator')  }} || ',';
+            AppHelper.settings.decimalSeparator = '{{ Setting::get('app-decimal-separator')  }}' || '.';
+            AppHelper.settings.thousandSeparator = '{{ Setting::get('app-thousands-separator')  }}' || ',';
             AppHelper.settings.displayLength = 25;
             AppHelper.settings.timeFormat = "small";
             AppHelper.settings.scrollbar = "jquery";
@@ -51,45 +51,18 @@
             AppLanugage.clear = "Clear";
         </script>
 
-        <?php
+
+        @php
         load_css(array(
-            "bootstrap/css/bootstrap.min.css",
-            "js/font-awesome/css/font-awesome.min.css",
-            "js/datatable/css/jquery.dataTables.min.css",
-            "js/datatable/TableTools/css/dataTables.tableTools.min.css",
-            "js/select2/select2.css",
-            "js/select2/select2-bootstrap.min.css",
-            "js/bootstrap-datepicker/css/datepicker3.css",
             "js/bootstrap-timepicker/css/bootstrap-timepicker.min.css",
-            "js/x-editable/css/bootstrap-editable.css",
-            "js/dropzone/dropzone.min.css",
-            "js/magnific-popup/magnific-popup.css",
-            "js/malihu-custom-scrollbar/jquery.mCustomScrollbar.min.css",
-            "js/awesomplete/awesomplete.css",
-            "css/font.css",
-            "css/style.css",
-            "css/custom-style.css",
+            "admin/css/vendor.css",
+            "admin/css/admin.css",
         ));
         load_js(array(
-            "js/jquery-1.11.3.min.js",
-            "bootstrap/js/bootstrap.min.js",
-            "js/jquery-validation/jquery.validate.min.js",
-            "js/jquery-validation/jquery.form.js",
-            "js/malihu-custom-scrollbar/jquery.mCustomScrollbar.concat.min.js",
-            "js/datatable/js/jquery.dataTables.min.js",
-            "js/select2/select2.js",
-            "js/datatable/TableTools/js/dataTables.tableTools.min.js",
-            "js/bootstrap-datepicker/js/bootstrap-datepicker.js",
-            "js/bootstrap-timepicker/js/bootstrap-timepicker.min.js",
-            "js/x-editable/js/bootstrap-editable.min.js",
-            "js/fullcalendar/moment.min.js",
-            "js/dropzone/dropzone.min.js",
-            "js/magnific-popup/jquery.magnific-popup.min.js",
-            "js/notificatoin_handler.js",
-            "js/general_helper.js",
-            "js/app.js"
+            "admin/js/vendor.js",
+            "admin/js/admin.js",
         ));
-        ?>
+        @endphp
 
         @stack('stylesheets')
     </head>
@@ -193,7 +166,7 @@
                         </li>
 
                         <li class="main">
-                            <a href="#">
+                            <a href="{{route('admin.setting.index')}}">
                                 <i class="fa fa-wrench"></i>
                                 <span>Settings</span>
                             </a>
@@ -203,9 +176,11 @@
             </div><!-- sidebar menu end -->
 
             <div id="page-container" class="box-content">
+
                 <div id="pre-loader">
                     <div id="pre-loade" class="app-loader"><div class="loading"></div></div>
                 </div>
+
                 <div class="scrollable-page">
                     @yield('content')
                 </div>

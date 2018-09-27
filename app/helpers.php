@@ -102,3 +102,16 @@ if (!function_exists('getPublicUrlFromPath')){
         }
     }
 }
+
+if (!function_exists('getBase64ImageFromRequest')){
+    function getBase64ImageFromRequest($base64_str = null){
+        if ($base64_str !== null){
+            //get the base-64 from data
+            $base64_str = substr($base64_str, strpos($base64_str, ",")+1);
+            //decode base64 string
+            $image = base64_decode($base64_str);
+
+            return $image;
+        }
+    }
+}
