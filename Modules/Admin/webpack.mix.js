@@ -3,10 +3,6 @@ require('laravel-mix-merge-manifest');
 
 mix.setPublicPath('../../public').mergeManifest();
 
-mix.js(__dirname + '/Resources/assets/js/app.js', 'admin/js/admin.js')
-    .sass( __dirname + '/Resources/assets/sass/app.scss', 'admin/css/admin.css');
-
-
 mix.styles([
     'Resources/assets/bower_components/bootstrap/dist/css/bootstrap.min.css',
     'Resources/assets/bower_components/font-awesome/css/font-awesome.min.css',
@@ -30,6 +26,7 @@ mix.copyDirectory('Resources/assets/bower_components/font-awesome/fonts', '../..
 
 mix.copyDirectory('Resources/assets/css/fonts', '../../public/admin/css/fonts');
 
+mix.copyDirectory('Resources/assets/images', '../../public/admin/images');
 
 mix.scripts([
     'Resources/assets/bower_components/jquery/dist/jquery.min.js',
@@ -47,6 +44,11 @@ mix.scripts([
     'Resources/assets/bower_components/magnific-popup/dist/jquery.magnific-popup.min.js',
 ],
     '../../public/admin/js/vendor.js');
+
+
+mix.js(__dirname + '/Resources/assets/js/app.js', 'admin/js/admin.js')
+    .sass( __dirname + '/Resources/assets/sass/app.scss', 'admin/css/admin.css');
+
 
 
 if (mix.inProduction()) {

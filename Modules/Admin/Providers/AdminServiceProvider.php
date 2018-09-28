@@ -26,6 +26,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->registerViewComposers();
     }
 
     /**
@@ -109,5 +110,12 @@ class AdminServiceProvider extends ServiceProvider
     public function provides()
     {
         return [];
+    }
+
+    public function registerViewComposers(){
+        // Using class based composers...
+        \Illuminate\Support\Facades\View::composer(
+            '*', 'Modules\Admin\Http\ViewComposers\LogoComposer'
+        );
     }
 }
