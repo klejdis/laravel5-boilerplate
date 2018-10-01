@@ -2,30 +2,28 @@
 
 namespace Modules\Admin\Http\Controllers\Auth;
 
-
 use Mail;
+use Modules\Admin\Entities\User;
 use Route;
 use Setting;
 use Reminder;
 use Activation;
 use Exception;
 use Sentinel;
-use App\Models\User;
 use Illuminate\Http\Request;
 use  App\Http\Controllers\Controller;
-
 
 class ForgotPasswordController extends Controller
 {
 
     /**
-    *Forgot Password Page
+    * Forgot Password Page
     */
     public function forgotPassword(){
         if (Setting::get('forgot-password-avalilability') == 'true') {
-            return view('backend.auth.password-email');
+            return view('admin::auth.password-email');
         }else{
-            abort(404);
+            abort(403);
         }
     }
 
@@ -37,7 +35,7 @@ class ForgotPasswordController extends Controller
             'email' => 'required'
         ]);
 
-        $user = User::where('email' , $request->input('email'))->first();
+        $user =  User::where('email' , $request->input('email'))->first();
     
         if (!$user) {
 
@@ -52,6 +50,7 @@ class ForgotPasswordController extends Controller
             //CREATE REMINDER IF DOES NOT EXISTS
             $reminder = Reminder::create($user); 
             $this->sendResetPasswordEmail($user , $reminder->code );
+
             return redirect()->route('admin.auth.forgot_password')->with([
                 'status' => 'success' , 
                 'message'=> 'Check Your Email'
@@ -63,7 +62,7 @@ class ForgotPasswordController extends Controller
     * Change Password
     */
     public function changePassword(User $user , $code){
-        return view('backend.auth.password-reset-form')->with(['token' => $code]);
+        return view('admin::auth.password-reset-form')->with(['token' => $code]);
     }
 
     public function postChangePassword(Request $request){
@@ -118,7 +117,7 @@ class ForgotPasswordController extends Controller
     * Send  Reset Password Link With Email
     */
     public function sendResetPasswordEmail($user , $code ){
-        Mail::send('backend.auth.email.reset-password' , [
+        Mail::send('admin::auth.email.reset-password' , [
             'user' => $user,
             'code' => $code
         ], function($message) use ($user){

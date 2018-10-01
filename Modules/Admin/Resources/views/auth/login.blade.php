@@ -1,54 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+@extends('admin::layouts.auth')
 
-</head>
-<body>
+@section('content')
 
+    <div class="signin-box">
 
-<div class="signin-box">
-    <form action="{{route('admin.auth.login.post')}}" method="post">
-        {{csrf_field()}}
+        <div class="panel panel-default mb15">
 
-        <div class="form-group has-feedback ">
-            <input type="email" name="email" class="form-control" value="" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-            {!! $errors->has('email') ? '<small class="text-danger"> '.$errors->first("email").'</small>' : '' !!}
-        </div>
-        <div class="form-group has-feedback">
-            <input type="password" name="password" class="form-control" placeholder="Password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            {!! $errors->has('password') ? '<small class="text-danger"> '.$errors->first("password").'</small>' : '' !!}
-        </div>
-        <div class="row">
-        {{--<div class="col-xs-8">
-            <div class="checkbox icheck">
-                <label>
-                    <input type="checkbox" name="remember"> {{__('backend/login.remember-me')}}
-                </label>
+            <div class="panel-heading text-center">
+
+                <h2>{{ __('admin::admin.Sign in') }}</h2>
+
             </div>
-        </div>--}}
-        <!-- /.col -->
-            <div class="col-xs-8">
-                <div class="auth-links">
-                    @if(Setting::get('forgot-password-avalilability'))
-                        <a href="{{route('admin.auth.forgot_password')}}"
-                           class="text-center"
-                        >{{__('backend/login.i-forgot-my-password')}}</a>
-                    @endif
-                    <br>
 
-                </div>
+            <div class="panel-body p30">
+
+                @if(Session::has('auth_failed'))
+                    <div class="alert alert-danger text-center">
+                      <b> {{ Session::get('auth_failed') }} </b>
+                    </div>
+                @endif
+
+                <form action="{{route('admin.auth.login.post')}}" method="post" id="signin-form" class="general-form">
+
+                    {{csrf_field()}}
+
+                    <div class="form-group has-feedback ">
+
+                        <input type="email" name="email" class="form-control p10" value="" placeholder="{{ __('admin::admin.Email') }}">
+
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+                        {!! $errors->has('email') ? '<small class="text-danger"> '.$errors->first("email").'</small>' : '' !!}
+
+                    </div>
+
+                    <div class="form-group has-feedback">
+
+                        <input type="password" name="password" class="form-control p10" placeholder="{{ __('admin::admin.Password') }}">
+
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+                        {!! $errors->has('password') ? '<small class="text-danger"> '.$errors->first("password").'</small>' : '' !!}
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg mt15">
+                        {{ __('admin::admin.Sign in') }}
+                    </button>
+
+                    <div class="row">
+
+                        <div class="col-xs-12 mt5">
+
+                            <div class="auth-links">
+
+                                @if(Setting::get('forgot-password-avalilability') == 'true')
+
+                                    <a href="{{route('admin.auth.forgot_password')}}" class="text-center">
+
+                                        {{ __('admin::admin.i-forgot-my-password') }}
+
+                                    </a>
+
+                                @endif
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
             </div>
-            <div class="col-xs-4">
-                <button type="submit" class="btn btn-primary btn-block btn-flat">{{__('backend/login.sign-in')}}</button>
-            </div>
-            <!-- /.col -->
+
         </div>
-    </form>
 
-</div>
-</body>
-</html>
-
-
+    </div>
+@endsection

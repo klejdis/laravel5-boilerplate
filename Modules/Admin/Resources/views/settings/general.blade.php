@@ -1,6 +1,7 @@
-@extends('admin::layouts.master')
+@extends('admin::layouts.admin')
 
-@section('content')
+
+@section('page')
         <div class="p20 row">
             @include('admin::settings.tabs')
 
@@ -133,7 +134,7 @@
 @endsection
 
 
-@push('jsScripts')
+@push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
 

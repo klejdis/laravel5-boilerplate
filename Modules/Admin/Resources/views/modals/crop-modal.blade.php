@@ -46,7 +46,7 @@
     </style>
 @endpush
 
-@push('jsScripts')
+@push('scripts')
     <script src="{{asset('js/cropbox/cropbox-min.js')}}"></script>
     <script type="text/javascript">
         var options =

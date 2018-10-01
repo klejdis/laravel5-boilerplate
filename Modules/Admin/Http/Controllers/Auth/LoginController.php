@@ -10,9 +10,8 @@ use Reminder;
 use Activation;
 use Exception;
 use Sentinel;
-use App\Models\User;
 use Illuminate\Http\Request;
-use  App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Session;
 
 class LoginController extends Controller
@@ -25,7 +24,7 @@ class LoginController extends Controller
     }
 
     /**
-    *Authenticate User Against Credentials
+    * Authenticate User Against Credentials
     */
     public function authenticate(Request $request){
 
@@ -38,30 +37,20 @@ class LoginController extends Controller
         $remember = ($request->input('remember')) ? true : false ;
 
         try{
-
             $logged_in = Sentinel::authenticate($request->only(['email' ,'password'] , $remember));
-
         }catch (ThrottlingException $e){
-
             return view('backend.auth.throttle',compact('e'));
-
         }
 
         if ($logged_in) {
-
             $backend_entry_point = (Setting::get('backend-entry-point')) ? Setting::get('backend-entry-point') : 'admin.auth.login';
             return redirect()->route($backend_entry_point);
-
         }else{
-
             return redirect()->route('admin.auth.login')->with([
-                'toastr' => json_encode([
-                    'type' => 'error',
-                    'message' => __('auth.failed')
-                ])
+                'auth_failed' => __('admin::admin.auth-failed')
             ]);
-
         }
+
     }
 
     /**
@@ -70,6 +59,7 @@ class LoginController extends Controller
     public function logout(){
         Sentinel::logout();
         Session::forget('ticket_count');
+
         return redirect()->route('admin.auth.login');
     }
 
