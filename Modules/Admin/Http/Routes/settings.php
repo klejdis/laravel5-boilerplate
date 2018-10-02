@@ -7,12 +7,12 @@
 Route::get('/settings/{tab?}' , [
     'as'     => 'setting.index',
     'uses'   => 'SettingsController@index',
-    //'middleware' => 'permission:browse-settings'
+    'middleware' => 'permission:browse-settings'
 ]);
 
 Route::post('/settings' , [
     'as'     => 'setting.store',
     'uses'   => 'SettingsController@store',
-    //'middleware' => 'permission:edit-settings'
+    'middleware' => 'permission:edit-settings'
 ]);
 

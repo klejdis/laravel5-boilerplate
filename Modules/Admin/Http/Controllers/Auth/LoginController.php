@@ -4,6 +4,7 @@ namespace Modules\Admin\Http\Controllers\Auth;
 
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Mail;
+use Module\Admin\Entities\Repositories\PermissionRepository;
 use Route;
 use Setting;
 use Reminder;
@@ -20,6 +21,11 @@ class LoginController extends Controller
     * Login Page
     */
     public function login(){
+
+       // $permission = new PermissionRepository();
+
+        dd(class_exists(Module\Admin\Entities\Repositories\PermissionRepository::class) );
+
         return view('admin::auth.login');
     }
 

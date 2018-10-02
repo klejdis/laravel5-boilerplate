@@ -23,6 +23,7 @@ return [
     'i-forgot-my-password' => 'I Forgot My Password',
     'auth-failed' => 'Authentication Failed',
     'Reset Password' => 'Reset Password',
+    'Not Authorized For This Action' => 'Not Authorized For This Action'
 
     /*-----------------------------------------------------------------------*/
 

@@ -3,9 +3,7 @@
 namespace Modules\Admin\Entities;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
-use App\Traits\LogsActivityTrait;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
@@ -15,6 +13,7 @@ class User extends EloquentUser implements Authenticatable
     use Notifiable;
     
     protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *

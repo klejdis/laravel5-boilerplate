@@ -8,61 +8,61 @@ Route::group(['namespace' => 'Auth'], function () {
 
     Route::get('/login' , [
         'as' 	 => 'auth.login',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'LoginController@login',
     ]);
 
     Route::post('/logout' , [
         'as' 	 => 'auth.logout',
         'uses'   => 'LoginController@logout',
-        'permission' => true,
+        'authorized' => true,
     ]);
 
     Route::post('/login' , [
         'as' 	 => 'auth.login.post',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'LoginController@authenticate',
     ]);
 
     Route::get('/register' , [
         'as' 	 => 'auth.register.index',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'RegisterController@register',
     ]);
 
     Route::post('/register' , [
         'as' 	 => 'auth.register.store',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'RegisterController@postRegister',
     ]);
 
     Route::get('/activate/user/{user}/code/{code}' , [
         'as' 	 => 'auth.activate.account',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'RegisterController@activate',
     ]);
 
     Route::get('/password/reset' , [
         'as' 	 => 'auth.forgot_password',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'ForgotPasswordController@forgotPassword',
     ]);
 
     Route::post('/password/email' , [
         'as' 	 => 'auth.forgot_password.store',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'ForgotPasswordController@postForgotPassword',
     ]);
 
     Route::get('/password/reset/user/{user}/code/{code}' , [
         'as' 	 => 'auth.forgot_password.form',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'ForgotPasswordController@changePassword',
     ]);
 
     Route::post('/password/reset/' , [
         'as' 	 => 'auth.forgot_password.update',
-        'permission' => true,
+        'authorized' => true,
         'uses'   => 'ForgotPasswordController@postChangePassword',
     ]);
 

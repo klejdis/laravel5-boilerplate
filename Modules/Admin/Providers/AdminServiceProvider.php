@@ -4,6 +4,8 @@ namespace Modules\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Admin\Http\Middleware\Authenticated;
+use Modules\Admin\Http\Middleware\Permission;
 
 class AdminServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->registerViewComposers();
+        $this->registerMiddlewares();
     }
 
     /**
@@ -117,5 +120,11 @@ class AdminServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\View::composer(
             '*', 'Modules\Admin\Http\ViewComposers\LogoComposer'
         );
+    }
+
+    public function registerMiddlewares(){
+        $router = $this->app['router'];
+        $router->aliasMiddleware('authenticated', Authenticated::class);
+        $router->aliasMiddleware('permission', Permission::class);
     }
 }

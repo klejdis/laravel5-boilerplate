@@ -106,6 +106,16 @@ class MigrationCartalystSentinel extends Migration
             $table->engine = 'InnoDB';
             $table->unique('email');
         });
+
+
+        Schema::create('permissions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name','128');
+            $table->string('module','128');
+            $table->string('slug')->unique();
+            $table->timestamps();
+            $table->engine = 'InnoDB';
+        });
     }
 
     /**

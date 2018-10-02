@@ -7,7 +7,7 @@
  * ----------------------------------------------------------------------------
  */
 Route::group([
-    'middleware' => 'web',
+    'middleware' => ['web','authenticated'],
     'prefix' => 'admin',
     'as' => 'admin.',
     'namespace' => 'Modules\Admin\Http\Controllers',

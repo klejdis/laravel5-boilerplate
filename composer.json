@@ -12,6 +12,7 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.7",
         "nwidart/laravel-modules": "^3.3",
+        "tymon/jwt-auth": "^0.5.12",
         "unisharp/laravel-settings": "^2.0",
         "watson/active": "^3.0"
     },
