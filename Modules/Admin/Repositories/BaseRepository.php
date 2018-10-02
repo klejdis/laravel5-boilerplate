@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Admin\Entities\Repositories;
+namespace Modules\Admin\Repositories;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;

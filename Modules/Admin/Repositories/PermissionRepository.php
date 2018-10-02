@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Admin\Entities\Repositories;
+namespace Modules\Admin\Repositories;
 
 use Modules\Admin\Entities\Permission;
 

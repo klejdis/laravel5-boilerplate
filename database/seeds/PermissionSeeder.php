@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Modules\Admin\Entities\Permission;
-use Module\Admin\Entities\Repositories\PermissionRepository;
 
 class PermissionSeeder extends Seeder
 {
@@ -15,7 +14,7 @@ class PermissionSeeder extends Seeder
     {
         Permission::truncate();
 
-        $permission = new PermissionRepository();
+        $permission = new \Modules\Admin\Repositories\PermissionRepository();
 
         $permission->createMultiple([
             [
