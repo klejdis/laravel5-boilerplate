@@ -2,7 +2,7 @@
 
 /**
  * ----------------------------------------------------------------------------
- * This file loads all Admin Module Routes whic are prefixed with /admin and
+ * This file loads all Admin Module Routes which are prefixed with /admin and
  * route names are prefixed with admin.
  * ----------------------------------------------------------------------------
  */

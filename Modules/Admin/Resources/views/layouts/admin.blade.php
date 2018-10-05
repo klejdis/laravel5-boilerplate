@@ -69,8 +69,8 @@
         <div id="sidebar" class="box-content ani-width">
             <div id="sidebar-scroll">
                 <ul class="" id="sidebar-menu">
-                    <li class="    main">
-                        <a href="#">
+                    <li class="main">
+                        <a href="{{route('admin.dashboard.index')}}">
                             <i class="fa fa-desktop"></i>
                             <span>Dashboard</span>
                         </a>

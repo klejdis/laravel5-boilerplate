@@ -65,7 +65,6 @@ class SettingsController extends Controller
     }
 
     protected function _saveLogo($base64_str = null){
-
         //decode base64 string
         $image = getBase64ImageFromRequest($base64_str);
 
@@ -78,7 +77,6 @@ class SettingsController extends Controller
         $path = $save_dir.$image_name;
 
         return $path;
-
     }
 
 }

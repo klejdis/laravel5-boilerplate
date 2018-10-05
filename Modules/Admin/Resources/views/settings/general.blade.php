@@ -1,6 +1,5 @@
 @extends('admin::layouts.admin')
 
-
 @section('page')
         <div class="p20 row">
             @include('admin::settings.tabs')
@@ -38,6 +37,15 @@
                             {!! Form::label('app-lang', 'App Language' , ['class'=> 'col-sm-3']) !!}
                             <div class="col-sm-9">
                                 {!! Form::select('app-lang', $languages , Setting::get('app-name') , ['class'=> 'form-control']) !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('app-timezone', 'Timezone' , ['class'=> 'col-sm-3']) !!}
+                            <div class="col-sm-9">
+                                {!! Form::select('app-timezone',
+                                    \Modules\Admin\Support\Helper::getTimezones()
+                                    ,Setting::get('app-timezone') , ['class'=> 'form-control']) !!}
                             </div>
                         </div>
 
@@ -86,7 +94,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             {!! Form::label('app-accepted-file-format', 'Accepted file format' , ['class'=> 'col-sm-3']) !!}
                             <div class="col-sm-9">
@@ -110,14 +117,30 @@
                         <div class="form-group">
                             {!! Form::label('app-decimal-separator', 'Decimal Separator' , ['class'=> 'col-sm-3']) !!}
                             <div class="col-sm-9">
-                                {!! Form::text('app-decimal-separator',Setting::get('app-decimal-separator') , ['class'=> 'form-control']) !!}
+                                {!!
+                                    Form::select('app-decimal-separator', [
+                                         "." => ".",
+                                         "," => ",",
+                                       ],
+                                       Setting::get('app-decimal-separator'),
+                                       ['class'=> 'form-control']
+                                    )
+                                !!}
                             </div>
                         </div>
 
                         <div class="form-group">
                             {!! Form::label('app-thousands-separator', 'Thousands Separator' , ['class'=> 'col-sm-3']) !!}
                             <div class="col-sm-9">
-                                {!! Form::text('app-thousands-separator',Setting::get('app-thousands-separator') , ['class'=> 'form-control']) !!}
+                                {!!
+                                    Form::select('app-thousands-separator', [
+                                         "." => ".",
+                                         "," => ",",
+                                       ],
+                                       Setting::get('app-thousands-separator'),
+                                       ['class'=> 'form-control']
+                                    )
+                                !!}
                             </div>
                         </div>
 
@@ -129,6 +152,7 @@
                 </div>
                 {!! Form::close() !!}
             </div>
+
             @include('admin::modals.crop-modal')
         </div>
 @endsection

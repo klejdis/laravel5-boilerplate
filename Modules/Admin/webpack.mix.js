@@ -51,6 +51,6 @@ mix.js(__dirname + '/Resources/assets/js/app.js', 'admin/js/admin.js')
 
 
 
-if (mix.inProduction()) {
-    mix.version();
-}
+// if (mix.inProduction()) {
+//     mix.version();
+// }
