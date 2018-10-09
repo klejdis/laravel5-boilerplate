@@ -1,5 +1,10 @@
 $(document).ready(function () {
-    $.ajaxSetup({cache: false});
+    $.ajaxSetup({
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     //set locale of moment js
     moment.locale(AppLanugage.locale);
@@ -366,6 +371,7 @@ if (typeof TableTools != 'undefined') {
 }
 
 
+//app table with datatable
 (function ($) {
     //appTable using datatable
     $.fn.appTable = function (options) {
@@ -373,17 +379,19 @@ if (typeof TableTools != 'undefined') {
         //set default display length
         var displayLength = AppHelper.settings.displayLength * 1;
 
-        if (isNaN(displayLength) || !displayLength) {
+        if (isNaN(displayLength) || !displayLength){
             displayLength = 10;
         }
 
         var defaults = {
-            source: "", //data url
+            source: "", //data url,
+            serverSide : true,
+            paging : true,
             xlsColumns: [], // array of excel exportable column numbers
             pdfColumns: [], // array of pdf exportable column numbers
             printColumns: [], // array of printable column numbers
             columns: [], //column title and options
-            order: [[0, "asc"]], //default sort value
+            order: [[0, "desc"]], //default sort value
             hideTools: false, //show/hide tools section
             displayLength: displayLength, //default rows per page
             dateRangeType: "", // type: daily, weekly, monthly, yearly. output params: start_date and end_date
@@ -392,6 +400,7 @@ if (typeof TableTools != 'undefined') {
             filterDropdown: [], // [{id: 10, text:'Caption', isSelected:true}]
             singleDatepicker: [], // [{name: '', value:'', options:[]}]
             rangeDatepicker: [], // [{startDate:{name:"", value:""},endDate:{name:"", value:""}}]
+            buttons:[],//[{title:"",class:"",id:""}]
             stateSave: true, //save user state
             stateDuration: 60 * 60 * 24 * 30, //remember for 30 days
             filterParams: {datatable: true}, //will post this vales on source url
@@ -434,18 +443,14 @@ if (typeof TableTools != 'undefined') {
         // reload
         if (settings.reload) {
             var table = $(this).dataTable();
-            var instanceSettings = window.InstanceCollection[$(this).selector];
-
+            var instanceSettings = window.InstanceCollection["#" + $(this).selector];
             if (!instanceSettings) {
                 instanceSettings = settings;
             }
-
             table.fnReloadAjax(instanceSettings.filterParams);
-
             if ($(this).data("onRelaodCallback")) {
                 $(this).data("onRelaodCallback")(table, instanceSettings.filterParams);
             }
-
             return false;
         }
 
@@ -454,9 +459,7 @@ if (typeof TableTools != 'undefined') {
             var table = $(this).dataTable();
             if (settings.dataId) {
                 //check for existing row; if found, delete the row;
-
                 var $row = $(this).find("[data-post-id='" + settings.dataId + "']");
-
                 if ($row.length) {
                     table.fnDeleteRow($row.closest('tr'));
                 } else {
@@ -480,7 +483,6 @@ if (typeof TableTools != 'undefined') {
         settings._exportable = settings.xlsColumns.length + settings.pdfColumns.length + settings.printColumns.length;
         settings._firstDayOfWeek = AppHelper.settings.firstDayOfWeek || 0;
         settings._inputDateFormat = "YYYY-MM-DD";
-
 
         var getWeekRange = function (date) {
             //set first and last day of week
@@ -546,7 +548,7 @@ if (typeof TableTools != 'undefined') {
         };
 
         var prepareDefaultDropdownFilterParams = function () {
-            $.each(settings.filterDropdown || [], function (index, dropdown) {
+            $.each(settings.filterDropdown || [], function (index, dropdown){
                 $.each(dropdown.options, function (index, option) {
                     if (option.isSelected) {
                         settings.filterParams[dropdown.name] = option.id;
@@ -565,7 +567,6 @@ if (typeof TableTools != 'undefined') {
             });
         };
 
-
         var prepareDefaultrRngeDatepickerFilterParams = function () {
             $.each(settings.rangeDatepicker || [], function (index, datepicker) {
 
@@ -579,7 +580,6 @@ if (typeof TableTools != 'undefined') {
 
             });
         };
-
 
         prepareDefaultDateRangeFilterParams();
         prepareDefaultCheckBoxFilterParams();
@@ -595,6 +595,8 @@ if (typeof TableTools != 'undefined') {
                 type: "POST",
                 data: settings.filterParams
             },
+            serverSide : settings.serverSide,
+            paging : settings.paging,
             sServerMethod: "POST",
             columns: settings.columns,
             bProcessing: true,
@@ -608,13 +610,12 @@ if (typeof TableTools != 'undefined') {
                 if (oData && oData.search) {
                     oData.search.search = "";
                 }
-
             },
             stateDuration: settings.stateDuration,
             fnInitComplete: function () {
                 settings.onInitComplete(this);
             },
-            language: {
+            language:{
                 lengthMenu: "_MENU_",
                 zeroRecords: settings.customLanguage.noRecordFoundText,
                 info: "_START_-_END_ / _TOTAL_",
@@ -631,86 +632,20 @@ if (typeof TableTools != 'undefined') {
                     "sPrevious": "<i class='fa fa-angle-double-left'></i>",
                     "sNext": "<i class='fa fa-angle-double-right'></i>"
                 }
-
             },
             sDom: "",
-            footerCallback: function (row, data, start, end, display) {
+            footerCallback: function (row, data, start, end, display){
                 var instance = this;
-
-                if (settings.summation) {
-
-                    var pageInfo = instance.api().page.info();
-
-                    if (pageInfo.recordsTotal) {
-                        $(instance).find("tfoot").show();
-                    } else {
-                        $(instance).find("tfoot").hide();
-                        return false;
-                    }
-
-                    $.each(settings.summation, function (index, option) {
-                        // total value of current page
-                        var pageTotal = calculateDatatableTotal(instance, option.column, function (currentValue) {
-                            if (option.dataType === "currency") {
-                                return unformatCurrency(currentValue);
-                            } else if (option.dataType === "time") {
-                                return moment.duration(currentValue).asSeconds();
-                            } else if (option.dataType === "number") {
-                                return unformatCurrency(currentValue);
-                            } else {
-                                return currentValue;
-                            }
-                        }, true);
-
-                        if (option.dataType === "currency") {
-                            pageTotal = toCurrency(pageTotal, option.currencySymbol);
-                        } else if (option.dataType === "time") {
-                            pageTotal = secondsToTimeFormat(pageTotal);
-                        } else if (option.dataType === "number") {
-                            pageTotal = toCurrency(pageTotal, "none");
-                        }
-                        $(instance).find("[data-current-page=" + option.column + "]").html(pageTotal);
-
-                        // total value of all pages
-                        if (pageInfo.pages > 1) {
-                            $(instance).find("[data-section='all_pages']").show();
-                            var total = calculateDatatableTotal(instance, option.column, function (currentValue) {
-                                if (option.dataType === "currency") {
-                                    return unformatCurrency(currentValue);
-                                } else if (option.dataType === "time") {
-                                    return moment.duration(currentValue).asSeconds();
-                                } else if (option.dataType === "number") {
-                                    return unformatCurrency(currentValue);
-                                } else {
-                                    return currentValue;
-                                }
-                            });
-
-                            if (option.dataType === "currency") {
-                                total = toCurrency(total, option.currencySymbol);
-                            } else if (option.dataType === "time") {
-                                total = secondsToTimeFormat(total);
-                            } else if (option.dataType === "number") {
-                                total = toCurrency(total, "none");
-                            }
-                            $(instance).find("[data-all-page=" + option.column + "]").html(total);
-                        } else {
-                            $(instance).find("[data-section='all_pages']").hide();
-                        }
-                    });
-                }
-
                 settings.footerCallback(row, data, start, end, display, instance);
             },
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull){
                 settings.rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull);
             }
         };
 
         if (!settings.hideTools) {
-            datatableOptions.sDom = "<'datatable-tools'<'col-md-1'l><'col-md-11 custom-toolbar'f>r>t<'datatable-tools clearfix'<'col-md-3'i><'col-md-9'p>>";
+            datatableOptions.sDom = "<'datatable-tools'<'col-md-1'l><'col-md-11 custom-toolbar 'f>r>t<'datatable-tools row  clearfix'<'col-md-3'i><'col-md-9'p>>";
         }
-
 
         if (settings._exportable) {
             var datatableButtons = [];
@@ -786,7 +721,8 @@ if (typeof TableTools != 'undefined') {
             placement: 'bottom',
             container: 'body'
         });
-        $instanceWrapper.find("select").select2({
+
+        $instanceWrapper.find("select").not('.dataTables_length select').select2({
             minimumResultsForSearch: -1
         });
 
@@ -795,10 +731,10 @@ if (typeof TableTools != 'undefined') {
 
         //build date wise filter selectors
         if (settings.dateRangeType) {
-            var dateRangeFilterDom = '<div class="mr15 DTTT_container">'
-                + '<button data-act="prev" class="btn btn-default date-range-selector"><i class="fa fa-chevron-left"></i></button>'
-                + '<button data-act="datepicker" class="btn btn-default" style="margin: -1px"></button>'
-                + '<button data-act="next"  class="btn btn-default date-range-selector"><i class="fa fa-chevron-right"></i></button>'
+            var dateRangeFilterDom = '<div class="mr-5 DTTT_container">'
+                + '<button data-act="prev" class="btn btn-default btn-white date-range-selector"><i class="icon md-chevron-left"></i></button>'
+                + '<button data-act="datepicker" class="btn btn-default btn-white" style="margin: -1px"></button>'
+                + '<button data-act="next"  class="btn btn-default  btn-white date-range-selector"><i class="icon md-chevron-right"></i></button>'
                 + '</div>';
             $instanceWrapper.find(".custom-toolbar").append(dateRangeFilterDom);
 
@@ -957,12 +893,13 @@ if (typeof TableTools != 'undefined') {
                         autoclose: true,
                         calendarWeeks: true,
                         language: "custom",
-                        weekStart: AppHelper.settings.firstDayOfWeek
+                        weekStart: AppHelper.settings.firstDayOfWeek,
+                        clearBtn: true,
                     });
                     $elector.html(from + " - " + to);
                 };
 
-                prepareDefaultDateRangeFilterParams();
+                //prepareDefaultDateRangeFilterParams();
                 initWeekSelectorText($datepicker);
 
                 //bind the click events
@@ -988,7 +925,8 @@ if (typeof TableTools != 'undefined') {
                     autoclose: true,
                     calendarWeeks: true,
                     language: "custom",
-                    weekStart: AppHelper.settings.firstDayOfWeek
+                    weekStart: AppHelper.settings.firstDayOfWeek,
+                    clearBtn: true,
                 }).on("show", function () {
                     $(".datepicker").addClass("week-view");
                     $(".datepicker-days").find(".active").siblings(".day").addClass("active");
@@ -1013,16 +951,17 @@ if (typeof TableTools != 'undefined') {
                     active = " active";
                     values.push(option.value);
                 }
-                checkboxes += '<label class="btn btn-default ' + active + '">';
+                checkboxes += '<label class="btn btn-default btn-white ' + active + '">';
                 checkboxes += '<input type="checkbox" name="' + option.name + '" value="' + option.value + '" autocomplete="off" ' + checked + '>' + option.text;
                 checkboxes += '</label>';
             });
             settings.filterParams[name] = values;
-            var checkboxDom = '<div class="mr15 DTTT_container">'
+            var checkboxDom = '<div class="mr-5 DTTT_container">'
                 + '<div class="btn-group filter" data-act="checkbox" data-toggle="buttons">'
                 + checkboxes
                 + '</div>'
                 + '</div>';
+
             $instanceWrapper.find(".custom-toolbar").append(checkboxDom);
 
             var $checkbox = $instanceWrapper.find("[data-act='checkbox']");
@@ -1054,11 +993,11 @@ if (typeof TableTools != 'undefined') {
                     active = " active";
                     settings.filterParams[option.name] = option.value;
                 }
-                radiobuttons += '<label class="btn btn-default ' + active + '">';
+                radiobuttons += '<label class="btn btn-default btn-white ' + active + '">';
                 radiobuttons += '<input type="radio" name="' + option.name + '" value="' + option.value + '" autocomplete="off" ' + checked + '>' + option.text;
                 radiobuttons += '</label>';
             });
-            var radioDom = '<div class="mr15 DTTT_container">'
+            var radioDom = '<div class="mr-5 DTTT_container">'
                 + '<div class="btn-group filter" data-act="radio" data-toggle="buttons">'
                 + radiobuttons
                 + '</div>'
@@ -1078,7 +1017,6 @@ if (typeof TableTools != 'undefined') {
                 });
             });
         }
-
 
         //build singleDatepicker filter
         if (typeof settings.singleDatepicker[0] !== 'undefined') {
@@ -1132,8 +1070,8 @@ if (typeof TableTools != 'undefined') {
                     + options
                     + '</div>';
 
-                var selectDom = '<div class="mr15 DTTT_container">'
-                    + '<button name="' + datePicker.name + '" class="btn datepicker-custom-selector">'
+                var selectDom = '<div class="mr-5 DTTT_container">'
+                    + '<button name="' + datePicker.name + '" class="btn btn-default btn-white datepicker-custom-selector">'
                     + getDatePickerText(selectedText)
                     + '</button>'
                     + '</div>';
@@ -1189,7 +1127,6 @@ if (typeof TableTools != 'undefined') {
             });
         }
 
-
         //build rangeDatepicker filter
         if (typeof settings.rangeDatepicker[0] !== 'undefined') {
 
@@ -1213,11 +1150,11 @@ if (typeof TableTools != 'undefined') {
 
 
                 //prepare DOM
-                var selectDom = '<div class="mr15 DTTT_container">'
+                var selectDom = '<div class="mr-5 DTTT_container">'
                     + '<div class="input-daterange input-group">'
-                    + '<button class="btn btn-default form-control" name="' + startDate.name + '" data-date="' + startDate.value + '">' + startButtonText + '</button>'
+                    + '<button class="btn btn-default btn-white form-control" name="' + startDate.name + '" data-date="' + startDate.value + '">' + startButtonText + '</button>'
                     + '<span class="input-group-addon">-</span>'
-                    + '<button class="btn btn-default form-control" name="' + endDate.name + '" data-date="' + endDate.value + '">' + endButtonText + ''
+                    + '<button class="btn btn-default btn-white form-control" name="' + endDate.name + '" data-date="' + endDate.value + '">' + endButtonText + ''
                     + '</div>'
                     + '</div>';
 
@@ -1277,12 +1214,29 @@ if (typeof TableTools != 'undefined') {
             });
         }
 
+        //build buttons
+        if (settings.buttons[0] !== 'undefied'){
+            var buttons = "";
+            $.each(settings.buttons, function (idex, button) {
+                var css_class = button.class || "btn btn-default";
+                var id = button.id || "";
+                var title = button.title || "-title-";
+
+                buttons += '<button id="'+id+'" class="'+css_class+'">'+title+'</button>';
+            });
+
+            var buttonsDom = '<div class="mr-5 DTTT_container">'
+                + buttons
+                + '</div>';
+
+            $instanceWrapper.find(".custom-toolbar").append(buttonsDom);
+        }
 
         //build dropdown filter
         if (typeof settings.filterDropdown[0] !== 'undefined') {
             var radiobuttons = "";
             $.each(settings.filterDropdown, function (index, dropdown) {
-                var optons = "", selectedValue = "";
+                var optons = "", selectedValue = "", dataAttr = "";
 
                 $.each(dropdown.options, function (index, option) {
                     var isSelected = "";
@@ -1293,18 +1247,24 @@ if (typeof TableTools != 'undefined') {
                     optons += '<option ' + isSelected + ' value="' + option.id + '">' + option.text + '</option>';
                 });
 
+                $.each(dropdown.dataAttr, function (index, attr) {
+                    dataAttr += 'data-'+index + '="'+attr+'"';
+                });
+
                 if (dropdown.name) {
                     settings.filterParams[dropdown.name] = selectedValue;
                 }
 
-                var selectDom = '<div class="mr15 DTTT_container">'
-                    + '<select class="' + dropdown.class + '" name="' + dropdown.name + '">'
+                var selectDom = '<div class="mr-5 DTTT_container">'
+                    + '<select class="' + dropdown.class + '" name="' + dropdown.name + '" '+dataAttr+'>'
                     + optons
                     + '</select>'
                     + '</div>';
+
                 $instanceWrapper.find(".custom-toolbar").append(selectDom);
 
                 var $dropdown = $instanceWrapper.find("[name='" + dropdown.name + "']");
+
                 if (window.Select2 !== undefined) {
                     $dropdown.select2();
                 }
@@ -1317,9 +1277,6 @@ if (typeof TableTools != 'undefined') {
                 });
             });
         }
-
-
-
 
         var undoHandler = function (eventData) {
             $('<a class="undo-delete" href="javascript:;"><strong>Undo</strong></a>').insertAfter($(eventData.alertSelector).find(".app-alert-message"));
@@ -1343,9 +1300,7 @@ if (typeof TableTools != 'undefined') {
             });
         };
 
-
         var deleteHandler = function (e) {
-            appLoader.show();
             var $target = $(e.currentTarget);
 
             if (e.data && e.data.target) {
@@ -1361,18 +1316,18 @@ if (typeof TableTools != 'undefined') {
                 dataType: 'json',
                 data: {id: id},
                 success: function (result) {
-                    if (result.success) {
-                        var tr = $target.closest('tr'),
+                    if (result.code == 'OK') {
+                        var tr = $target.closest('tr').get(0),
                             table = $instance.DataTable();
 
-                        oTable.fnDeleteRow(table.row(tr).index());
-                        var alertId = appAlert.warning(result.message, {duration: 20000});
-
+                        //@ToDo fix the fnDeleteRow
+                        tr.remove()
+                        oTable.fnDeleteRow(table.row(tr))
                         //fire success callback
                         settings.onDeleteSuccess(result);
 
                         //bind undo selector
-                        if (undo !== "0") {
+                        if (undo == "1") {
                             undoHandler({
                                 alertSelector: alertId,
                                 url: url,
@@ -1380,18 +1335,19 @@ if (typeof TableTools != 'undefined') {
                             });
                         }
                     } else {
-                        appAlert.error(result.message);
+                        toastr.error(result.message);
                     }
-                    appLoader.hide();
                 }
             });
         };
 
         var deleteConfirmationHandler = function (e) {
+            e.preventDefault();
+
             var $deleteButton = $("#confirmDeleteButton"),
                 $target = $(e.currentTarget);
-            //copy attributes
 
+            //copy attributes
             $(this).each(function () {
                 $.each(this.attributes, function () {
                     if (this.specified && this.name.match("^data-")) {
@@ -1410,41 +1366,25 @@ if (typeof TableTools != 'undefined') {
             $("#confirmationModal").modal('show');
         };
 
-
         window.InstanceCollection = window.InstanceCollection || {};
-        window.InstanceCollection["#" + this.id] = settings;
-
-
+        window.InstanceCollection["#" + $(this).selector] = settings;
 
         $('body').find($instance).on('click', '[data-action=delete]', deleteHandler);
         $('body').find($instance).on('click', '[data-action=delete-confirmation]', deleteConfirmationHandler);
+        $('.custom-toolbar').closest('.datatable-tools').addClass('row');
 
         $.fn.dataTableExt.oApi.getSettings = function (oSettings) {
             return oSettings;
         };
 
-        $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, filterParams) {
-            this.fnClearTable(this);
-            this.oApi._fnProcessingDisplay(oSettings, true);
-            var that = this;
-            $.ajax({
-                url: oSettings.ajax.url,
-                type: "POST",
-                dataType: "json",
-                data: filterParams,
-                success: function (json) {
-                    /* Got the data - add it to the table */
-                    for (var i = 0; i < json.data.length; i++) {
-                        that.oApi._fnAddData(oSettings, json.data[i]);
-                    }
-
-                    oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
-                    that.fnDraw(that);
-                    that.oApi._fnProcessingDisplay(oSettings, false);
-                }
-            });
+        $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, filterParams ){
+            oSettings.ajax.data = filterParams;
+            table = $(this).DataTable();
+            table.ajax.reload(null,false);
+            return false;
         };
-        $.fn.dataTableExt.oApi.fnAddRow = function (oSettings, data) {
+
+        $.fn.dataTableExt.oApi.fnAddRow = function (oSettings, data){
             this.oApi._fnAddData(oSettings, data);
             this.fnDraw(this);
         };

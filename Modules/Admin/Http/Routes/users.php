@@ -10,7 +10,7 @@ Route::get('/users', [
     'middleware' => 'permission:browse-users'
 ]);
 
-Route::get('/users/datatable', [
+Route::post('/users/datatable', [
     'as'     => 'users.datatable',
     'uses'   => 'UsersController@datatable',
     'middleware' => 'permission:browse-users'

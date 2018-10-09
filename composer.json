@@ -14,7 +14,8 @@
         "nwidart/laravel-modules": "^3.3",
         "tymon/jwt-auth": "^0.5.12",
         "unisharp/laravel-settings": "^2.0",
-        "watson/active": "^3.0"
+        "watson/active": "^3.0",
+        "yajra/laravel-datatables-oracle": "~8.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
@@ -27,7 +28,7 @@
     },
     "autoload": {
         "classmap": [
-            "database/seeds",
+            "dataYajra\DataTables\DataTablesServiceProvider::class,base/seeds",
             "database/factories"
         ],
         "psr-4": {

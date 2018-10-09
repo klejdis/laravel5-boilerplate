@@ -1,1 +1,2323 @@
-!function(a){var t={};function e(n){if(t[n])return t[n].exports;var o=t[n]={i:n,l:!1,exports:{}};return a[n].call(o.exports,o,o.exports,e),o.l=!0,o.exports}e.m=a,e.c=t,e.d=function(a,t,n){e.o(a,t)||Object.defineProperty(a,t,{configurable:!1,enumerable:!0,get:n})},e.n=function(a){var t=a&&a.__esModule?function(){return a.default}:function(){return a};return e.d(t,"a",t),t},e.o=function(a,t){return Object.prototype.hasOwnProperty.call(a,t)},e.p="/",e(e.s=0)}([function(a,t,e){e(1),a.exports=e(5)},function(a,t,e){e(2),e(3),e(4)},function(a,t){checkNotifications=function(a){function t(t,e){return a.apply(this,arguments)}return t.toString=function(){return a.toString()},t}(function(a,t){a&&a.notificationUrl&&$.ajax({url:a.notificationUrl,dataType:"json",success:function(e){if(e.success&&(e.total_notifications&&1*e.total_notifications&&a.notificationSelector.html("<i class='fa "+a.icon+"'></i> <span class='badge bg-danger up'>"+e.total_notifications+"</span>"),a.notificationSelector.parent().find(".dropdown-details").html(e.notification_list),t&&$.ajax({url:a.notificationStatusUpdateUrl,success:function(){a.notificationSelector.html("<i class='fa "+a.icon+"'></i>")}})),!t){var n=a.checkNotificationAfterEvery;(n*=1e3)<1e4&&(n=1e4),setTimeout(function(){checkNotifications(a)},n)}}})})},function(a,t){$(window).load(function(){$("#pre-loader").delay(250).fadeOut(function(){$("#pre-loader").remove()})}),$(document).ready(function(){$.ajaxSetup({cache:!1}),$("#sidebar-toggle-md").click(function(){$("#sidebar").toggleClass("collapsed"),$("#sidebar").hasClass("collapsed")?($(this).find(".fa").removeClass("fa-dedent"),$(this).find(".fa").addClass("fa-indent")):($(this).find(".fa").addClass("fa-dedent"),$(this).find(".fa").removeClass("fa-indent"))}),$("#sidebar-collapse").click(function(){$("#sidebar").addClass("collapsed")}),$("#sidebar-menu > .expand > a").click(function(){var a=$(this).parent();if(a.hasClass("main")&&(a.hasClass("open")?a.removeClass("open"):($("#sidebar-menu >.expand").removeClass("open"),a.addClass("open")),!$(this).closest(".collapsed").length))return!1}),$("#sidebar-toggle").click(function(){$("body").toggleClass("off-screen"),$("#sidebar").removeClass("collapsed")}),setPageScrollable(),setMenuScrollable(),$(window).resize(function(){setPageScrollable(),setMenuScrollable()}),$("body").on("click",".timeline-images a",function(){var a=$(this).closest(".timeline-images");return a.magnificPopup({delegate:"a",type:"image",closeOnContentClick:!1,closeBtnInside:!1,mainClass:"mfp-with-zoom mfp-img-mobile",gallery:{enabled:!0},image:{titleSrc:"data-title"},callbacks:{change:function(a){var t=$(a.el).data();setTimeout(function(){t&&"google"===t.viewer?$(".mfp-content").addClass("full-width-mfp-content"):$(".mfp-content").removeClass("full-width-mfp-content")})}}}),a.magnificPopup("open"),!1})}),setPageScrollable=function(){$.fn.mCustomScrollbar&&($(window).width()<=640?($("html").css({overflow:"auto"}),$("body").css({overflow:"auto"})):initScrollbar(".scrollable-page",{setHeight:$(window).height()-45}))},setMenuScrollable=function(){initScrollbar("#sidebar-scroll",{setHeight:$(window).height()-45})},initScrollbar=function(a,t){t||(t={});var e=$.extend({},{theme:"minimal-dark",autoExpandScrollbar:!0,keyboard:{enable:!0,scrollType:"stepless",scrollAmount:40},mouseWheelPixels:300,scrollInertia:60,mouseWheel:{scrollAmount:188,normalizeDelta:!0}},t);"native"==AppHelper.settings.scrollbar?$(a).css({height:e.setHeight+"px","overflow-y":"scroll"}):$.fn.mCustomScrollbar&&$(a).mCustomScrollbar(e)},getRndomString=function(a){for(var t="",e="!-().0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",n=a;n>0;--n)t+=e[Math.round(Math.random()*(e.length-1))];return t},getRandomAlphabet=function(a){for(var t="",e="abcdefghijklmnopqrstuvwxyz",n=a;n>0;--n)t+=e[Math.round(Math.random()*(e.length-1))];return t},attachDropzoneWithForm=function(a,t,e,n){var o=$(a),r=o.find(".post-file-dropzone-scrollbar"),i=o.find(".post-file-previews"),s=o.find(".post-file-upload-row"),l=o.find(".upload-file-button"),d=o.find("button[type=submit]"),c=getRandomAlphabet(15),m=getRandomAlphabet(15),u=getRandomAlphabet(15);i.attr("id",c),s.attr("id",m),l.attr("id",u);var f=document.querySelector("#"+m);f.id="";var p=f.parentNode.innerHTML;return f.parentNode.removeChild(f),n||(n={}),new Dropzone(a,{url:t,thumbnailWidth:80,thumbnailHeight:80,parallelUploads:20,maxFilesize:3e3,previewTemplate:p,dictDefaultMessage:AppLanugage.fileUploadInstruction,autoQueue:!0,previewsContainer:"#"+c,clickable:"#"+u,maxFiles:n.maxFiles?n.maxFiles:1e3,init:function(){this.on("maxfilesexceeded",function(a){this.removeAllFiles(),this.addFile(a)})},accept:function(a,t){a.name.length>200&&t(AppLanugage.fileNameTooLong),r.removeClass("hide"),initScrollbar(r,{setHeight:90}),r.parent().removeClass("hide"),o.find("textarea").focus(),$.ajax({url:e,data:{file_name:a.name,file_size:a.size},cache:!1,type:"POST",dataType:"json",success:function(e){e.success?($(a.previewTemplate).append("<input type='hidden' name='file_names[]' value='"+a.name+"' />\n                                 <input type='hidden' name='file_sizes[]' value='"+a.size+"' />"),t()):(appAlert.error(e.message),$(a.previewTemplate).find("input").remove(),t(e.message))}})},processing:function(){d.prop("disabled",!0)},queuecomplete:function(){d.prop("disabled",!1)},reset:function(a){r.addClass("hide")},fallback:function(){$("body").addClass("dropzone-disabled"),l.click(function(){$(this).html("<i class='fa fa-camera'></i> Add more"),r.removeClass("hide"),initScrollbar(r,{setHeight:90}),r.parent().removeClass("hide"),i.prepend("<div class='clearfix p5 file-row'><button type='button' class='btn btn-xs btn-danger pull-left mr10 remove-file'><i class='fa fa-times'></i></button> <input class='pull-left' type='file' name='manualFiles[]' /></div>")}),i.on("click",".remove-file",function(){$(this).parent().remove()})},success:function(a){setTimeout(function(){$(a.previewElement).find(".progress-striped").removeClass("progress-striped").addClass("progress-bar-success")},1e3)}})},teamAndMemberSelect2Format=function(a){return"team"===a.type?"<i class='fa fa-users info'></i> "+a.text:"<i class='fa fa-user'></i> "+a.text},setDatePicker=function(a,t){t||(t={});var e=$.extend({},{autoclose:!0,language:"custom",todayHighlight:!0,weekStart:AppHelper.settings.firstDayOfWeek,format:"yyyy-mm-dd"},t);$(a).datepicker(e)},setTimePicker=function(a,t){t||(t={});var e="24_hours"!=AppHelper.settings.timeFormat,n=$.extend({},{minuteStep:5,defaultTime:"",appendWidgetTo:"#ajaxModal",showMeridian:e},t);$(a).timepicker(n)},initWYSIWYGEditor=function(a,t){t||(t={});var e=$.extend({},{height:250,toolbar:[["style",["style"]],["font",["bold","italic","underline","clear"]],["fontname",["fontname"]],["color",["color"]],["para",["ul","ol","paragraph"]],["height",["height"]],["table",["table"]],["insert",["hr"]],["view",["fullscreen","codeview"]]],disableDragAndDrop:!0},t);$(a).summernote(e)},getWYSIWYGEditorHTML=function(a){return $(a).summernote("code")},combineCustomFieldsColumns=function(a,t){if(a&&t){var e=a.slice(-1)[0],n=t.split(",").length;if(n)for(var o=1;o<=n;o++)a.push(o+e),e++}return a}},function(a,t){var e;$(document).ready(function(){$.ajaxSetup({cache:!1}),moment.locale(AppLanugage.locale),jQuery.fn.datepicker.dates.custom={days:AppLanugage.days,daysShort:AppLanugage.daysShort,daysMin:AppLanugage.daysMin,months:AppLanugage.months,monthsShort:AppLanugage.monthsShort,today:AppLanugage.today},$("body").on("click","[data-act=ajax-modal]",function(){var a={ajaxModal:1},t=$(this).attr("data-action-url"),e=$(this).attr("data-modal-lg"),n=$(this).attr("data-title");return t?(n?$("#ajaxModalTitle").html(n):$("#ajaxModalTitle").html($("#ajaxModalTitle").attr("data-title")),$("#ajaxModalContent").html($("#ajaxModalOriginalContent").html()),$("#ajaxModalContent").find(".original-modal-body").removeClass("original-modal-body").addClass("modal-body"),$("#ajaxModal").modal("show"),$(this).each(function(){$.each(this.attributes,function(){if(this.specified&&this.name.match("^data-post-")){var t=this.name.replace("data-post-","");a[t]=this.value}})}),ajaxModalXhr=$.ajax({url:t,data:a,cache:!1,type:"POST",success:function(a){$("#ajaxModal").find(".modal-dialog").removeClass("mini-modal"),"1"===e&&$("#ajaxModal").find(".modal-dialog").addClass("modal-lg"),$("#ajaxModalContent").html(a);var t=$("#ajaxModalContent").find(".modal-body"),n=t.height(),o=$(window).height()-200;n>o&&(n=o,$.fn.mCustomScrollbar&&t.mCustomScrollbar({setHeight:n,theme:"minimal-dark",autoExpandScrollbar:!0}))},statusCode:{404:function(){$("#ajaxModalContent").find(".modal-body").html(""),appAlert.error("404: Page not found.",{container:".modal-body",animate:!1})}},error:function(){$("#ajaxModalContent").find(".modal-body").html(""),appAlert.error("500: Internal Server Error.",{container:".modal-body",animate:!1})}}),!1):(console.log("Ajax Modal: Set data-action-url!"),!1)}),$("#ajaxModal").on("hidden.bs.modal",function(a){ajaxModalXhr.abort(),$("#ajaxModal").find(".modal-dialog").removeClass("modal-lg"),$("#ajaxModal").find(".modal-dialog").addClass("mini-modal"),$("#ajaxModalContent").html("")}),$("body").on("click","[data-act=ajax-request]",function(){var a={},t=$(this),e=t.attr("data-action-url"),n=t.attr("data-remove-on-success"),o=t.attr("data-remove-on-click"),r=t.attr("data-fade-out-on-success"),i=t.attr("data-fade-out-on-click"),s=t.attr("data-inline-loader"),l=t.attr("data-reload-on-success"),d="";if(t.attr("data-real-target")?d=$(t.attr("data-real-target")):t.attr("data-closest-target")&&(d=t.closest(t.attr("data-closest-target"))),!e)return console.log("Ajax Request: Set data-action-url!"),!1;o&&$(o).length&&$(o).remove(),i&&$(i).length&&$(i).fadeOut(function(){$(this).remove()}),t.each(function(){$.each(this.attributes,function(){if(this.specified&&this.name.match("^data-post-")){var t=this.name.replace("data-post-","");a[t]=this.value}})}),"1"===s?t.addClass("inline-loader"):appLoader.show(),ajaxRequestXhr=$.ajax({url:e,data:a,cache:!1,type:"POST",success:function(a){l&&location.reload(),n&&$(n).length&&$(n).remove(),r&&$(r).length&&$(r).fadeOut(function(){$(this).remove()}),appLoader.hide(),d.length&&d.html(a)},statusCode:{404:function(){appLoader.hide(),appAlert.error("404: Page not found.")}},error:function(){appLoader.hide(),appAlert.error("500: Internal Server Error.")}})}),$("body").on("click",'[data-toggle="ajax-tab"] a',function(){var a=$(this),t=a.attr("href"),e=a.attr("data-target");return!!e&&(""===$(e).html()&&(appLoader.show({container:e,css:"right:50%; bottom:auto;"}),$.get(t,function(a){$(e).html(a)})),a.tab("show"),!1)}),$('[data-toggle="ajax-tab"] a').first().trigger("click"),$("body").on("click",'[data-toggle="app-modal"]',function(){var a=!0;return"0"===$(this).attr("data-sidebar")&&(a=!1),appContentModal.init({url:$(this).attr("data-url"),sidebar:a}),!1})}),function(a){a.fn.appForm=function(t){var e=a.extend({},{ajaxSubmit:!0,isModal:!0,dataType:"json",onModalClose:function(){},onSuccess:function(){},onError:function(){return!0},onSubmit:function(){},onAjaxSuccess:function(){},beforeAjaxSubmit:function(a,t,e){}},t);function n(t,e){a.validator.addMethod("greaterThanOrEqual",function(t,e,n){var o=n;return!n||0!==n.indexOf("#")&&0!==n.indexOf(".")||(o=a(n).val()),/Invalid|NaN/.test(new Date(t))?isNaN(t)&&isNaN(o)||Number(t)>=Number(o):new Date(t)>=new Date(o)},"Must be greater than {0}."),a(t).validate({submitHandler:function(a){if(!e)return!0;e(a)},highlight:function(t){a(t).closest(".form-group").addClass("has-error")},unhighlight:function(t){a(t).closest(".form-group").removeClass("has-error")},errorElement:"span",errorClass:"help-block",ignore:":hidden:not(.validate-hidden)",errorPlacement:function(a,t){t.parent(".input-group").length?a.insertAfter(t.parent()):a.insertAfter(t)}}),a(".validate-hidden").click(function(){a(this).closest(".form-group").removeClass("has-error").find(".help-block").hide()})}this.each(function(){e.ajaxSubmit?n(a(this),function(t){e.onSubmit(),e.isModal&&function(t){var e=t.height()-80;e>0&&(e=Math.floor(e/2));t.append("<div class='modal-mask'><div class='circle-loader'></div></div>");var n=t.outerHeight();a(".modal-mask").css({width:t.width()+30+"px",height:n+"px","padding-top":e+"px"}),t.closest(".modal-dialog").find('[type="submit"]').attr("disabled","disabled")}(a("#ajaxModalContent").find(".modal-body")),a(t).ajaxSubmit({dataType:e.dataType,beforeSubmit:function(a,t,n){e.beforeAjaxSubmit(a,t,n)},success:function(t){e.onAjaxSuccess(t),t.success?(e.onSuccess(t),e.isModal&&function(t){t&&(a(".modal-mask").html("<div class='circle-done'><i class='fa fa-check'></i></div>"),setTimeout(function(){a(".modal-mask").find(".circle-done").addClass("ok")},30));setTimeout(function(){a(".modal-mask").remove(),a("#ajaxModal").modal("toggle"),e.onModalClose()},1e3)}(!0)):e.onError(t)&&(e.isModal?(a(".modal-body").closest(".modal-dialog").find('[type="submit"]').removeAttr("disabled"),a(".modal-mask").remove(),t.message&&appAlert.error(t.message,{container:".modal-body",animate:!1})):t.message&&appAlert.error(t.message))}})}):n(a(this))})}}(jQuery),"undefined"!=typeof TableTools&&(TableTools.DEFAULTS.sSwfPath=AppHelper.assetsDirectory+"js/datatable/TableTools/swf/copy_csv_xls_pdf.swf"),function(a){a.fn.appTable=function(t){var e=1*AppHelper.settings.displayLength;!isNaN(e)&&e||(e=10);var n={source:"",xlsColumns:[],pdfColumns:[],printColumns:[],columns:[],order:[[0,"asc"]],hideTools:!1,displayLength:e,dateRangeType:"",checkBoxes:[],radioButtons:[],filterDropdown:[],singleDatepicker:[],rangeDatepicker:[],stateSave:!0,stateDuration:2592e3,filterParams:{datatable:!0},onDeleteSuccess:function(){},onUndoSuccess:function(){},onInitComplete:function(){},customLanguage:{noRecordFoundText:AppLanugage.noRecordFound,searchPlaceholder:AppLanugage.search,printButtonText:AppLanugage.print,excelButtonText:AppLanugage.excel,printButtonToolTip:AppLanugage.printButtonTooltip,today:AppLanugage.today,yesterday:AppLanugage.yesterday,tomorrow:AppLanugage.tomorrow},footerCallback:function(a,t,e,n,o){},rowCallback:function(a,t,e,n){},summation:"",onRelaodCallback:function(){}},o=a(this);if(!o.is("table"))return console.log("Element must have to be a table",this),!1;var r=a.extend({},n,t);if(r.reload){var i=a(this).dataTable(),s=window.InstanceCollection[a(this).selector];return s||(s=r),i.fnReloadAjax(s.filterParams),a(this).data("onRelaodCallback")&&a(this).data("onRelaodCallback")(i,s.filterParams),!1}if(r.newData){i=a(this).dataTable();if(r.dataId){var l=a(this).find("[data-post-id='"+r.dataId+"']");if(l.length)i.fnDeleteRow(l.closest("tr"));else{var d=a(this).find("[data-index-id='"+r.dataId+"']");d.length&&i.fnDeleteRow(d.closest("tr"))}}return i.fnAddRow(r.newData),!1}r._visible_columns=[],a.each(r.columns,function(a,t){!1!==t.visible&&r._visible_columns.push(a)}),r._exportable=r.xlsColumns.length+r.pdfColumns.length+r.printColumns.length,r._firstDayOfWeek=AppHelper.settings.firstDayOfWeek||0,r._inputDateFormat="YYYY-MM-DD";var c=function(a){a||(a=moment().format("YYYY-MM-DD"));var t=moment(a).format("E")-AppHelper.settings.firstDayOfWeek,e={};return e.firstDateOfWeek=t<7?moment(a).subtract(t,"days").format("YYYY-MM-DD"):moment(a).format("YYYY-MM-DD"),t<0&&(e.firstDateOfWeek=moment(e.firstDateOfWeek).subtract(7,"days").format("YYYY-MM-DD")),e.lastDateOfWeek=moment(e.firstDateOfWeek).add(6,"days").format("YYYY-MM-DD"),e},m=function(){if("daily"===r.dateRangeType)r.filterParams.start_date=moment().format(r._inputDateFormat),r.filterParams.end_date=r.filterParams.start_date;else if("monthly"===r.dateRangeType){var a=moment().daysInMonth(),t=moment().format("YYYY-MM");r.filterParams.start_date=t+"-01",r.filterParams.end_date=t+"-"+a}else if("yearly"===r.dateRangeType){var e=moment().format("YYYY");r.filterParams.start_date=e+"-01-01",r.filterParams.end_date=e+"-12-31"}else if("weekly"===r.dateRangeType){var n=c();r.filterParams.start_date=n.firstDateOfWeek,r.filterParams.end_date=n.lastDateOfWeek}};m(),function(){var t=[],e="";a.each(r.checkBoxes,function(a,n){e=n.name,n.isChecked&&t.push(n.value)}),r.filterParams[e]=t}(),a.each(r.radioButtons,function(a,t){t.isChecked&&(r.filterParams[t.name]=t.value)}),a.each(r.filterDropdown||[],function(t,e){a.each(e.options,function(a,t){t.isSelected&&(r.filterParams[e.name]=t.id)})}),a.each(r.singleDatepicker||[],function(t,e){a.each(e.options||[],function(a,t){t.isSelected&&(r.filterParams[e.name]=t.value)})}),a.each(r.rangeDatepicker||[],function(a,t){t.startDate&&t.startDate.value&&(r.filterParams[t.startDate.name]=t.startDate.value),t.startDate&&t.endDate.value&&(r.filterParams[t.endDate.name]=t.endDate.value)});var u,f,p={ajax:{url:r.source,type:"POST",data:r.filterParams},sServerMethod:"POST",columns:r.columns,bProcessing:!0,iDisplayLength:r.displayLength,bAutoWidth:!1,bSortClasses:!1,order:r.order,stateSave:r.stateSave,fnStateLoadParams:function(a,t){t&&t.search&&(t.search.search="")},stateDuration:r.stateDuration,fnInitComplete:function(){r.onInitComplete(this)},language:{lengthMenu:"_MENU_",zeroRecords:r.customLanguage.noRecordFoundText,info:"_START_-_END_ / _TOTAL_",sInfo:"_START_-_END_ / _TOTAL_",infoFiltered:"(_MAX_)",search:"",searchPlaceholder:r.customLanguage.searchPlaceholder,sInfoEmpty:"0-0 / 0",sInfoFiltered:"(_MAX_)",sInfoPostFix:"",sInfoThousands:",",sProcessing:"<div class='table-loader'><span class='loading'></span></div>",oPaginate:{sPrevious:"<i class='fa fa-angle-double-left'></i>",sNext:"<i class='fa fa-angle-double-right'></i>"}},sDom:"",footerCallback:function(t,e,n,o,i){var s=this;if(r.summation){var l=s.api().page.info();if(!l.recordsTotal)return a(s).find("tfoot").hide(),!1;a(s).find("tfoot").show(),a.each(r.summation,function(t,e){var n=calculateDatatableTotal(s,e.column,function(a){return"currency"===e.dataType?unformatCurrency(a):"time"===e.dataType?moment.duration(a).asSeconds():"number"===e.dataType?unformatCurrency(a):a},!0);if("currency"===e.dataType?n=toCurrency(n,e.currencySymbol):"time"===e.dataType?n=secondsToTimeFormat(n):"number"===e.dataType&&(n=toCurrency(n,"none")),a(s).find("[data-current-page="+e.column+"]").html(n),l.pages>1){a(s).find("[data-section='all_pages']").show();var o=calculateDatatableTotal(s,e.column,function(a){return"currency"===e.dataType?unformatCurrency(a):"time"===e.dataType?moment.duration(a).asSeconds():"number"===e.dataType?unformatCurrency(a):a});"currency"===e.dataType?o=toCurrency(o,e.currencySymbol):"time"===e.dataType?o=secondsToTimeFormat(o):"number"===e.dataType&&(o=toCurrency(o,"none")),a(s).find("[data-all-page="+e.column+"]").html(o)}else a(s).find("[data-section='all_pages']").hide()})}r.footerCallback(t,e,n,o,i,s)},fnRowCallback:function(a,t,e,n){r.rowCallback(a,t,e,n)}};if(r.hideTools||(p.sDom="<'datatable-tools'<'col-md-1'l><'col-md-11 custom-toolbar'f>r>t<'datatable-tools clearfix'<'col-md-3'i><'col-md-9'p>>"),r._exportable){var h=[];if(r.xlsColumns.length&&h.push({sExtends:"xls",sButtonText:r.customLanguage.excelButtonText,mColumns:r.xlsColumns}),r.pdfColumns.length&&h.push({sExtends:"pdf",mColumns:r.pdfColumns}),r.printColumns.length){r._hiddenColumns=(u=r._visible_columns,f=r.printColumns,u.filter(function(a){return f.indexOf(a)<0})),h.push({sExtends:"print",sButtonText:r.customLanguage.printButtonText,sToolTip:r.customLanguage.printButtonToolTip,sInfo:"",fnClick:function(t,e){for(var n in r._hiddenColumns)g.fnSetColumnVis(r._hiddenColumns[n],!1);a("html").addClass("print-peview"),a(".scrollable-page").addClass("print-peview"),this.fnPrint(!0,e),a(window).keydown(function(t){if(27===t.which){for(var e in r._hiddenColumns)g.fnSetColumnVis(r._hiddenColumns[e],!0);a(".print-peview").removeClass("print-peview"),setPageScrollable(),a(".dataTables_processing").hide()}})}})}r.hideTools||(p.sDom="<'datatable-tools'<'col-md-1'l><'col-md-11 custom-toolbar'f<'datatable-export'T>>r>t<'datatable-tools clearfix'<'col-md-3'i><'col-md-9'p>>"),p.oTableTools={aButtons:h}}var g=o.dataTable(p),v=o.closest(".dataTables_wrapper");if(v.find(".DTTT_button_print").tooltip({placement:"bottom",container:"body"}),v.find("select").select2({minimumResultsForSearch:-1}),o.data("onRelaodCallback",r.onRelaodCallback),r.dateRangeType){v.find(".custom-toolbar").append('<div class="mr15 DTTT_container"><button data-act="prev" class="btn btn-default date-range-selector"><i class="fa fa-chevron-left"></i></button><button data-act="datepicker" class="btn btn-default" style="margin: -1px"></button><button data-act="next"  class="btn btn-default date-range-selector"><i class="fa fa-chevron-right"></i></button></div>');var b=v.find("[data-act='datepicker']"),y=v.find(".date-range-selector");if("daily"===r.dateRangeType){var _=function(a){r.filterParams.start_date===moment().format(r._inputDateFormat)?a.html(r.customLanguage.today):r.filterParams.start_date===moment().subtract(1,"days").format(r._inputDateFormat)?a.html(r.customLanguage.yesterday):r.filterParams.start_date===moment().add(1,"days").format(r._inputDateFormat)?a.html(r.customLanguage.tomorrow):a.html(moment(r.filterParams.start_date).format("Do, MMMM YYYY"))};m(),_(b),b.datepicker({format:r._inputDateFormat,autoclose:!0,todayHighlight:!0,language:"custom"}).on("changeDate",function(a){var t=moment(a.date).format(r._inputDateFormat);r.filterParams.start_date=t,r.filterParams.end_date=t,_(b),o.appTable({reload:!0,filterParams:r.filterParams})}),y.click(function(){var t=a(this).attr("data-act"),e="";"next"===t?e=moment(r.filterParams.start_date).add(1,"days").format(r._inputDateFormat):"prev"===t&&(e=moment(r.filterParams.start_date).subtract(1,"days").format(r._inputDateFormat)),r.filterParams.start_date=e,r.filterParams.end_date=e,_(b),o.appTable({reload:!0,filterParams:r.filterParams})})}if("monthly"===r.dateRangeType){var T=function(a){a.html(moment(r.filterParams.start_date).format("MMMM YYYY"))};m(),T(b),b.datepicker({format:"YYYY-MM",viewMode:"months",minViewMode:"months",autoclose:!0,language:"custom"}).on("changeDate",function(a){var t=moment(a.date).format(r._inputDateFormat),e=moment(t).daysInMonth(),n=moment(t).format("YYYY-MM");r.filterParams.start_date=n+"-01",r.filterParams.end_date=n+"-"+e,T(b),o.appTable({reload:!0,filterParams:r.filterParams})}),y.click(function(){var t=a(this).attr("data-act"),e=moment(r.filterParams.start_date),n=moment(r.filterParams.end_date);if("next"===t){var i=e.add(1,"months"),s=i.daysInMonth();e=(l=i.format("YYYY-MM"))+"-01",n=l+"-"+s}else if("prev"===t){var l,d=e.subtract(1,"months");s=d.daysInMonth();e=(l=d.format("YYYY-MM"))+"-01",n=l+"-"+s}r.filterParams.start_date=e,r.filterParams.end_date=n,T(b),o.appTable({reload:!0,filterParams:r.filterParams})})}if("yearly"===r.dateRangeType){var k=function(a){a.html(moment(r.filterParams.start_date).format("YYYY"))};m(),k(b),b.datepicker({format:"YYYY-MM",viewMode:"years",minViewMode:"years",autoclose:!0,language:"custom"}).on("changeDate",function(a){var t=moment(a.date).format(r._inputDateFormat),e=moment(t).format("YYYY");r.filterParams.start_date=e+"-01-01",r.filterParams.end_date=e+"-12-31",k(b),o.appTable({reload:!0,filterParams:r.filterParams})}),y.click(function(){var t=a(this).attr("data-act"),e=moment(r.filterParams.start_date),n=moment(r.filterParams.end_date);"next"===t?(e=e.add(1,"years").format(r._inputDateFormat),n=n.add(1,"years").format(r._inputDateFormat)):"prev"===t&&(e=e.subtract(1,"years").format(r._inputDateFormat),n=n.subtract(1,"years").format(r._inputDateFormat)),r.filterParams.start_date=e,r.filterParams.end_date=n,k(b),o.appTable({reload:!0,filterParams:r.filterParams})})}if("weekly"===r.dateRangeType){var x=function(a){var t=moment(r.filterParams.start_date).format("Do MMM"),e=moment(r.filterParams.end_date).format("Do MMM, YYYY");b.datepicker({format:"YYYY-MM-DD",autoclose:!0,calendarWeeks:!0,language:"custom",weekStart:AppHelper.settings.firstDayOfWeek}),a.html(t+" - "+e)};m(),x(b),y.click(function(){var t=a(this).attr("data-act"),e=moment(r.filterParams.start_date),n=moment(r.filterParams.end_date);"next"===t?(e=e.add(7,"days").format(r._inputDateFormat),n=n.add(7,"days").format(r._inputDateFormat)):"prev"===t&&(e=e.subtract(7,"days").format(r._inputDateFormat),n=n.subtract(7,"days").format(r._inputDateFormat)),r.filterParams.start_date=e,r.filterParams.end_date=n,x(b),o.appTable({reload:!0,filterParams:r.filterParams})}),b.datepicker({format:r._inputDateFormat,autoclose:!0,calendarWeeks:!0,language:"custom",weekStart:AppHelper.settings.firstDayOfWeek}).on("show",function(){a(".datepicker").addClass("week-view"),a(".datepicker-days").find(".active").siblings(".day").addClass("active")}).on("changeDate",function(a){var t=c(a.date);r.filterParams.start_date=t.firstDateOfWeek,r.filterParams.end_date=t.lastDateOfWeek,x(b),o.appTable({reload:!0,filterParams:r.filterParams})})}}if(void 0!==r.checkBoxes[0]){var D="",P=[],w="";a.each(r.checkBoxes,function(a,t){var e="",n="";w=t.name,t.isChecked&&(e=" checked",n=" active",P.push(t.value)),D+='<label class="btn btn-default '+n+'">',D+='<input type="checkbox" name="'+t.name+'" value="'+t.value+'" autocomplete="off" '+e+">"+t.text,D+="</label>"}),r.filterParams[w]=P;var C='<div class="mr15 DTTT_container"><div class="btn-group filter" data-act="checkbox" data-toggle="buttons">'+D+"</div></div>";v.find(".custom-toolbar").append(C),v.find("[data-act='checkbox']").click(function(){var t=a(this);setTimeout(function(){var e=[],n="";t.parent().find("input:checkbox").each(function(){n=a(this).attr("name"),a(this).is(":checked")&&e.push(a(this).val())}),r.filterParams[n]=e,o.appTable({reload:!0,filterParams:r.filterParams})})})}if(void 0!==r.radioButtons[0]){var M="";a.each(r.radioButtons,function(a,t){var e="",n="";t.isChecked&&(e=" checked",n=" active",r.filterParams[t.name]=t.value),M+='<label class="btn btn-default '+n+'">',M+='<input type="radio" name="'+t.name+'" value="'+t.value+'" autocomplete="off" '+e+">"+t.text,M+="</label>"});var Y='<div class="mr15 DTTT_container"><div class="btn-group filter" data-act="radio" data-toggle="buttons">'+M+"</div></div>";v.find(".custom-toolbar").append(Y),v.find("[data-act='radio']").click(function(){var t=a(this);setTimeout(function(){t.parent().find("input:radio").each(function(){a(this).is(":checked")&&(r.filterParams[a(this).attr("name")]=a(this).val())}),o.appTable({reload:!0,filterParams:r.filterParams})})})}if(void 0!==r.singleDatepicker[0]&&a.each(r.singleDatepicker,function(t,e){var n=" ",i="",s="";e.options||(e.options=[]),e.options.push({value:"show-date-picker",text:AppLanugage.custom}),a.each(e.options,function(a,t){var e="";t.isSelected&&(e="active",i=t.value,s=t.text),n+='<div class="list-group-item '+e+'" data-value="'+t.value+'">'+t.text+"</div>"}),s||(s="- "+e.defaultText+" -",n='<div class="list-group-item active" data-value="">'+s+"</div>"+n),e.name&&(r.filterParams[e.name]=i);var l=function(a){r.filterParams[e.name]=a,o.appTable({reload:!0,filterParams:r.filterParams})},d=function(a){return a+"<i class='ml10 fa fa-caret-down text-off'></i>"},c='<div class="datepicker-custom-list list-group mb0">'+n+"</div>",m='<div class="mr15 DTTT_container"><button name="'+e.name+'" class="btn datepicker-custom-selector">'+d(s)+"</button></div>";v.find(".custom-toolbar").append(m);var u=v.find("[name='"+e.name+"']"),f=void 0!==e.options[1];u.datepicker({format:r._inputDateFormat,autoclose:!0,todayHighlight:!0,language:"custom",weekStart:AppHelper.settings.firstDayOfWeek,orientation:"bottom"}).on("show",function(){f&&(a(".datepicker-days, .datepicker-months, .datepicker-years, .datepicker-decades, .table-condensed").hide(),a(".datepicker-custom-list").show(),a(".datepicker-custom-list").length||(a(".datepicker").append(c),a(".datepicker .list-group-item").click(function(){a(".datepicker .list-group-item").removeClass("active"),a(this).addClass("active");var t=a(this).attr("data-value");"show-date-picker"===t?(a(".datepicker-custom-list, .datepicker-months, .datepicker-years, .datepicker-decades, .table-condensed").hide(),a(".datepicker-days, .table-condensed").show()):(a(".datepicker").hide(),moment(t,r._inputDateFormat).isValid()&&(t=moment(t,r._inputDateFormat).format(r._inputDateFormat)),u.html(d(a(this).html())),l(t))})))}).on("changeDate",function(a){u.html(d(moment(a.date,r._inputDateFormat).format("Do, MMMM YYYY"))),l(moment(a.date,r._inputDateFormat).format(r._inputDateFormat))})}),void 0!==r.rangeDatepicker[0]&&a.each(r.rangeDatepicker,function(t,e){var n=e.startDate||{},i=e.endDate||{},s=!!e.showClearButton,l='<i class="fa fa-calendar"></i>',d=n.value?moment(n.value,r._inputDateFormat).format("Do, MMMM YYYY"):l,c=i.value?moment(i.value,r._inputDateFormat).format("Do, MMMM YYYY"):l;r.filterParams[n.name]=n.value,r.filterParams[i.name]=i.value;var m=function(a,t){r.filterParams[a]=t,o.appTable({reload:!0,filterParams:r.filterParams})},u='<div class="mr15 DTTT_container"><div class="input-daterange input-group"><button class="btn btn-default form-control" name="'+n.name+'" data-date="'+n.value+'">'+d+'</button><span class="input-group-addon">-</span><button class="btn btn-default form-control" name="'+i.name+'" data-date="'+i.value+'">'+c+"</div></div>";v.find(".custom-toolbar").append(u);var f=v.find(".input-daterange"),p=f.find("button").toArray();f.datepicker({format:"yyyy-mm-dd",autoclose:!0,todayHighlight:!0,language:"custom",weekStart:AppHelper.settings.firstDayOfWeek,orientation:"bottom",inputs:p}).on("changeDate",function(t){var e=moment(t.date,r._inputDateFormat).format(r._inputDateFormat);r.filterParams[n.name]||(r.filterParams[n.name]=e),r.filterParams[i.name]||(r.filterParams[i.name]=e),m(a(t.target).attr("name"),e),a(p[0]).html(moment(r.filterParams[n.name],r._inputDateFormat).format("Do, MMMM YYYY")),a(p[1]).html(moment(r.filterParams[i.name],r._inputDateFormat).format("Do, MMMM YYYY"))}).on("show",function(){s&&(a(".datepicker-clear-selection").show(),a(".datepicker-clear-selection").length||(a(".datepicker").append("<div class='datepicker-clear-selection p5 clickable text-center'>"+AppLanugage.clear+"</div>"),a(".datepicker .datepicker-clear-selection").click(function(){r.filterParams[n.name]="",m(i.name,""),a(p[0]).html(l),a(p[1]).html(l),a(".datepicker").hide()})))})}),void 0!==r.filterDropdown[0]){M="";a.each(r.filterDropdown,function(t,e){var n="",i="";a.each(e.options,function(a,t){var e="";t.isSelected&&(e="selected",i=t.id),n+="<option "+e+' value="'+t.id+'">'+t.text+"</option>"}),e.name&&(r.filterParams[e.name]=i);var s='<div class="mr15 DTTT_container"><select class="'+e.class+'" name="'+e.name+'">'+n+"</select></div>";v.find(".custom-toolbar").append(s);var l=v.find("[name='"+e.name+"']");void 0!==window.Select2&&l.select2(),l.change(function(){var t=a(this);r.filterParams[t.attr("name")]=t.val(),o.appTable({reload:!0,filterParams:r.filterParams})})})}var S=function(t){appLoader.show();var e=a(t.currentTarget);t.data&&t.data.target&&(e=t.data.target);var n=e.attr("data-action-url"),i=e.attr("data-id"),s=e.attr("data-undo");a.ajax({url:n,type:"POST",dataType:"json",data:{id:i},success:function(t){if(t.success){var l=e.closest("tr"),d=o.DataTable();g.fnDeleteRow(d.row(l).index());var c=appAlert.warning(t.message,{duration:2e4});r.onDeleteSuccess(t),"0"!==s&&(m={alertSelector:c,url:n,id:i},a('<a class="undo-delete" href="javascript:;"><strong>Undo</strong></a>').insertAfter(a(m.alertSelector).find(".app-alert-message")),a(m.alertSelector).find(".undo-delete").bind("click",function(){a(m.alertSelector).remove(),appLoader.show(),a.ajax({url:m.url,type:"POST",dataType:"json",data:{id:m.id,undo:!0},success:function(a){appLoader.hide(),a.success&&(o.appTable({newData:a.data}),r.onUndoSuccess(a))}})}))}else appAlert.error(t.message);var m;appLoader.hide()}})};window.InstanceCollection=window.InstanceCollection||{},window.InstanceCollection["#"+this.id]=r,a("body").find(o).on("click","[data-action=delete]",S),a("body").find(o).on("click","[data-action=delete-confirmation]",function(t){var e=a("#confirmDeleteButton"),n=a(t.currentTarget);a(this).each(function(){a.each(this.attributes,function(){this.specified&&this.name.match("^data-")&&e.attr(this.name,this.value)})}),n.attr("data-undo","0"),e.unbind("click"),e.on("click",{target:n},S),a("#confirmationModal").modal("show")}),a.fn.dataTableExt.oApi.getSettings=function(a){return a},a.fn.dataTableExt.oApi.fnReloadAjax=function(t,e){this.fnClearTable(this),this.oApi._fnProcessingDisplay(t,!0);var n=this;a.ajax({url:t.ajax.url,type:"POST",dataType:"json",data:e,success:function(a){for(var e=0;e<a.data.length;e++)n.oApi._fnAddData(t,a.data[e]);t.aiDisplay=t.aiDisplayMaster.slice(),n.fnDraw(n),n.oApi._fnProcessingDisplay(t,!1)}})},a.fn.dataTableExt.oApi.fnAddRow=function(a,t){this.oApi._fnAddData(a,t),this.fnDraw(this)}}}(jQuery),e=function(a){return function(){var t={info:function(a,t){return this._settings=e(t),this._settings.alertType="info",n(a),"#"+this._settings.alertId},success:function(a,t){return this._settings=e(t),this._settings.alertType="success",n(a),"#"+this._settings.alertId},warning:function(a,t){return this._settings=e(t),this._settings.alertType="warning",n(a),"#"+this._settings.alertId},error:function(a,t){return this._settings=e(t),this._settings.alertType="error",n(a),"#"+this._settings.alertId},options:{container:"body",duration:0,showProgressBar:!0,clearAll:!0,animate:!0}};return t;function e(e){return e||(e={}),e.alertId="app-alert-"+function(){for(var a="",t="abcdefghijklmnopqrstuvwxyz0123456789",e=0;e<5;e++)a+=t.charAt(Math.floor(Math.random()*t.length));return a}(),this._settings=a.extend({},t.options,e)}function n(t){!function(){this._settings.clearAll&&a("[role='alert']").remove()}(),a(this._settings.container).length?(this._settings.animate&&setTimeout(function(){a(".app-alert").animate({opacity:1,right:"40px"},500,function(){a(".app-alert").animate({right:"15px"},300)})},20),a(this._settings.container).prepend(function(a){var t="info";return"error"===this._settings.alertType?t="danger":"success"===this._settings.alertType?t="success":"warning"===this._settings.alertType&&(t="warning"),this._settings.animate&&(t+=" animate"),'<div id="'+this._settings.alertId+'" class="app-alert alert alert-'+t+' alert-dismissible " role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><div class="app-alert-message">'+a+'</div><div class="progress"><div class="progress-bar progress-bar-'+t+' hide" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div></div></div>'}(t)),function(){if(this._settings.duration&&this._settings.showProgressBar){var t="#"+this._settings.alertId,e=a(t).find(".progress-bar");e.removeClass("hide").width(0);var n="width "+this._settings.duration+"ms ease";e.css({WebkitTransition:n,MozTransition:n,MsTransition:n,OTransition:n,transition:n}),setTimeout(function(){a(t).length>0&&a(t).remove()},this._settings.duration)}}()):console.log("appAlert: container must be an html selector!")}}()},window.appAlert=e(window.jQuery),function(a){var t;t=function(a){return function(){var t={show:function(e){var n=a("#app-loader");if(this._settings=function(e){if(!e)var e={};return this._settings=a.extend({},t.options,e)}(e),!n.length){var o=a(this._settings.container);o.length?o.append('<div id="app-loader" class="app-loader" style="z-index:'+this._settings.zIndex+";"+this._settings.css+'"><div class="loading"></div></div>'):console.log("appLoader: container must be an html selector!")}},hide:function(){var t=a("#app-loader");t.length&&t.remove()},options:{container:"body",zIndex:"auto",css:""}};return t}()},window.appLoader=t(window.jQuery)}(),function(a){var t;t=function(a){return function(){var t={init:function(o){this._settings=function(t){t||(t={});return this._settings=a.extend({},appLoader.options,t)}(o),function(o){var r="<div class='app-modal-sidebar hidden-xs'>                                        <div class='app-modal-close'><span>&times;</span></div>                                        <div class='app-moadl-sidebar-scrollbar'>                                            <div class='app-modal-sidebar-area'>                                            </div>                                        </div>                                    </div>",i="<i class='fa fa-expand expand hidden-xs'></i>";!1===o.sidebar&&(r="",i="<div class='app-modal-close app-modal-fixed-close-button'><span>&times;</span></div>");var s="<div class='app-modal loading'>                                <i class='fa fa-compress compress'></i>                                <div class='app-modal-body'>                                    <div class='app-modal-content'>"+i+"<div class='hide app-modal-close'><span>&times;</span></div>                                    <div class='app-modal-content-area'>                                    </div>                                </div>"+r+"</div>                        </div>";n(),a("body").prepend(s),a.fn.mCustomScrollbar&&a(".app-moadl-sidebar-scrollbar").mCustomScrollbar({setHeight:a(window).height()-60,theme:"minimal-dark",autoExpandScrollbar:!0});a(".expand").click(function(){a(".app-modal").addClass("full-content")}),a(".compress").click(function(){a(".app-modal").removeClass("full-content")}),a(".app-modal-close").click(function(){n()}),a(document).bind("keyup",e),appLoader.show({container:".app-modal",css:"top:35%; right:48%;"}),appModalXhr=a.ajax({url:o.url||"",data:{},cache:!1,type:"POST",success:function(t){var e=a(t);a(".app-modal-content-area").html(e.find(".app-modal-content").html()),a(".app-modal-sidebar-area").html(e.find(".app-modal-sidebar").html()),e.remove(),a(".app-modal").removeClass("loading"),appLoader.hide()},statusCode:{404:function(){t.destroy(),appAlert.error("404: Page not found.")}},error:function(){t.destroy(),appAlert.error("500: Internal Server Error.")}})}(this._settings)},destroy:n,options:{url:"",css:"",sidebar:!0}};return t;function e(a){27===a.keyCode&&n()}function n(){a(".app-modal").remove(),a(document).unbind("keyup",e),"undefined"!=typeof appModalXhr&&appModalXhr.abort()}}()},window.appContentModal=t(window.jQuery)}(),function(a){a.fn.appDateRange=function(t){var e=a.extend({},{dateRangeType:"yearly",filterParams:{},onChange:function(a){},onInit:function(a){}},t);e._inputDateFormat="YYYY-MM-DD",this.each(function(){var t=a(this);t.append('<div class="ml15"><button data-act="prev" class="btn btn-default date-range-selector"><i class="fa fa-chevron-left"></i></button><button data-act="datepicker" class="btn btn-default" style="margin: -1px"></button><button data-act="next"  class="btn btn-default date-range-selector"><i class="fa fa-chevron-right"></i></button></div>');var n=t.find("[data-act='datepicker']"),o=t.find(".date-range-selector");if("yearly"===e.dateRangeType){var r=function(a){a.html(moment(e.filterParams.start_date).format("YYYY"))};r(n),n.datepicker({format:"YYYY-MM",viewMode:"years",minViewMode:"years",autoclose:!0,language:"custom"}).on("changeDate",function(a){var t=moment(a.date).format(e._inputDateFormat),o=moment(t).format("YYYY");e.filterParams.start_date=o+"-01-01",e.filterParams.end_date=o+"-12-31",e.filterParams.year=o,r(n),e.onChange(e.filterParams)});var i=moment().format("YYYY");e.filterParams.start_date=i+"-01-01",e.filterParams.end_date=i+"-12-31",e.filterParams.year=i,e.onInit(e.filterParams),o.click(function(){var t=a(this).attr("data-act"),o=moment(e.filterParams.start_date),i=moment(e.filterParams.end_date);"next"===t?(o=o.add(1,"years").format(e._inputDateFormat),i=i.add(1,"years").format(e._inputDateFormat)):"prev"===t&&(o=o.subtract(1,"years").format(e._inputDateFormat),i=i.subtract(1,"years").format(e._inputDateFormat)),e.filterParams.start_date=o,e.filterParams.end_date=i,e.filterParams.year=moment(o).format("YYYY"),r(n),e.onChange(e.filterParams)})}})}}(jQuery),replaceAllString=function(a,t,e){return a.split(t).join(e)},toCurrency=function(a,t){a=parseFloat(a).toFixed(2),t||(t=AppHelper.settings.currencySymbol);var e=a.replace(/(\d)(?=(\d{3})+\.)/g,"$1,");return" "===AppHelper.settings.thousandSeparator&&(e=e.replace(","," ")),","===AppHelper.settings.decimalSeparator&&(e=replaceAllString(e,".","_"),e=replaceAllString(e,",","."),e=replaceAllString(e,"_",",")),"none"===t&&(t=""),"right"===AppHelper.settings.currencyPosition?e+""+t:t+""+e},calculateDatatableTotal=function(a,t,e,n){var o=a.api(),r={};return n&&(r={page:"current"}),o.column(t,r).data().reduce(function(a,t){return e?a+e(t):a+t},0)},unformatCurrency=function(a){return(a=a.toString())&&(0!=(a=a.replace(/[^0-9.,]/g,"")).indexOf(".")&&0!=a.indexOf(",")||(a=a.slice(1)),","===AppHelper.settings.decimalSeparator?(a=replaceAllString(a,".",""),a=replaceAllString(a,",",".")):a=replaceAllString(a,",",""),a*=1),a||0},secondsToTimeFormat=function(a){var t=parseInt(a,10),e=Math.floor(t/3600),n=Math.floor((t-3600*e)/60),o=t-3600*e-60*n;return e<10&&(e="0"+e),n<10&&(n="0"+n),o<10&&(o="0"+o),e+":"+n+":"+o},clearAppTableState=function(a){a&&setTimeout(function(){a.api().state.clear()},200)},showHideAppTableColumn=function(a,t,e){a.fnSetColumnVis(t,!!e)}},function(a,t){}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+module.exports = __webpack_require__(5);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+
+__webpack_require__(2);
+__webpack_require__(3);
+__webpack_require__(4);
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+checkNotifications = function (_checkNotifications) {
+    function checkNotifications(_x, _x2) {
+        return _checkNotifications.apply(this, arguments);
+    }
+
+    checkNotifications.toString = function () {
+        return _checkNotifications.toString();
+    };
+
+    return checkNotifications;
+}(function (params, updateStatus) {
+    if (params && params.notificationUrl) {
+        $.ajax({
+            url: params.notificationUrl,
+            dataType: 'json',
+            success: function success(result) {
+                if (result.success) {
+                    if (result.total_notifications && result.total_notifications * 1) {
+                        params.notificationSelector.html("<i class='fa " + params.icon + "'></i> <span class='badge bg-danger up'>" + result.total_notifications + "</span>");
+                    }
+
+                    params.notificationSelector.parent().find(".dropdown-details").html(result.notification_list);
+
+                    if (updateStatus) {
+                        //update last notification checking time
+                        $.ajax({
+                            url: params.notificationStatusUpdateUrl,
+                            success: function success() {
+                                params.notificationSelector.html("<i class='fa " + params.icon + "'></i>");
+                            }
+                        });
+                    }
+                }
+                if (!updateStatus) {
+                    //check notification again after sometime
+                    var check_notification_after_every = params.checkNotificationAfterEvery;
+                    check_notification_after_every = check_notification_after_every * 1000;
+                    if (check_notification_after_every < 10000) {
+                        check_notification_after_every = 10000; //don't allow to call this requiest before 10 seconds
+                    }
+
+                    setTimeout(function () {
+                        checkNotifications(params);
+                    }, check_notification_after_every);
+                }
+            }
+        });
+    }
+});
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+$(window).load(function () {
+    $('#pre-loader').delay(250).fadeOut(function () {
+        $('#pre-loader').remove();
+    });
+});
+
+$(document).ready(function () {
+    $.ajaxSetup({ cache: false });
+
+    //expand or collapse sidebar menu 
+    $("#sidebar-toggle-md").click(function () {
+        $("#sidebar").toggleClass('collapsed');
+        if ($("#sidebar").hasClass("collapsed")) {
+            $(this).find(".fa").removeClass("fa-dedent");
+            $(this).find(".fa").addClass("fa-indent");
+        } else {
+            $(this).find(".fa").addClass("fa-dedent");
+            $(this).find(".fa").removeClass("fa-indent");
+        }
+    });
+
+    $("#sidebar-collapse").click(function () {
+        $("#sidebar").addClass('collapsed');
+    });
+
+    //expand or collaps sidebar menu items
+    $("#sidebar-menu > .expand > a").click(function () {
+        var $target = $(this).parent();
+        if ($target.hasClass('main')) {
+            if ($target.hasClass('open')) {
+                $target.removeClass('open');
+            } else {
+                $("#sidebar-menu >.expand").removeClass('open');
+                $target.addClass('open');
+            }
+            if (!$(this).closest(".collapsed").length) {
+                return false;
+            }
+        }
+    });
+
+    $("#sidebar-toggle").click(function () {
+        $("body").toggleClass("off-screen");
+        $("#sidebar").removeClass("collapsed");
+    });
+
+    //set custom scrollbar
+    setPageScrollable();
+    setMenuScrollable();
+    $(window).resize(function () {
+        setPageScrollable();
+        setMenuScrollable();
+    });
+
+    $('body').on('click', '.timeline-images a', function () {
+        var $gallery = $(this).closest(".timeline-images");
+        $gallery.magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            closeOnContentClick: false,
+            closeBtnInside: false,
+            mainClass: 'mfp-with-zoom mfp-img-mobile',
+            gallery: {
+                enabled: true
+            },
+            image: {
+                titleSrc: 'data-title'
+            },
+            callbacks: {
+                change: function change(item) {
+
+                    var itemData = $(item.el).data();
+                    setTimeout(function () {
+                        if (itemData && itemData.viewer === 'google') {
+                            $(".mfp-content").addClass("full-width-mfp-content");
+                        } else {
+                            $(".mfp-content").removeClass("full-width-mfp-content");
+                        }
+                    });
+                }
+            }
+        });
+        $gallery.magnificPopup('open');
+        return false;
+    });
+});
+
+//set scrollbar on page
+setPageScrollable = function setPageScrollable() {
+    if ($.fn.mCustomScrollbar) {
+        if ($(window).width() <= 640) {
+            $('html').css({ "overflow": "auto" });
+            $('body').css({ "overflow": "auto" });
+        } else {
+            initScrollbar('.scrollable-page', {
+                setHeight: $(window).height() - 45
+            });
+        }
+    }
+};
+
+//set scrollbar on left menu
+setMenuScrollable = function setMenuScrollable() {
+    initScrollbar('#sidebar-scroll', {
+        setHeight: $(window).height() - 45
+    });
+};
+
+initScrollbar = function initScrollbar(selector, options) {
+    if (!options) {
+        options = {};
+    }
+
+    var defaults = {
+        theme: "minimal-dark",
+        autoExpandScrollbar: true,
+        keyboard: {
+            enable: true,
+            scrollType: "stepless",
+            scrollAmount: 40
+        },
+        mouseWheelPixels: 300,
+        scrollInertia: 60,
+        mouseWheel: { scrollAmount: 188, normalizeDelta: true }
+    },
+        settings = $.extend({}, defaults, options);
+
+    if (AppHelper.settings.scrollbar == "native") {
+        $(selector).css({ "height": settings.setHeight + "px", "overflow-y": "scroll" });
+    } else {
+        if ($.fn.mCustomScrollbar) {
+            $(selector).mCustomScrollbar(settings);
+        }
+    }
+};
+
+// generate reandom string 
+getRndomString = function getRndomString(length) {
+    var result = '',
+        chars = '!-().0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (var i = length; i > 0; --i) {
+        result += chars[Math.round(Math.random() * (chars.length - 1))];
+    }return result;
+};
+
+// getnerat random small alphabet 
+getRandomAlphabet = function getRandomAlphabet(length) {
+    var result = '',
+        chars = 'abcdefghijklmnopqrstuvwxyz';
+    for (var i = length; i > 0; --i) {
+        result += chars[Math.round(Math.random() * (chars.length - 1))];
+    }return result;
+};
+
+attachDropzoneWithForm = function attachDropzoneWithForm(dropzoneTarget, uploadUrl, validationUrl, options) {
+    var $dropzonePreviewArea = $(dropzoneTarget),
+        $dropzonePreviewScrollbar = $dropzonePreviewArea.find(".post-file-dropzone-scrollbar"),
+        $previews = $dropzonePreviewArea.find(".post-file-previews"),
+        $postFileUploadRow = $dropzonePreviewArea.find(".post-file-upload-row"),
+        $uploadFileButton = $dropzonePreviewArea.find(".upload-file-button"),
+        $submitButton = $dropzonePreviewArea.find("button[type=submit]"),
+        previewsContainer = getRandomAlphabet(15),
+        postFileUploadRowId = getRandomAlphabet(15),
+        uploadFileButtonId = getRandomAlphabet(15);
+
+    //set random id with the previws 
+    $previews.attr("id", previewsContainer);
+    $postFileUploadRow.attr("id", postFileUploadRowId);
+    $uploadFileButton.attr("id", uploadFileButtonId);
+
+    //get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+    var previewNode = document.querySelector("#" + postFileUploadRowId);
+    previewNode.id = "";
+    var previewTemplate = previewNode.parentNode.innerHTML;
+    previewNode.parentNode.removeChild(previewNode);
+
+    if (!options) options = {};
+
+    var postFilesDropzone = new Dropzone(dropzoneTarget, {
+        url: uploadUrl,
+        thumbnailWidth: 80,
+        thumbnailHeight: 80,
+        parallelUploads: 20,
+        maxFilesize: 3000,
+        previewTemplate: previewTemplate,
+        dictDefaultMessage: AppLanugage.fileUploadInstruction,
+        autoQueue: true,
+        previewsContainer: "#" + previewsContainer,
+        clickable: "#" + uploadFileButtonId,
+        maxFiles: options.maxFiles ? options.maxFiles : 1000,
+        init: function init() {
+            this.on("maxfilesexceeded", function (file) {
+                this.removeAllFiles();
+                this.addFile(file);
+            });
+        },
+        accept: function accept(file, done) {
+            if (file.name.length > 200) {
+                done(AppLanugage.fileNameTooLong);
+            }
+
+            $dropzonePreviewScrollbar.removeClass("hide");
+            initScrollbar($dropzonePreviewScrollbar, { setHeight: 90 });
+
+            $dropzonePreviewScrollbar.parent().removeClass("hide");
+            $dropzonePreviewArea.find("textarea").focus();
+            //validate the file
+            $.ajax({
+                url: validationUrl,
+                data: { file_name: file.name, file_size: file.size },
+                cache: false,
+                type: 'POST',
+                dataType: "json",
+                success: function success(response) {
+                    if (response.success) {
+
+                        $(file.previewTemplate).append("<input type='hidden' name='file_names[]' value='" + file.name + "' />\n\
+                                 <input type='hidden' name='file_sizes[]' value='" + file.size + "' />");
+                        done();
+                    } else {
+                        appAlert.error(response.message);
+                        $(file.previewTemplate).find("input").remove();
+                        done(response.message);
+                    }
+                }
+            });
+        },
+        processing: function processing() {
+            $submitButton.prop("disabled", true);
+        },
+        queuecomplete: function queuecomplete() {
+            $submitButton.prop("disabled", false);
+        },
+        reset: function reset(file) {
+            $dropzonePreviewScrollbar.addClass("hide");
+        },
+        fallback: function fallback() {
+            //add custom fallback;
+            $("body").addClass("dropzone-disabled");
+
+            $uploadFileButton.click(function () {
+                //fallback for old browser
+                $(this).html("<i class='fa fa-camera'></i> Add more");
+
+                $dropzonePreviewScrollbar.removeClass("hide");
+                initScrollbar($dropzonePreviewScrollbar, { setHeight: 90 });
+
+                $dropzonePreviewScrollbar.parent().removeClass("hide");
+                $previews.prepend("<div class='clearfix p5 file-row'><button type='button' class='btn btn-xs btn-danger pull-left mr10 remove-file'><i class='fa fa-times'></i></button> <input class='pull-left' type='file' name='manualFiles[]' /></div>");
+            });
+            $previews.on("click", ".remove-file", function () {
+                $(this).parent().remove();
+            });
+        },
+        success: function success(file) {
+            setTimeout(function () {
+                $(file.previewElement).find(".progress-striped").removeClass("progress-striped").addClass("progress-bar-success");
+            }, 1000);
+        }
+    });
+
+    return postFilesDropzone;
+};
+
+teamAndMemberSelect2Format = function teamAndMemberSelect2Format(option) {
+    if (option.type === "team") {
+        return "<i class='fa fa-users info'></i> " + option.text;
+    } else {
+        return "<i class='fa fa-user'></i> " + option.text;
+    }
+};
+
+setDatePicker = function setDatePicker(element, options) {
+    if (!options) {
+        options = {};
+    }
+    var settings = $.extend({}, {
+        autoclose: true,
+        language: "custom",
+        todayHighlight: true,
+        weekStart: AppHelper.settings.firstDayOfWeek,
+        format: "yyyy-mm-dd"
+    }, options);
+
+    $(element).datepicker(settings);
+};
+
+setTimePicker = function setTimePicker(element, options) {
+    if (!options) {
+        options = {};
+    }
+
+    var showMeridian = AppHelper.settings.timeFormat == "24_hours" ? false : true;
+
+    var settings = $.extend({}, {
+        minuteStep: 5,
+        defaultTime: "",
+        appendWidgetTo: "#ajaxModal",
+        showMeridian: showMeridian
+    }, options);
+
+    $(element).timepicker(settings);
+};
+
+initWYSIWYGEditor = function initWYSIWYGEditor(element, options) {
+    if (!options) {
+        options = {};
+    }
+
+    var settings = $.extend({}, {
+        height: 250,
+        toolbar: [['style', ['style']], ['font', ['bold', 'italic', 'underline', 'clear']], ['fontname', ['fontname']], ['color', ['color']], ['para', ['ul', 'ol', 'paragraph']], ['height', ['height']], ['table', ['table']], ['insert', ['hr']], ['view', ['fullscreen', 'codeview']]],
+        disableDragAndDrop: true
+    }, options);
+
+    $(element).summernote(settings);
+};
+
+getWYSIWYGEditorHTML = function getWYSIWYGEditorHTML(element) {
+    return $(element).summernote('code');
+};
+
+combineCustomFieldsColumns = function combineCustomFieldsColumns(defaultFields, customFieldString) {
+    if (defaultFields && customFieldString) {
+
+        var startAfter = defaultFields.slice(-1)[0];
+        //count no of custom fields
+        var noOfCustomFields = customFieldString.split(',').length;
+        if (noOfCustomFields) {
+            for (var i = 1; i <= noOfCustomFields; i++) {
+                defaultFields.push(i + startAfter);
+                startAfter++;
+            }
+        }
+    }
+    return defaultFields;
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+    $.ajaxSetup({
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    //set locale of moment js
+    moment.locale(AppLanugage.locale);
+
+    //set locale for datepicker;
+    (function ($) {
+        $.fn.datepicker.dates['custom'] = {
+            days: AppLanugage.days,
+            daysShort: AppLanugage.daysShort,
+            daysMin: AppLanugage.daysMin,
+            months: AppLanugage.months,
+            monthsShort: AppLanugage.monthsShort,
+            today: AppLanugage.today
+        };
+    })(jQuery);
+
+    //set datepicker language
+
+    $('body').on('click', '[data-act=ajax-modal]', function () {
+        var data = { ajaxModal: 1 },
+            url = $(this).attr('data-action-url'),
+            isLargeModal = $(this).attr('data-modal-lg'),
+            title = $(this).attr('data-title');
+        if (!url) {
+            console.log('Ajax Modal: Set data-action-url!');
+            return false;
+        }
+        if (title) {
+            $("#ajaxModalTitle").html(title);
+        } else {
+            $("#ajaxModalTitle").html($("#ajaxModalTitle").attr('data-title'));
+        }
+
+        $("#ajaxModalContent").html($("#ajaxModalOriginalContent").html());
+        $("#ajaxModalContent").find(".original-modal-body").removeClass("original-modal-body").addClass("modal-body");
+        $("#ajaxModal").modal('show');
+
+        $(this).each(function () {
+            $.each(this.attributes, function () {
+                if (this.specified && this.name.match("^data-post-")) {
+                    var dataName = this.name.replace("data-post-", "");
+                    data[dataName] = this.value;
+                }
+            });
+        });
+        ajaxModalXhr = $.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            type: 'POST',
+            success: function success(response) {
+                $("#ajaxModal").find(".modal-dialog").removeClass("mini-modal");
+                if (isLargeModal === "1") {
+                    $("#ajaxModal").find(".modal-dialog").addClass("modal-lg");
+                }
+                $("#ajaxModalContent").html(response);
+
+                var $scroll = $("#ajaxModalContent").find(".modal-body"),
+                    height = $scroll.height(),
+                    maxHeight = $(window).height() - 200;
+                if (height > maxHeight) {
+                    height = maxHeight;
+                    if ($.fn.mCustomScrollbar) {
+                        $scroll.mCustomScrollbar({ setHeight: height, theme: "minimal-dark", autoExpandScrollbar: true });
+                    }
+                }
+            },
+            statusCode: {
+                404: function _() {
+                    $("#ajaxModalContent").find('.modal-body').html("");
+                    appAlert.error("404: Page not found.", { container: '.modal-body', animate: false });
+                }
+            },
+            error: function error() {
+                $("#ajaxModalContent").find('.modal-body').html("");
+                appAlert.error("500: Internal Server Error.", { container: '.modal-body', animate: false });
+            }
+        });
+        return false;
+    });
+
+    //abort ajax request on modal close.
+    $('#ajaxModal').on('hidden.bs.modal', function (e) {
+        ajaxModalXhr.abort();
+        $("#ajaxModal").find(".modal-dialog").removeClass("modal-lg");
+        $("#ajaxModal").find(".modal-dialog").addClass("mini-modal");
+
+        $("#ajaxModalContent").html("");
+    });
+
+    //common ajax request
+    $('body').on('click', '[data-act=ajax-request]', function () {
+        var data = {},
+            $selector = $(this),
+            url = $selector.attr('data-action-url'),
+            removeOnSuccess = $selector.attr('data-remove-on-success'),
+            removeOnClick = $selector.attr('data-remove-on-click'),
+            fadeOutOnSuccess = $selector.attr('data-fade-out-on-success'),
+            fadeOutOnClick = $selector.attr('data-fade-out-on-click'),
+            inlineLoader = $selector.attr('data-inline-loader'),
+            reloadOnSuccess = $selector.attr('data-reload-on-success');
+
+        var $target = "";
+        if ($selector.attr('data-real-target')) {
+            $target = $($selector.attr('data-real-target'));
+        } else if ($selector.attr('data-closest-target')) {
+            $target = $selector.closest($selector.attr('data-closest-target'));
+        }
+
+        if (!url) {
+            console.log('Ajax Request: Set data-action-url!');
+            return false;
+        }
+
+        //remove the target element
+        if (removeOnClick && $(removeOnClick).length) {
+            $(removeOnClick).remove();
+        }
+
+        //remove the target element with fade out effect
+        if (fadeOutOnClick && $(fadeOutOnClick).length) {
+            $(fadeOutOnClick).fadeOut(function () {
+                $(this).remove();
+            });
+        }
+
+        $selector.each(function () {
+            $.each(this.attributes, function () {
+                if (this.specified && this.name.match("^data-post-")) {
+                    var dataName = this.name.replace("data-post-", "");
+                    data[dataName] = this.value;
+                }
+            });
+        });
+        if (inlineLoader === "1") {
+            $selector.addClass("inline-loader");
+        } else {
+            appLoader.show();
+        }
+
+        ajaxRequestXhr = $.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            type: 'POST',
+            success: function success(response) {
+                if (reloadOnSuccess) {
+                    location.reload();
+                }
+
+                //remove the target element
+                if (removeOnSuccess && $(removeOnSuccess).length) {
+                    $(removeOnSuccess).remove();
+                }
+
+                //remove the target element with fade out effect
+                if (fadeOutOnSuccess && $(fadeOutOnSuccess).length) {
+                    $(fadeOutOnSuccess).fadeOut(function () {
+                        $(this).remove();
+                    });
+                }
+
+                appLoader.hide();
+                if ($target.length) {
+                    $target.html(response);
+                }
+            },
+            statusCode: {
+                404: function _() {
+                    appLoader.hide();
+                    appAlert.error("404: Page not found.");
+                }
+            },
+            error: function error() {
+                appLoader.hide();
+                appAlert.error("500: Internal Server Error.");
+            }
+        });
+    });
+
+    //bind ajax tab
+    $('body').on('click', '[data-toggle="ajax-tab"] a', function () {
+        var $this = $(this),
+            loadurl = $this.attr('href'),
+            target = $this.attr('data-target');
+        if (!target) return false;
+        if ($(target).html() === "") {
+            appLoader.show({ container: target, css: "right:50%; bottom:auto;" });
+            $.get(loadurl, function (data) {
+                $(target).html(data);
+            });
+        }
+        $this.tab('show');
+        return false;
+    });
+    //auto load first tab
+    $('[data-toggle="ajax-tab"] a').first().trigger("click");
+
+    $('body').on('click', '[data-toggle="app-modal"]', function () {
+        var sidebar = true;
+
+        if ($(this).attr("data-sidebar") === "0") {
+            sidebar = false;
+        }
+
+        appContentModal.init({ url: $(this).attr("data-url"), sidebar: sidebar });
+        return false;
+    });
+});
+
+//custom app form controller
+(function ($) {
+    $.fn.appForm = function (options) {
+
+        var defaults = {
+            ajaxSubmit: true,
+            isModal: true,
+            dataType: "json",
+            onModalClose: function onModalClose() {},
+            onSuccess: function onSuccess() {},
+            onError: function onError() {
+                return true;
+            },
+            onSubmit: function onSubmit() {},
+            onAjaxSuccess: function onAjaxSuccess() {},
+            beforeAjaxSubmit: function beforeAjaxSubmit(data, self, options) {}
+        };
+        var settings = $.extend({}, defaults, options);
+        this.each(function () {
+            if (settings.ajaxSubmit) {
+                validateForm($(this), function (form) {
+                    settings.onSubmit();
+                    if (settings.isModal) {
+                        maskModal($("#ajaxModalContent").find(".modal-body"));
+                    }
+                    $(form).ajaxSubmit({
+                        dataType: settings.dataType,
+                        beforeSubmit: function beforeSubmit(data, self, options) {
+                            settings.beforeAjaxSubmit(data, self, options);
+                        },
+                        success: function success(result) {
+                            settings.onAjaxSuccess(result);
+
+                            if (result.success) {
+                                settings.onSuccess(result);
+                                if (settings.isModal) {
+                                    closeAjaxModal(true);
+                                }
+                            } else {
+                                if (settings.onError(result)) {
+                                    if (settings.isModal) {
+                                        unmaskModal();
+                                        if (result.message) {
+                                            appAlert.error(result.message, { container: '.modal-body', animate: false });
+                                        }
+                                    } else if (result.message) {
+                                        appAlert.error(result.message);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+            } else {
+                validateForm($(this));
+            }
+        });
+        /*
+         * @form : the form we want to validate;
+         * @customSubmit : execute custom js function insted of form submission.
+         * don't pass the 2nd parameter for regular form submission
+         */
+        function validateForm(form, customSubmit) {
+            //add custom method
+            $.validator.addMethod("greaterThanOrEqual", function (value, element, params) {
+                var paramsVal = params;
+                if (params && (params.indexOf("#") === 0 || params.indexOf(".") === 0)) {
+                    paramsVal = $(params).val();
+                }
+                if (!/Invalid|NaN/.test(new Date(value))) {
+                    return new Date(value) >= new Date(paramsVal);
+                }
+                return isNaN(value) && isNaN(paramsVal) || Number(value) >= Number(paramsVal);
+            }, 'Must be greater than {0}.');
+            $(form).validate({
+                submitHandler: function submitHandler(form) {
+                    if (customSubmit) {
+                        customSubmit(form);
+                    } else {
+                        return true;
+                    }
+                },
+                highlight: function highlight(element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function unhighlight(element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                ignore: ":hidden:not(.validate-hidden)",
+                errorPlacement: function errorPlacement(error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+            });
+            //handeling the hidden field validation like select2
+            $(".validate-hidden").click(function () {
+                $(this).closest('.form-group').removeClass('has-error').find(".help-block").hide();
+            });
+        }
+
+        //show loadig mask on modal before form submission;
+        function maskModal($maskTarget) {
+            var padding = $maskTarget.height() - 80;
+            if (padding > 0) {
+                padding = Math.floor(padding / 2);
+            }
+            $maskTarget.append("<div class='modal-mask'><div class='circle-loader'></div></div>");
+            //check scrollbar
+            var height = $maskTarget.outerHeight();
+            $('.modal-mask').css({ "width": $maskTarget.width() + 30 + "px", "height": height + "px", "padding-top": padding + "px" });
+            $maskTarget.closest('.modal-dialog').find('[type="submit"]').attr('disabled', 'disabled');
+        }
+
+        //remove loadig mask from modal
+        function unmaskModal() {
+            var $maskTarget = $(".modal-body");
+            $maskTarget.closest('.modal-dialog').find('[type="submit"]').removeAttr('disabled');
+            $(".modal-mask").remove();
+        }
+
+        //colse ajax modal and show success check mark
+        function closeAjaxModal(success) {
+            if (success) {
+                $(".modal-mask").html("<div class='circle-done'><i class='fa fa-check'></i></div>");
+                setTimeout(function () {
+                    $(".modal-mask").find('.circle-done').addClass('ok');
+                }, 30);
+            }
+            setTimeout(function () {
+                $(".modal-mask").remove();
+                $("#ajaxModal").modal('toggle');
+                settings.onModalClose();
+            }, 1000);
+        }
+    };
+})(jQuery);
+if (typeof TableTools != 'undefined') {
+    TableTools.DEFAULTS.sSwfPath = AppHelper.assetsDirectory + "js/datatable/TableTools/swf/copy_csv_xls_pdf.swf";
+}
+
+//app table with datatable
+(function ($) {
+    //appTable using datatable
+    $.fn.appTable = function (options) {
+
+        //set default display length
+        var displayLength = AppHelper.settings.displayLength * 1;
+
+        if (isNaN(displayLength) || !displayLength) {
+            displayLength = 10;
+        }
+
+        var defaults = {
+            source: "", //data url,
+            serverSide: true,
+            paging: true,
+            xlsColumns: [], // array of excel exportable column numbers
+            pdfColumns: [], // array of pdf exportable column numbers
+            printColumns: [], // array of printable column numbers
+            columns: [], //column title and options
+            order: [[0, "desc"]], //default sort value
+            hideTools: false, //show/hide tools section
+            displayLength: displayLength, //default rows per page
+            dateRangeType: "", // type: daily, weekly, monthly, yearly. output params: start_date and end_date
+            checkBoxes: [], // [{text: "Caption", name: "status", value: "in_progress", isChecked: true}]
+            radioButtons: [], // [{text: "Caption", name: "status", value: "in_progress", isChecked: true}]
+            filterDropdown: [], // [{id: 10, text:'Caption', isSelected:true}]
+            singleDatepicker: [], // [{name: '', value:'', options:[]}]
+            rangeDatepicker: [], // [{startDate:{name:"", value:""},endDate:{name:"", value:""}}]
+            buttons: [], //[{title:"",class:"",id:""}]
+            stateSave: true, //save user state
+            stateDuration: 60 * 60 * 24 * 30, //remember for 30 days
+            filterParams: { datatable: true }, //will post this vales on source url
+            onDeleteSuccess: function onDeleteSuccess() {},
+            onUndoSuccess: function onUndoSuccess() {},
+            onInitComplete: function onInitComplete() {},
+            customLanguage: {
+                noRecordFoundText: AppLanugage.noRecordFound,
+                searchPlaceholder: AppLanugage.search,
+                printButtonText: AppLanugage.print,
+                excelButtonText: AppLanugage.excel,
+                printButtonToolTip: AppLanugage.printButtonTooltip,
+                today: AppLanugage.today,
+                yesterday: AppLanugage.yesterday,
+                tomorrow: AppLanugage.tomorrow
+            },
+            footerCallback: function footerCallback(row, data, start, end, display) {},
+            rowCallback: function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
+            summation: "", /* {column: 5, dataType: 'currency'}  dataType:currency, time */
+            onRelaodCallback: function onRelaodCallback() {}
+        };
+
+        var $instance = $(this);
+
+        //check if this binding with a table or not
+        if (!$instance.is("table")) {
+            console.log("Element must have to be a table", this);
+            return false;
+        }
+
+        var settings = $.extend({}, defaults, options);
+
+        // reload
+        if (settings.reload) {
+            var table = $(this).dataTable();
+            var instanceSettings = window.InstanceCollection["#" + $(this).selector];
+            if (!instanceSettings) {
+                instanceSettings = settings;
+            }
+            table.fnReloadAjax(instanceSettings.filterParams);
+            if ($(this).data("onRelaodCallback")) {
+                $(this).data("onRelaodCallback")(table, instanceSettings.filterParams);
+            }
+            return false;
+        }
+
+        // add/edit row
+        if (settings.newData) {
+            var table = $(this).dataTable();
+            if (settings.dataId) {
+                //check for existing row; if found, delete the row;
+                var $row = $(this).find("[data-post-id='" + settings.dataId + "']");
+                if ($row.length) {
+                    table.fnDeleteRow($row.closest('tr'));
+                } else {
+                    var $row2 = $(this).find("[data-index-id='" + settings.dataId + "']");
+                    if ($row2.length) {
+                        table.fnDeleteRow($row2.closest('tr'));
+                    }
+                }
+            }
+            table.fnAddRow(settings.newData);
+            return false;
+        }
+
+        settings._visible_columns = [];
+        $.each(settings.columns, function (index, column) {
+            if (column.visible !== false) {
+                settings._visible_columns.push(index);
+            }
+        });
+
+        settings._exportable = settings.xlsColumns.length + settings.pdfColumns.length + settings.printColumns.length;
+        settings._firstDayOfWeek = AppHelper.settings.firstDayOfWeek || 0;
+        settings._inputDateFormat = "YYYY-MM-DD";
+
+        var getWeekRange = function getWeekRange(date) {
+            //set first and last day of week
+            if (!date) date = moment().format("YYYY-MM-DD");
+
+            var dayOfWeek = moment(date).format("E"),
+                diff = dayOfWeek - AppHelper.settings.firstDayOfWeek,
+                range = {};
+
+            if (diff < 7) {
+                range.firstDateOfWeek = moment(date).subtract(diff, 'days').format("YYYY-MM-DD");
+            } else {
+                range.firstDateOfWeek = moment(date).format("YYYY-MM-DD");
+            }
+
+            if (diff < 0) {
+                range.firstDateOfWeek = moment(range.firstDateOfWeek).subtract(7, 'days').format("YYYY-MM-DD");
+            }
+
+            range.lastDateOfWeek = moment(range.firstDateOfWeek).add(6, 'days').format("YYYY-MM-DD");
+            return range;
+        };
+
+        var prepareDefaultDateRangeFilterParams = function prepareDefaultDateRangeFilterParams() {
+            if (settings.dateRangeType === "daily") {
+                settings.filterParams.start_date = moment().format(settings._inputDateFormat);
+                settings.filterParams.end_date = settings.filterParams.start_date;
+            } else if (settings.dateRangeType === "monthly") {
+                var daysInMonth = moment().daysInMonth(),
+                    yearMonth = moment().format("YYYY-MM");
+                settings.filterParams.start_date = yearMonth + "-01";
+                settings.filterParams.end_date = yearMonth + "-" + daysInMonth;
+            } else if (settings.dateRangeType === "yearly") {
+                var year = moment().format("YYYY");
+                settings.filterParams.start_date = year + "-01-01";
+                settings.filterParams.end_date = year + "-12-31";
+            } else if (settings.dateRangeType === "weekly") {
+                var range = getWeekRange();
+                settings.filterParams.start_date = range.firstDateOfWeek;
+                settings.filterParams.end_date = range.lastDateOfWeek;
+            }
+        };
+
+        var prepareDefaultCheckBoxFilterParams = function prepareDefaultCheckBoxFilterParams() {
+            var values = [],
+                name = "";
+            $.each(settings.checkBoxes, function (index, option) {
+                name = option.name;
+                if (option.isChecked) {
+                    values.push(option.value);
+                }
+            });
+            settings.filterParams[name] = values;
+        };
+
+        var prepareDefaultRadioFilterParams = function prepareDefaultRadioFilterParams() {
+            $.each(settings.radioButtons, function (index, option) {
+                if (option.isChecked) {
+                    settings.filterParams[option.name] = option.value;
+                }
+            });
+        };
+
+        var prepareDefaultDropdownFilterParams = function prepareDefaultDropdownFilterParams() {
+            $.each(settings.filterDropdown || [], function (index, dropdown) {
+                $.each(dropdown.options, function (index, option) {
+                    if (option.isSelected) {
+                        settings.filterParams[dropdown.name] = option.id;
+                    }
+                });
+            });
+        };
+
+        var prepareDefaultrSingleDatepickerFilterParams = function prepareDefaultrSingleDatepickerFilterParams() {
+            $.each(settings.singleDatepicker || [], function (index, datepicker) {
+                $.each(datepicker.options || [], function (index, option) {
+                    if (option.isSelected) {
+                        settings.filterParams[datepicker.name] = option.value;
+                    }
+                });
+            });
+        };
+
+        var prepareDefaultrRngeDatepickerFilterParams = function prepareDefaultrRngeDatepickerFilterParams() {
+            $.each(settings.rangeDatepicker || [], function (index, datepicker) {
+
+                if (datepicker.startDate && datepicker.startDate.value) {
+                    settings.filterParams[datepicker.startDate.name] = datepicker.startDate.value;
+                }
+
+                if (datepicker.startDate && datepicker.endDate.value) {
+                    settings.filterParams[datepicker.endDate.name] = datepicker.endDate.value;
+                }
+            });
+        };
+
+        prepareDefaultDateRangeFilterParams();
+        prepareDefaultCheckBoxFilterParams();
+        prepareDefaultRadioFilterParams();
+        prepareDefaultDropdownFilterParams();
+        prepareDefaultrSingleDatepickerFilterParams();
+        prepareDefaultrRngeDatepickerFilterParams();
+
+        var datatableOptions = {
+            // sAjaxSource: settings.source,
+            ajax: {
+                url: settings.source,
+                type: "POST",
+                data: settings.filterParams
+            },
+            serverSide: settings.serverSide,
+            paging: settings.paging,
+            sServerMethod: "POST",
+            columns: settings.columns,
+            bProcessing: true,
+            iDisplayLength: settings.displayLength,
+            bAutoWidth: false,
+            bSortClasses: false,
+            order: settings.order,
+            stateSave: settings.stateSave,
+            fnStateLoadParams: function fnStateLoadParams(oSettings, oData) {
+                //if the stateSave is true, we'll remove the search value after next reload.
+                if (oData && oData.search) {
+                    oData.search.search = "";
+                }
+            },
+            stateDuration: settings.stateDuration,
+            fnInitComplete: function fnInitComplete() {
+                settings.onInitComplete(this);
+            },
+            language: {
+                lengthMenu: "_MENU_",
+                zeroRecords: settings.customLanguage.noRecordFoundText,
+                info: "_START_-_END_ / _TOTAL_",
+                sInfo: "_START_-_END_ / _TOTAL_",
+                infoFiltered: "(_MAX_)",
+                search: "",
+                searchPlaceholder: settings.customLanguage.searchPlaceholder,
+                sInfoEmpty: "0-0 / 0",
+                sInfoFiltered: "(_MAX_)",
+                sInfoPostFix: "",
+                sInfoThousands: ",",
+                sProcessing: "<div class='table-loader'><span class='loading'></span></div>",
+                "oPaginate": {
+                    "sPrevious": "<i class='fa fa-angle-double-left'></i>",
+                    "sNext": "<i class='fa fa-angle-double-right'></i>"
+                }
+            },
+            sDom: "",
+            footerCallback: function footerCallback(row, data, start, end, display) {
+                var instance = this;
+                settings.footerCallback(row, data, start, end, display, instance);
+            },
+            fnRowCallback: function fnRowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                settings.rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull);
+            }
+        };
+
+        if (!settings.hideTools) {
+            datatableOptions.sDom = "<'datatable-tools'<'col-md-1'l><'col-md-11 custom-toolbar 'f>r>t<'datatable-tools row  clearfix'<'col-md-3'i><'col-md-9'p>>";
+        }
+
+        if (settings._exportable) {
+            var datatableButtons = [];
+
+            if (settings.xlsColumns.length) {
+                //add excel button
+                datatableButtons.push({
+                    sExtends: "xls",
+                    sButtonText: settings.customLanguage.excelButtonText,
+                    mColumns: settings.xlsColumns
+                });
+            }
+
+            if (settings.pdfColumns.length) {
+                //add pdf button
+                datatableButtons.push({
+                    sExtends: "pdf",
+                    mColumns: settings.pdfColumns
+                });
+            }
+
+            if (settings.printColumns.length) {
+                //prepear print preview
+                var arrayDiff = function arrayDiff(array1, array2) {
+                    return array1.filter(function (i) {
+                        return array2.indexOf(i) < 0;
+                    });
+                };
+                settings._hiddenColumns = arrayDiff(settings._visible_columns, settings.printColumns);
+                datatableButtons.push({
+                    sExtends: "print",
+                    sButtonText: settings.customLanguage.printButtonText,
+                    sToolTip: settings.customLanguage.printButtonToolTip,
+                    sInfo: "",
+                    fnClick: function fnClick(nButton, oConfig) {
+                        //hide columns
+                        for (var key in settings._hiddenColumns) {
+                            oTable.fnSetColumnVis(settings._hiddenColumns[key], false);
+                        }
+
+                        $("html").addClass('print-peview');
+
+                        $(".scrollable-page").addClass("print-peview");
+                        this.fnPrint(true, oConfig);
+                        //window.print();
+                        $(window).keydown(function (e) {
+                            //exit print preview;
+                            if (e.which === 27) {
+                                //show columns which has hidden during print preview
+                                for (var key in settings._hiddenColumns) {
+                                    oTable.fnSetColumnVis(settings._hiddenColumns[key], true);
+                                }
+                                $(".print-peview").removeClass("print-peview");
+                                setPageScrollable();
+                                $(".dataTables_processing").hide();
+                            }
+                        });
+                    }
+                });
+            }
+            if (!settings.hideTools) {
+                datatableOptions.sDom = "<'datatable-tools'<'col-md-1'l><'col-md-11 custom-toolbar'f<'datatable-export'T>>r>t<'datatable-tools clearfix'<'col-md-3'i><'col-md-9'p>>";
+            }
+
+            datatableOptions.oTableTools = {
+                aButtons: datatableButtons
+            };
+        }
+        var oTable = $instance.dataTable(datatableOptions),
+            $instanceWrapper = $instance.closest(".dataTables_wrapper");
+
+        $instanceWrapper.find('.DTTT_button_print').tooltip({
+            placement: 'bottom',
+            container: 'body'
+        });
+
+        $instanceWrapper.find("select").not('.dataTables_length select').select2({
+            minimumResultsForSearch: -1
+        });
+
+        //set onReloadCallback
+        $instance.data("onRelaodCallback", settings.onRelaodCallback);
+
+        //build date wise filter selectors
+        if (settings.dateRangeType) {
+            var dateRangeFilterDom = '<div class="mr-5 DTTT_container">' + '<button data-act="prev" class="btn btn-default btn-white date-range-selector"><i class="icon md-chevron-left"></i></button>' + '<button data-act="datepicker" class="btn btn-default btn-white" style="margin: -1px"></button>' + '<button data-act="next"  class="btn btn-default  btn-white date-range-selector"><i class="icon md-chevron-right"></i></button>' + '</div>';
+            $instanceWrapper.find(".custom-toolbar").append(dateRangeFilterDom);
+
+            var $datepicker = $instanceWrapper.find("[data-act='datepicker']"),
+                $dateRangeSelector = $instanceWrapper.find(".date-range-selector");
+
+            //init single day selector
+            if (settings.dateRangeType === "daily") {
+                var initSingleDaySelectorText = function initSingleDaySelectorText($elector) {
+                    if (settings.filterParams.start_date === moment().format(settings._inputDateFormat)) {
+                        $elector.html(settings.customLanguage.today);
+                    } else if (settings.filterParams.start_date === moment().subtract(1, 'days').format(settings._inputDateFormat)) {
+                        $elector.html(settings.customLanguage.yesterday);
+                    } else if (settings.filterParams.start_date === moment().add(1, 'days').format(settings._inputDateFormat)) {
+                        $elector.html(settings.customLanguage.tomorrow);
+                    } else {
+                        $elector.html(moment(settings.filterParams.start_date).format("Do, MMMM YYYY"));
+                    }
+                };
+                prepareDefaultDateRangeFilterParams();
+                initSingleDaySelectorText($datepicker);
+
+                //bind the click events
+                $datepicker.datepicker({
+                    format: settings._inputDateFormat,
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: "custom"
+                }).on('changeDate', function (e) {
+                    var date = moment(e.date).format(settings._inputDateFormat);
+                    settings.filterParams.start_date = date;
+                    settings.filterParams.end_date = date;
+                    initSingleDaySelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+
+                $dateRangeSelector.click(function () {
+                    var type = $(this).attr("data-act"),
+                        date = "";
+                    if (type === "next") {
+                        date = moment(settings.filterParams.start_date).add(1, 'days').format(settings._inputDateFormat);
+                    } else if (type === "prev") {
+                        date = moment(settings.filterParams.start_date).subtract(1, 'days').format(settings._inputDateFormat);
+                    }
+                    settings.filterParams.start_date = date;
+                    settings.filterParams.end_date = date;
+                    initSingleDaySelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            }
+
+            //init month selector
+            if (settings.dateRangeType === "monthly") {
+                var initMonthSelectorText = function initMonthSelectorText($elector) {
+                    $elector.html(moment(settings.filterParams.start_date).format("MMMM YYYY"));
+                };
+
+                prepareDefaultDateRangeFilterParams();
+                initMonthSelectorText($datepicker);
+
+                //bind the click events
+                $datepicker.datepicker({
+                    format: "YYYY-MM",
+                    viewMode: "months",
+                    minViewMode: "months",
+                    autoclose: true,
+                    language: "custom"
+                }).on('changeDate', function (e) {
+                    var date = moment(e.date).format(settings._inputDateFormat);
+                    var daysInMonth = moment(date).daysInMonth(),
+                        yearMonth = moment(date).format("YYYY-MM");
+                    settings.filterParams.start_date = yearMonth + "-01";
+                    settings.filterParams.end_date = yearMonth + "-" + daysInMonth;
+                    initMonthSelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+
+                $dateRangeSelector.click(function () {
+                    var type = $(this).attr("data-act"),
+                        startDate = moment(settings.filterParams.start_date),
+                        endDate = moment(settings.filterParams.end_date);
+                    if (type === "next") {
+                        var nextMonth = startDate.add(1, 'months'),
+                            daysInMonth = nextMonth.daysInMonth(),
+                            yearMonth = nextMonth.format("YYYY-MM");
+
+                        startDate = yearMonth + "-01";
+                        endDate = yearMonth + "-" + daysInMonth;
+                    } else if (type === "prev") {
+                        var lastMonth = startDate.subtract(1, 'months'),
+                            daysInMonth = lastMonth.daysInMonth(),
+                            yearMonth = lastMonth.format("YYYY-MM");
+
+                        startDate = yearMonth + "-01";
+                        endDate = yearMonth + "-" + daysInMonth;
+                    }
+
+                    settings.filterParams.start_date = startDate;
+                    settings.filterParams.end_date = endDate;
+
+                    initMonthSelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            }
+
+            //init year selector
+            if (settings.dateRangeType === "yearly") {
+                var inityearSelectorText = function inityearSelectorText($elector) {
+                    $elector.html(moment(settings.filterParams.start_date).format("YYYY"));
+                };
+                prepareDefaultDateRangeFilterParams();
+                inityearSelectorText($datepicker);
+
+                //bind the click events
+                $datepicker.datepicker({
+                    format: "YYYY-MM",
+                    viewMode: "years",
+                    minViewMode: "years",
+                    autoclose: true,
+                    language: "custom"
+                }).on('changeDate', function (e) {
+                    var date = moment(e.date).format(settings._inputDateFormat),
+                        year = moment(date).format("YYYY");
+                    settings.filterParams.start_date = year + "-01-01";
+                    settings.filterParams.end_date = year + "-12-31";
+                    inityearSelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+
+                $dateRangeSelector.click(function () {
+                    var type = $(this).attr("data-act"),
+                        startDate = moment(settings.filterParams.start_date),
+                        endDate = moment(settings.filterParams.end_date);
+                    if (type === "next") {
+                        startDate = startDate.add(1, 'years').format(settings._inputDateFormat);
+                        endDate = endDate.add(1, 'years').format(settings._inputDateFormat);
+                    } else if (type === "prev") {
+                        startDate = startDate.subtract(1, 'years').format(settings._inputDateFormat);
+                        endDate = endDate.subtract(1, 'years').format(settings._inputDateFormat);
+                    }
+                    settings.filterParams.start_date = startDate;
+                    settings.filterParams.end_date = endDate;
+                    inityearSelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            }
+
+            //init week selector
+            if (settings.dateRangeType === "weekly") {
+                var initWeekSelectorText = function initWeekSelectorText($elector) {
+                    var from = moment(settings.filterParams.start_date).format("Do MMM"),
+                        to = moment(settings.filterParams.end_date).format("Do MMM, YYYY");
+                    $datepicker.datepicker({
+                        format: "YYYY-MM-DD",
+                        autoclose: true,
+                        calendarWeeks: true,
+                        language: "custom",
+                        weekStart: AppHelper.settings.firstDayOfWeek,
+                        clearBtn: true
+                    });
+                    $elector.html(from + " - " + to);
+                };
+
+                //prepareDefaultDateRangeFilterParams();
+                initWeekSelectorText($datepicker);
+
+                //bind the click events
+                $dateRangeSelector.click(function () {
+                    var type = $(this).attr("data-act"),
+                        startDate = moment(settings.filterParams.start_date),
+                        endDate = moment(settings.filterParams.end_date);
+                    if (type === "next") {
+                        startDate = startDate.add(7, 'days').format(settings._inputDateFormat);
+                        endDate = endDate.add(7, 'days').format(settings._inputDateFormat);
+                    } else if (type === "prev") {
+                        startDate = startDate.subtract(7, 'days').format(settings._inputDateFormat);
+                        endDate = endDate.subtract(7, 'days').format(settings._inputDateFormat);
+                    }
+                    settings.filterParams.start_date = startDate;
+                    settings.filterParams.end_date = endDate;
+                    initWeekSelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+
+                $datepicker.datepicker({
+                    format: settings._inputDateFormat,
+                    autoclose: true,
+                    calendarWeeks: true,
+                    language: "custom",
+                    weekStart: AppHelper.settings.firstDayOfWeek,
+                    clearBtn: true
+                }).on("show", function () {
+                    $(".datepicker").addClass("week-view");
+                    $(".datepicker-days").find(".active").siblings(".day").addClass("active");
+                }).on('changeDate', function (e) {
+                    var range = getWeekRange(e.date);
+                    settings.filterParams.start_date = range.firstDateOfWeek;
+                    settings.filterParams.end_date = range.lastDateOfWeek;
+                    initWeekSelectorText($datepicker);
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            }
+        }
+
+        //build checkbox filter
+        if (typeof settings.checkBoxes[0] !== 'undefined') {
+            var checkboxes = "",
+                values = [],
+                name = "";
+            $.each(settings.checkBoxes, function (index, option) {
+                var checked = "",
+                    active = "";
+                name = option.name;
+                if (option.isChecked) {
+                    checked = " checked";
+                    active = " active";
+                    values.push(option.value);
+                }
+                checkboxes += '<label class="btn btn-default btn-white ' + active + '">';
+                checkboxes += '<input type="checkbox" name="' + option.name + '" value="' + option.value + '" autocomplete="off" ' + checked + '>' + option.text;
+                checkboxes += '</label>';
+            });
+            settings.filterParams[name] = values;
+            var checkboxDom = '<div class="mr-5 DTTT_container">' + '<div class="btn-group filter" data-act="checkbox" data-toggle="buttons">' + checkboxes + '</div>' + '</div>';
+
+            $instanceWrapper.find(".custom-toolbar").append(checkboxDom);
+
+            var $checkbox = $instanceWrapper.find("[data-act='checkbox']");
+            $checkbox.click(function () {
+                var $selector = $(this);
+                setTimeout(function () {
+                    var values = [],
+                        name = "";
+                    $selector.parent().find("input:checkbox").each(function () {
+                        name = $(this).attr("name");
+                        if ($(this).is(":checked")) {
+                            values.push($(this).val());
+                        }
+                    });
+                    settings.filterParams[name] = values;
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            });
+        }
+
+        //build radio button filter
+        if (typeof settings.radioButtons[0] !== 'undefined') {
+            var radiobuttons = "";
+            $.each(settings.radioButtons, function (index, option) {
+                var checked = "",
+                    active = "";
+                if (option.isChecked) {
+                    checked = " checked";
+                    active = " active";
+                    settings.filterParams[option.name] = option.value;
+                }
+                radiobuttons += '<label class="btn btn-default btn-white ' + active + '">';
+                radiobuttons += '<input type="radio" name="' + option.name + '" value="' + option.value + '" autocomplete="off" ' + checked + '>' + option.text;
+                radiobuttons += '</label>';
+            });
+            var radioDom = '<div class="mr-5 DTTT_container">' + '<div class="btn-group filter" data-act="radio" data-toggle="buttons">' + radiobuttons + '</div>' + '</div>';
+            $instanceWrapper.find(".custom-toolbar").append(radioDom);
+
+            var $radioButtons = $instanceWrapper.find("[data-act='radio']");
+            $radioButtons.click(function () {
+                var $selector = $(this);
+                setTimeout(function () {
+                    $selector.parent().find("input:radio").each(function () {
+                        if ($(this).is(":checked")) {
+                            settings.filterParams[$(this).attr("name")] = $(this).val();
+                        }
+                    });
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            });
+        }
+
+        //build singleDatepicker filter
+        if (typeof settings.singleDatepicker[0] !== 'undefined') {
+
+            $.each(settings.singleDatepicker, function (index, datePicker) {
+
+                var options = " ",
+                    value = "",
+                    selectedText = "";
+
+                if (!datePicker.options) datePicker.options = [];
+
+                //add custom datepicker selector
+                datePicker.options.push({ value: "show-date-picker", text: AppLanugage.custom });
+
+                //prepare custom list
+                $.each(datePicker.options, function (index, option) {
+                    var isSelected = "";
+                    if (option.isSelected) {
+                        isSelected = "active";
+                        value = option.value;
+                        selectedText = option.text;
+                    }
+
+                    options += '<div class="list-group-item ' + isSelected + '" data-value="' + option.value + '">' + option.text + '</div>';
+                });
+
+                if (!selectedText) {
+                    selectedText = "- " + datePicker.defaultText + " -";
+                    options = '<div class="list-group-item active" data-value="">' + selectedText + '</div>' + options;
+                }
+
+                //set filter params
+                if (datePicker.name) {
+                    settings.filterParams[datePicker.name] = value;
+                }
+
+                var reloadDatePickerFilter = function reloadDatePickerFilter(date) {
+                    settings.filterParams[datePicker.name] = date;
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                };
+
+                var getDatePickerText = function getDatePickerText(text) {
+                    return text + "<i class='ml10 fa fa-caret-down text-off'></i>";
+                };
+
+                //prepare DOM
+                var customList = '<div class="datepicker-custom-list list-group mb0">' + options + '</div>';
+
+                var selectDom = '<div class="mr-5 DTTT_container">' + '<button name="' + datePicker.name + '" class="btn btn-default btn-white datepicker-custom-selector">' + getDatePickerText(selectedText) + '</button>' + '</div>';
+                $instanceWrapper.find(".custom-toolbar").append(selectDom);
+
+                var $datePicker = $instanceWrapper.find("[name='" + datePicker.name + "']"),
+                    showCustomRange = typeof datePicker.options[1] === 'undefined' ? false : true; //don't show custom range if options not > 1
+
+                //init datepicker
+                $datePicker.datepicker({
+                    format: settings._inputDateFormat,
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: "custom",
+                    weekStart: AppHelper.settings.firstDayOfWeek,
+                    orientation: "bottom"
+                }).on("show", function () {
+
+                    //has custom dates, show them otherwise show the datepicker
+                    if (showCustomRange) {
+                        $(".datepicker-days, .datepicker-months, .datepicker-years, .datepicker-decades, .table-condensed").hide();
+                        $(".datepicker-custom-list").show();
+                        if (!$(".datepicker-custom-list").length) {
+                            $(".datepicker").append(customList);
+
+                            //bind click events
+                            $(".datepicker .list-group-item").click(function () {
+                                $(".datepicker .list-group-item").removeClass("active");
+                                $(this).addClass("active");
+                                var value = $(this).attr("data-value");
+                                //show datepicker for custom date
+                                if (value === "show-date-picker") {
+                                    $(".datepicker-custom-list, .datepicker-months, .datepicker-years, .datepicker-decades, .table-condensed").hide();
+                                    $(".datepicker-days, .table-condensed").show();
+                                } else {
+                                    $(".datepicker").hide();
+
+                                    if (moment(value, settings._inputDateFormat).isValid()) {
+                                        value = moment(value, settings._inputDateFormat).format(settings._inputDateFormat);
+                                    }
+
+                                    $datePicker.html(getDatePickerText($(this).html()));
+                                    reloadDatePickerFilter(value);
+                                }
+                            });
+                        }
+                    }
+                }).on('changeDate', function (e) {
+                    $datePicker.html(getDatePickerText(moment(e.date, settings._inputDateFormat).format("Do, MMMM YYYY")));
+                    reloadDatePickerFilter(moment(e.date, settings._inputDateFormat).format(settings._inputDateFormat));
+                });
+            });
+        }
+
+        //build rangeDatepicker filter
+        if (typeof settings.rangeDatepicker[0] !== 'undefined') {
+
+            $.each(settings.rangeDatepicker, function (index, datePicker) {
+
+                var startDate = datePicker.startDate || {},
+                    endDate = datePicker.endDate || {},
+                    showClearButton = datePicker.showClearButton ? true : false,
+                    emptyText = '<i class="fa fa-calendar"></i>',
+                    startButtonText = startDate.value ? moment(startDate.value, settings._inputDateFormat).format("Do, MMMM YYYY") : emptyText,
+                    endButtonText = endDate.value ? moment(endDate.value, settings._inputDateFormat).format("Do, MMMM YYYY") : emptyText;
+
+                //set filter params
+                settings.filterParams[startDate.name] = startDate.value;
+                settings.filterParams[endDate.name] = endDate.value;
+
+                var reloadDateRangeFilter = function reloadDateRangeFilter(name, date) {
+                    settings.filterParams[name] = date;
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                };
+
+                //prepare DOM
+                var selectDom = '<div class="mr-5 DTTT_container">' + '<div class="input-daterange input-group">' + '<button class="btn btn-default btn-white form-control" name="' + startDate.name + '" data-date="' + startDate.value + '">' + startButtonText + '</button>' + '<span class="input-group-addon">-</span>' + '<button class="btn btn-default btn-white form-control" name="' + endDate.name + '" data-date="' + endDate.value + '">' + endButtonText + '' + '</div>' + '</div>';
+
+                $instanceWrapper.find(".custom-toolbar").append(selectDom);
+
+                var $datePicker = $instanceWrapper.find(".input-daterange"),
+                    inputs = $datePicker.find('button').toArray();
+
+                //init datepicker
+                $datePicker.datepicker({
+                    format: "yyyy-mm-dd",
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: "custom",
+                    weekStart: AppHelper.settings.firstDayOfWeek,
+                    orientation: "bottom",
+                    inputs: inputs
+                }).on('changeDate', function (e) {
+                    var date = moment(e.date, settings._inputDateFormat).format(settings._inputDateFormat);
+
+                    //set save value if anyone is empty
+                    if (!settings.filterParams[startDate.name]) {
+                        settings.filterParams[startDate.name] = date;
+                    }
+
+                    if (!settings.filterParams[endDate.name]) {
+                        settings.filterParams[endDate.name] = date;
+                    }
+
+                    reloadDateRangeFilter($(e.target).attr("name"), date);
+
+                    //show button text
+                    $(inputs[0]).html(moment(settings.filterParams[startDate.name], settings._inputDateFormat).format("Do, MMMM YYYY"));
+                    $(inputs[1]).html(moment(settings.filterParams[endDate.name], settings._inputDateFormat).format("Do, MMMM YYYY"));
+                }).on("show", function () {
+
+                    //show clear button
+                    if (showClearButton) {
+                        $(".datepicker-clear-selection").show();
+                        if (!$(".datepicker-clear-selection").length) {
+                            $(".datepicker").append("<div class='datepicker-clear-selection p5 clickable text-center'>" + AppLanugage.clear + "</div>");
+
+                            //bind click event for clear button
+                            $(".datepicker .datepicker-clear-selection").click(function () {
+                                settings.filterParams[startDate.name] = "";
+                                reloadDateRangeFilter(endDate.name, "");
+
+                                $(inputs[0]).html(emptyText);
+                                $(inputs[1]).html(emptyText);
+                                $(".datepicker").hide();
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        //build buttons
+        if (settings.buttons[0] !== 'undefied') {
+            var buttons = "";
+            $.each(settings.buttons, function (idex, button) {
+                var css_class = button.class || "btn btn-default";
+                var id = button.id || "";
+                var title = button.title || "-title-";
+
+                buttons += '<button id="' + id + '" class="' + css_class + '">' + title + '</button>';
+            });
+
+            var buttonsDom = '<div class="mr-5 DTTT_container">' + buttons + '</div>';
+
+            $instanceWrapper.find(".custom-toolbar").append(buttonsDom);
+        }
+
+        //build dropdown filter
+        if (typeof settings.filterDropdown[0] !== 'undefined') {
+            var radiobuttons = "";
+            $.each(settings.filterDropdown, function (index, dropdown) {
+                var optons = "",
+                    selectedValue = "",
+                    dataAttr = "";
+
+                $.each(dropdown.options, function (index, option) {
+                    var isSelected = "";
+                    if (option.isSelected) {
+                        isSelected = "selected";
+                        selectedValue = option.id;
+                    }
+                    optons += '<option ' + isSelected + ' value="' + option.id + '">' + option.text + '</option>';
+                });
+
+                $.each(dropdown.dataAttr, function (index, attr) {
+                    dataAttr += 'data-' + index + '="' + attr + '"';
+                });
+
+                if (dropdown.name) {
+                    settings.filterParams[dropdown.name] = selectedValue;
+                }
+
+                var selectDom = '<div class="mr-5 DTTT_container">' + '<select class="' + dropdown.class + '" name="' + dropdown.name + '" ' + dataAttr + '>' + optons + '</select>' + '</div>';
+
+                $instanceWrapper.find(".custom-toolbar").append(selectDom);
+
+                var $dropdown = $instanceWrapper.find("[name='" + dropdown.name + "']");
+
+                if (window.Select2 !== undefined) {
+                    $dropdown.select2();
+                }
+
+                $dropdown.change(function () {
+                    var $selector = $(this);
+                    settings.filterParams[$selector.attr("name")] = $selector.val();
+                    $instance.appTable({ reload: true, filterParams: settings.filterParams });
+                });
+            });
+        }
+
+        var undoHandler = function undoHandler(eventData) {
+            $('<a class="undo-delete" href="javascript:;"><strong>Undo</strong></a>').insertAfter($(eventData.alertSelector).find(".app-alert-message"));
+            $(eventData.alertSelector).find(".undo-delete").bind("click", function () {
+                $(eventData.alertSelector).remove();
+                appLoader.show();
+                $.ajax({
+                    url: eventData.url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: eventData.id, undo: true },
+                    success: function success(result) {
+                        appLoader.hide();
+                        if (result.success) {
+                            $instance.appTable({ newData: result.data });
+                            //fire success callback
+                            settings.onUndoSuccess(result);
+                        }
+                    }
+                });
+            });
+        };
+
+        var deleteHandler = function deleteHandler(e) {
+            var $target = $(e.currentTarget);
+
+            if (e.data && e.data.target) {
+                $target = e.data.target;
+            }
+
+            var url = $target.attr('data-action-url'),
+                id = $target.attr('data-id'),
+                undo = $target.attr('data-undo');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: { id: id },
+                success: function success(result) {
+                    if (result.code == 'OK') {
+                        var tr = $target.closest('tr').get(0),
+                            table = $instance.DataTable();
+
+                        //@ToDo fix the fnDeleteRow
+                        tr.remove();
+                        oTable.fnDeleteRow(table.row(tr));
+                        //fire success callback
+                        settings.onDeleteSuccess(result);
+
+                        //bind undo selector
+                        if (undo == "1") {
+                            undoHandler({
+                                alertSelector: alertId,
+                                url: url,
+                                id: id
+                            });
+                        }
+                    } else {
+                        toastr.error(result.message);
+                    }
+                }
+            });
+        };
+
+        var deleteConfirmationHandler = function deleteConfirmationHandler(e) {
+            e.preventDefault();
+
+            var $deleteButton = $("#confirmDeleteButton"),
+                $target = $(e.currentTarget);
+
+            //copy attributes
+            $(this).each(function () {
+                $.each(this.attributes, function () {
+                    if (this.specified && this.name.match("^data-")) {
+                        $deleteButton.attr(this.name, this.value);
+                    }
+                });
+            });
+
+            $target.attr("data-undo", "0"); //don't show undo
+
+            //bind click event
+            $deleteButton.unbind("click");
+            $deleteButton.on("click", { target: $target }, deleteHandler);
+
+            $("#confirmationModal").modal('show');
+        };
+
+        window.InstanceCollection = window.InstanceCollection || {};
+        window.InstanceCollection["#" + $(this).selector] = settings;
+
+        $('body').find($instance).on('click', '[data-action=delete]', deleteHandler);
+        $('body').find($instance).on('click', '[data-action=delete-confirmation]', deleteConfirmationHandler);
+        $('.custom-toolbar').closest('.datatable-tools').addClass('row');
+
+        $.fn.dataTableExt.oApi.getSettings = function (oSettings) {
+            return oSettings;
+        };
+
+        $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, filterParams) {
+            oSettings.ajax.data = filterParams;
+            table = $(this).DataTable();
+            table.ajax.reload(null, false);
+            return false;
+        };
+
+        $.fn.dataTableExt.oApi.fnAddRow = function (oSettings, data) {
+            this.oApi._fnAddData(oSettings, data);
+            this.fnDraw(this);
+        };
+    };
+})(jQuery);
+
+// appAlert
+(function (define) {
+    define(['jquery'], function ($) {
+        return function () {
+            var appAlert = {
+                info: info,
+                success: success,
+                warning: warning,
+                error: error,
+                options: {
+                    container: "body", // append alert on the selector
+                    duration: 0, // don't close automatically,
+                    showProgressBar: true, // duration must be set
+                    clearAll: true, //clear all previous alerts
+                    animate: true //show animation
+                }
+            };
+
+            return appAlert;
+
+            function info(message, options) {
+                this._settings = _prepear_settings(options);
+                this._settings.alertType = "info";
+                _show(message);
+                return "#" + this._settings.alertId;
+            }
+
+            function success(message, options) {
+                this._settings = _prepear_settings(options);
+                this._settings.alertType = "success";
+                _show(message);
+                return "#" + this._settings.alertId;
+            }
+
+            function warning(message, options) {
+                this._settings = _prepear_settings(options);
+                this._settings.alertType = "warning";
+                _show(message);
+                return "#" + this._settings.alertId;
+            }
+
+            function error(message, options) {
+                this._settings = _prepear_settings(options);
+                this._settings.alertType = "error";
+                _show(message);
+                return "#" + this._settings.alertId;
+            }
+
+            function _template(message) {
+                var className = "info";
+                if (this._settings.alertType === "error") {
+                    className = "danger";
+                } else if (this._settings.alertType === "success") {
+                    className = "success";
+                } else if (this._settings.alertType === "warning") {
+                    className = "warning";
+                }
+
+                if (this._settings.animate) {
+                    className += " animate";
+                }
+
+                return '<div id="' + this._settings.alertId + '" class="app-alert alert alert-' + className + ' alert-dismissible " role="alert">' + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + '<div class="app-alert-message">' + message + '</div>' + '<div class="progress">' + '<div class="progress-bar progress-bar-' + className + ' hide" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' + '</div>' + '</div>' + '</div>';
+            }
+
+            function _prepear_settings(options) {
+                if (!options) var options = {};
+                options.alertId = "app-alert-" + _randomId();
+                return this._settings = $.extend({}, appAlert.options, options);
+            }
+
+            function _randomId() {
+                var id = "";
+                var keys = "abcdefghijklmnopqrstuvwxyz0123456789";
+                for (var i = 0; i < 5; i++) {
+                    id += keys.charAt(Math.floor(Math.random() * keys.length));
+                }return id;
+            }
+
+            function _clear() {
+                if (this._settings.clearAll) {
+                    $("[role='alert']").remove();
+                }
+            }
+
+            function _show(message) {
+                _clear();
+                var container = $(this._settings.container);
+                if (container.length) {
+                    if (this._settings.animate) {
+                        //show animation
+                        setTimeout(function () {
+                            $(".app-alert").animate({
+                                opacity: 1,
+                                right: "40px"
+                            }, 500, function () {
+                                $(".app-alert").animate({
+                                    right: "15px"
+                                }, 300);
+                            });
+                        }, 20);
+                    }
+
+                    $(this._settings.container).prepend(_template(message));
+                    _progressBarHandler();
+                } else {
+                    console.log("appAlert: container must be an html selector!");
+                }
+            }
+
+            function _progressBarHandler() {
+                if (this._settings.duration && this._settings.showProgressBar) {
+                    var alertId = "#" + this._settings.alertId;
+                    var $progressBar = $(alertId).find('.progress-bar');
+
+                    $progressBar.removeClass('hide').width(0);
+                    var css = "width " + this._settings.duration + "ms ease";
+                    $progressBar.css({
+                        WebkitTransition: css,
+                        MozTransition: css,
+                        MsTransition: css,
+                        OTransition: css,
+                        transition: css
+                    });
+
+                    setTimeout(function () {
+                        if ($(alertId).length > 0) {
+                            $(alertId).remove();
+                        }
+                    }, this._settings.duration);
+                }
+            }
+        }();
+    });
+})(function (d, f) {
+    window['appAlert'] = f(window['jQuery']);
+});
+
+(function (define) {
+    define(['jquery'], function ($) {
+        return function () {
+            var appLoader = {
+                show: show,
+                hide: hide,
+                options: {
+                    container: 'body',
+                    zIndex: "auto",
+                    css: ""
+                }
+            };
+
+            return appLoader;
+
+            function show(options) {
+                var $template = $("#app-loader");
+                this._settings = _prepear_settings(options);
+                if (!$template.length) {
+                    var $container = $(this._settings.container);
+                    if ($container.length) {
+                        $container.append('<div id="app-loader" class="app-loader" style="z-index:' + this._settings.zIndex + ';' + this._settings.css + '"><div class="loading"></div></div>');
+                    } else {
+                        console.log("appLoader: container must be an html selector!");
+                    }
+                }
+            }
+
+            function hide() {
+                var $template = $("#app-loader");
+                if ($template.length) {
+                    $template.remove();
+                }
+            }
+
+            function _prepear_settings(options) {
+                if (!options) var options = {};
+                return this._settings = $.extend({}, appLoader.options, options);
+            }
+        }();
+    });
+})(function (d, f) {
+    window['appLoader'] = f(window['jQuery']);
+});
+
+/*prepare html form data for suitable ajax submit*/
+function encodeAjaxPostData(html) {
+    html = replaceAll("=", "~", html);
+    html = replaceAll("&", "^", html);
+    return html;
+}
+
+//replace all occurrences of a string
+function replaceAll(find, replace, str) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+(function (define) {
+    define(['jquery'], function ($) {
+        return function () {
+            var appContentModal = {
+                init: init,
+                destroy: destroy,
+                options: {
+                    url: "",
+                    css: "",
+                    sidebar: true
+                }
+            };
+
+            return appContentModal;
+
+            function escKeyEvent(e) {
+                if (e.keyCode === 27) {
+                    destroy();
+                }
+            }
+
+            function init(options) {
+                this._settings = _prepear_settings(options);
+                _load_template(this._settings);
+            }
+
+            function destroy() {
+                $(".app-modal").remove();
+                $(document).unbind("keyup", escKeyEvent);
+                if (typeof appModalXhr !== 'undefined') {
+                    appModalXhr.abort();
+                }
+            }
+
+            function _prepear_settings(options) {
+                if (!options) options = {};
+
+                return this._settings = $.extend({}, appLoader.options, options);
+            }
+
+            function _load_template(settings) {
+
+                var sidebar = "<div class='app-modal-sidebar hidden-xs'>\
+                                        <div class='app-modal-close'><span>&times;</span></div>\
+                                        <div class='app-moadl-sidebar-scrollbar'>\
+                                            <div class='app-modal-sidebar-area'>\
+                                            </div>\
+                                        </div>\
+                                    </div>";
+                var controlIcon = "<i class='fa fa-expand expand hidden-xs'></i>";
+
+                if (settings.sidebar === false) {
+                    sidebar = "";
+                    controlIcon = "<div class='app-modal-close app-modal-fixed-close-button'><span>&times;</span></div>";
+                }
+
+                var template = "<div class='app-modal loading'>\
+                                <i class='fa fa-compress compress'></i>\
+                                <div class='app-modal-body'>\
+                                    <div class='app-modal-content'>" + controlIcon + "<div class='hide app-modal-close'><span>&times;</span></div>\
+                                    <div class='app-modal-content-area'>\
+                                    </div>\
+                                </div>" + sidebar + "</div>\
+                        </div>";
+                destroy();
+                $("body").prepend(template);
+
+                if ($.fn.mCustomScrollbar) {
+                    $('.app-moadl-sidebar-scrollbar').mCustomScrollbar({ setHeight: $(window).height() - 60, theme: "minimal-dark", autoExpandScrollbar: true });
+                }
+
+                $(".expand").click(function () {
+                    $(".app-modal").addClass("full-content");
+                });
+
+                $(".compress").click(function () {
+                    $(".app-modal").removeClass("full-content");
+                });
+                $(".app-modal-close").click(function () {
+                    destroy();
+                });
+                $(document).bind("keyup", escKeyEvent);
+                appLoader.show({ container: '.app-modal', css: "top:35%; right:48%;" });
+
+                appModalXhr = $.ajax({
+                    url: settings.url || "",
+                    data: {},
+                    cache: false,
+                    type: 'POST',
+                    success: function success(response) {
+                        var $content = $(response);
+                        $(".app-modal-content-area").html($content.find(".app-modal-content").html());
+                        $(".app-modal-sidebar-area").html($content.find(".app-modal-sidebar").html());
+                        $content.remove();
+                        $(".app-modal").removeClass("loading");
+                        appLoader.hide();
+                    },
+                    statusCode: {
+                        404: function _() {
+                            appContentModal.destroy();
+                            appAlert.error("404: Page not found.");
+                        }
+                    },
+                    error: function error() {
+                        appContentModal.destroy();
+                        appAlert.error("500: Internal Server Error.");
+                    }
+                });
+            }
+        }();
+    });
+})(function (d, f) {
+    window['appContentModal'] = f(window['jQuery']);
+});
+
+//custom app form controller
+(function ($) {
+    $.fn.appDateRange = function (options) {
+
+        var defaults = {
+            dateRangeType: "yearly",
+            filterParams: {},
+            onChange: function onChange(dateRange) {},
+            onInit: function onInit(dateRange) {}
+        };
+        var settings = $.extend({}, defaults, options);
+        settings._inputDateFormat = "YYYY-MM-DD";
+
+        this.each(function () {
+
+            var $instance = $(this);
+
+            var dom = '<div class="ml15">' + '<button data-act="prev" class="btn btn-default date-range-selector"><i class="fa fa-chevron-left"></i></button>' + '<button data-act="datepicker" class="btn btn-default" style="margin: -1px"></button>' + '<button data-act="next"  class="btn btn-default date-range-selector"><i class="fa fa-chevron-right"></i></button>' + '</div>';
+            $instance.append(dom);
+
+            var $datepicker = $instance.find("[data-act='datepicker']"),
+                $dateRangeSelector = $instance.find(".date-range-selector");
+
+            if (settings.dateRangeType === "yearly") {
+                var inityearSelectorText = function inityearSelectorText($elector) {
+                    $elector.html(moment(settings.filterParams.start_date).format("YYYY"));
+                };
+
+                inityearSelectorText($datepicker);
+
+                //bind the click events
+                $datepicker.datepicker({
+                    format: "YYYY-MM",
+                    viewMode: "years",
+                    minViewMode: "years",
+                    autoclose: true,
+                    language: "custom"
+                }).on('changeDate', function (e) {
+                    var date = moment(e.date).format(settings._inputDateFormat),
+                        year = moment(date).format("YYYY");
+                    settings.filterParams.start_date = year + "-01-01";
+                    settings.filterParams.end_date = year + "-12-31";
+                    settings.filterParams.year = year;
+                    inityearSelectorText($datepicker);
+                    settings.onChange(settings.filterParams);
+                });
+
+                //init default date
+                var year = moment().format("YYYY");
+                settings.filterParams.start_date = year + "-01-01";
+                settings.filterParams.end_date = year + "-12-31";
+                settings.filterParams.year = year;
+                settings.onInit(settings.filterParams);
+
+                $dateRangeSelector.click(function () {
+                    var type = $(this).attr("data-act"),
+                        startDate = moment(settings.filterParams.start_date),
+                        endDate = moment(settings.filterParams.end_date);
+                    if (type === "next") {
+                        startDate = startDate.add(1, 'years').format(settings._inputDateFormat);
+                        endDate = endDate.add(1, 'years').format(settings._inputDateFormat);
+                    } else if (type === "prev") {
+                        startDate = startDate.subtract(1, 'years').format(settings._inputDateFormat);
+                        endDate = endDate.subtract(1, 'years').format(settings._inputDateFormat);
+                    }
+
+                    settings.filterParams.start_date = startDate;
+                    settings.filterParams.end_date = endDate;
+                    settings.filterParams.year = moment(startDate).format("YYYY");
+
+                    inityearSelectorText($datepicker);
+                    settings.onChange(settings.filterParams);
+                });
+            }
+        });
+    };
+})(jQuery);
+
+//find and replace all search string
+replaceAllString = function replaceAllString(string, find, replaceWith) {
+    return string.split(find).join(replaceWith);
+};
+
+//convert a number to curency format
+toCurrency = function toCurrency(number, currencySymbol) {
+    number = parseFloat(number).toFixed(2);
+    if (!currencySymbol) {
+        currencySymbol = AppHelper.settings.currencySymbol;
+    }
+    var result = number.replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+
+    //remove (,) if thousand separator is (space)
+    if (AppHelper.settings.thousandSeparator === " ") {
+        result = result.replace(',', ' ');
+    }
+
+    if (AppHelper.settings.decimalSeparator === ",") {
+        result = replaceAllString(result, ".", "_");
+        result = replaceAllString(result, ",", ".");
+        result = replaceAllString(result, "_", ",");
+    }
+    if (currencySymbol === "none") {
+        currencySymbol = "";
+    }
+
+    if (AppHelper.settings.currencyPosition === "right") {
+        return result + "" + currencySymbol;
+    } else {
+        return currencySymbol + "" + result;
+    }
+};
+
+calculateDatatableTotal = function calculateDatatableTotal(instance, columnNumber, valueModifier, currentPage) {
+    var api = instance.api(),
+        columnOption = {};
+    if (currentPage) {
+        columnOption = { page: 'current' };
+    }
+    return api.column(columnNumber, columnOption).data().reduce(function (previousValue, currentValue) {
+        if (valueModifier) {
+            return previousValue + valueModifier(currentValue);
+        } else {
+            return previousValue + currentValue;
+        }
+    }, 0);
+};
+
+// rmove the formatting to get integer data
+unformatCurrency = function unformatCurrency(currency) {
+    currency = currency.toString();
+    if (currency) {
+        currency = currency.replace(/[^0-9.,]/g, '');
+        if (currency.indexOf(".") == 0 || currency.indexOf(",") == 0) {
+            currency = currency.slice(1);
+        }
+
+        if (AppHelper.settings.decimalSeparator === ",") {
+            currency = replaceAllString(currency, ".", "");
+            currency = replaceAllString(currency, ",", ".");
+        } else {
+            currency = replaceAllString(currency, ",", "");
+        }
+        currency = currency * 1;
+    }
+    if (currency) {
+        return currency;
+    }
+    return 0;
+};
+
+// convert seconds to hours:minutes:seconds format
+secondsToTimeFormat = function secondsToTimeFormat(sec) {
+    var sec_num = parseInt(sec, 10),
+        hours = Math.floor(sec_num / 3600),
+        minutes = Math.floor((sec_num - hours * 3600) / 60),
+        seconds = sec_num - hours * 3600 - minutes * 60;
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    var time = hours + ':' + minutes + ':' + seconds;
+    return time;
+};
+
+//clear datatable state
+clearAppTableState = function clearAppTableState(tableInstance) {
+    if (tableInstance) {
+        setTimeout(function () {
+            tableInstance.api().state.clear();
+        }, 200);
+    }
+};
+
+//show/hide datatable column
+showHideAppTableColumn = function showHideAppTableColumn(tableInstance, columnIndex, visible) {
+    tableInstance.fnSetColumnVis(columnIndex, !!visible);
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ })
+/******/ ]);

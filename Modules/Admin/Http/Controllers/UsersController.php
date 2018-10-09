@@ -3,6 +3,7 @@
 namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Modules\Admin\Entities\User;
 use Sentinel;
 use Activation;
 use DataTables;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Users\UserInterface;
 
+
 class UsersController extends Controller
 {
 
@@ -18,15 +20,20 @@ class UsersController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(){
-        return view('admin::users.index');
+        return view('admin::users.index')->with([
+            'panel' => [
+                'name' => __('admin::admin.Users')
+            ]
+        ]);
     }
 
     public function datatable(){
         $users = User::select(['id', 'first_name', 'last_name', 'email', 'created_at'])->with('roles','activations');
-        $datatables = Datatables::of($users);
+        $datatables = DataTables::of($users);
 
         //EDIT COLUMNS
         $datatables->editColumn('created_at',function($user){ return Carbon::parse($user->created_at)->format('d-m-Y H:i'); });
+
         //ACTIONS COLUMNS
         $datatables->addColumn('actions' , function($user){
 
@@ -58,7 +65,6 @@ class UsersController extends Controller
         });
 
         //FILTERS
-
         return $datatables->rawColumns(['actions'])->make();
     }
 
