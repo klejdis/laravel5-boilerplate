@@ -30,46 +30,14 @@ class UsersController extends Controller
     public function datatable(){
         $users = User::select(['id', 'first_name', 'last_name', 'email', 'created_at'])->with('roles','activations');
         $datatables = DataTables::of($users);
-
         //EDIT COLUMNS
         $datatables->editColumn('created_at',function($user){ return Carbon::parse($user->created_at)->format('d-m-Y H:i'); });
-
-        //ACTIONS COLUMNS
-        $datatables->addColumn('actions' , function($user){
-
-            $actions_html = '<div class="btn-group btn-group-sm" role="group" aria-label="User Actions">';
-
-            if (Sentinel::hasAccess('read-users')) {
-                $actions_html .= ' <a href="'.route('admin.users.show', ['user' => $user->id]).'" class="btn btn-info"><i class="fa fa-search" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"></i></a>';
-            }
-
-            if (Sentinel::hasAccess('edit-users')) {
-                $actions_html .= '<a href="'.route('admin.users.edit', ['user' => $user->id]).'" class="btn btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"></i></a>';
-            }
-
-            $actions_html .= '<div class="btn-group btn-group-sm" role="group">
-								<button id="userActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <i class="fa fa-sort-desc" aria-hidden="true"></i>
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							 ';
-            if (Sentinel::hasAccess('delete-users')) {
-                $actions_html .= '<li><a class="dropdown-item delete-btn"  data-id="'.$user->id.'" href="#">Delete</a></li>';
-            }
-
-            $actions_html .=  '</ul>
-							  </div>
-							</div>';
-
-            return $actions_html;
-
-        });
-
         //FILTERS
         return $datatables->rawColumns(['actions'])->make();
     }
 
     public function show(User $user){
-        return view('backend.users.show',compact('user'));
+        return view('admin::users.show', compact('user'));
     }
 
     public function create(){

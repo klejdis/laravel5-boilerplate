@@ -32,7 +32,7 @@
                    {  title : 'Surname' , data : 'last_name' },
                    {  title : 'Email' , data : 'email'},
                    {  title : 'Created At' , data : 'created_at' },
-                   {  title : '' , data : 'actions'  },
+                   {  data : 'actions', title: '<i class="fa fa-bars"></i>', "class": "text-center option w150" , orderable: false},
                ],
             });
 

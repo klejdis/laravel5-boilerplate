@@ -2244,7 +2244,6 @@ label{
 .file-upload {
     position: relative;
     overflow: hidden;
-    margin: 10px;
 }
 .file-upload input.upload {
     position: absolute;
@@ -2517,6 +2516,13 @@ td.option a.delete:hover{
     background:#d9534f;
     color: #fff;
     border:1px solid #d9534f;
+}
+td.option .dropdown {
+   display: inline-block;
+}
+td.option .dropdown button{
+    border-radius: 50%;
+    min-width: 28px;
 }
 
 .table-responsive th:first-child,

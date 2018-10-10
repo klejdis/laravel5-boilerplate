@@ -92,6 +92,47 @@ if (!function_exists('js_anchor')) {
 
 }
 
+/**
+ * prepare a anchor tag for modal
+ *
+ * @param string $url
+ * @param string $title
+ * @param array $attributes
+ * @return html link of anchor tag
+ */
+if (!function_exists('modal_anchor')) {
+
+    function modal_anchor($url = '', $title = '', $attributes = '') {
+        $attributes["data-act"] = "ajax-modal";
+        if (get_array_value($attributes, "data-modal-title")) {
+            $attributes["data-title"] = get_array_value($attributes, "data-modal-title");
+        } else {
+            $attributes["data-title"] = get_array_value($attributes, "title");
+        }
+        $attributes["data-action-url"] = $url;
+
+        return js_anchor($title, $attributes);
+    }
+
+}
+
+
+/**
+ * check the array key and return the value
+ *
+ * @param array $array
+ * @return extract array value safely
+ */
+if (!function_exists('get_array_value')) {
+
+    function get_array_value(array $array, $key) {
+        if (array_key_exists($key, $array)) {
+            return $array[$key];
+        }
+    }
+
+}
+
 if (!function_exists('getPublicUrlFromPath')){
     function getPublicUrlFromPath($path = null){
         if ($path !== null){
