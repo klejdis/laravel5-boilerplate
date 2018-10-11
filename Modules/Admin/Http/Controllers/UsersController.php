@@ -3,7 +3,10 @@
 namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Modules\Admin\Entities\Role;
 use Modules\Admin\Entities\User;
+use Modules\Admin\Http\Requests\StoreUserRequest;
+use Modules\Admin\Repositories\PermissionRepository;
 use Sentinel;
 use Activation;
 use DataTables;
@@ -40,48 +43,25 @@ class UsersController extends Controller
         return view('admin::users.show', compact('user'));
     }
 
-    public function create(){
+    public function create(Request $request, PermissionRepository $permissionRepository){
         $roles = Role::pluck('name', 'id');
-        $permissions = $this->permissionRepository->getPermissionsGroupped();
+        $permissions = $permissionRepository->getPermissionsGroupped();
 
-        return view('backend.users.create' , compact('roles' ,'permissions'));
+        return view('admin::users.quick-create', compact($roles,$permissions) );
     }
 
     public function store(StoreUserRequest $request){
+
         $activate = $request->activate ? true : false;
         $user = Sentinel::register($request->all() , $activate);
-
 
         if ($request->roles) {
             $user->roles()->sync($request->roles);
         }
 
-        if ($request->permissions) {
-            $user->permissions = $this->permissionRepository->getPermissionsFromGroup($request->permissions);
-            $user->save();
-        }
-
-        //get the base-64 from data
-        $base64_str = substr($request->input('gravatar'), strpos($request->input('gravatar'), ",")+1);
-
-        //decode base64 string
-        $image = base64_decode($base64_str);
-
-        $public = 'public/';
-
-        $save_dir = 'avatars/'.$user->id.'/';
-
-        $image_name = 'profile_image_'.$user->id.'.png';
-
-        Storage::put($public.$save_dir.$image_name, $image);
-
-        $path = $save_dir.$image_name;
-
-        $user->gravatar = $path;
-
-        $user->save();
-
-        return redirect()->route('admin.users.index');
+        return response()->json([
+           'success' => true,
+        ]);
     }
 
     public function edit(User $user){

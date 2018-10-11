@@ -7,6 +7,7 @@ mix.styles([
     'Resources/assets/bower_components/bootstrap/dist/css/bootstrap.min.css',
     'Resources/assets/bower_components/font-awesome/css/font-awesome.min.css',
     'Resources/assets/bower_components/datatables/media/css/jquery.dataTables.min.css',
+    'Resources/assets/bower_components/select2/select2.css',
     'Resources/assets/bower_components/select2/select2-bootstrap.css',
     'Resources/assets/bower_components/select2-bootstrap-css/select2-bootstrap.min.css',
     'Resources/assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
@@ -27,6 +28,10 @@ mix.copyDirectory('Resources/assets/bower_components/font-awesome/fonts', '../..
 mix.copyDirectory('Resources/assets/css/fonts', '../../public/admin/css/fonts');
 
 mix.copyDirectory('Resources/assets/images', '../../public/admin/images');
+
+mix.copyDirectory('Resources/assets/bower_components/select2/select2.png', '../../public/admin/css');
+
+mix.copyDirectory('Resources/assets/bower_components/select2/select2-spinner.gif', '../../public/admin/css');
 
 mix.scripts([
     'Resources/assets/bower_components/jquery/dist/jquery.min.js',

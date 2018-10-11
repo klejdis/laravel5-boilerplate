@@ -573,7 +573,7 @@ $(document).ready(function () {
     $('#ajaxModal').on('hidden.bs.modal', function (e) {
         ajaxModalXhr.abort();
         $("#ajaxModal").find(".modal-dialog").removeClass("modal-lg");
-        $("#ajaxModal").find(".modal-dialog").addClass("mini-modal");
+        //$("#ajaxModal").find(".modal-dialog").addClass("mini-modal");
 
         $("#ajaxModalContent").html("");
     });
@@ -839,6 +839,7 @@ $(document).ready(function () {
         }
     };
 })(jQuery);
+
 if (typeof TableTools != 'undefined') {
     TableTools.DEFAULTS.sSwfPath = AppHelper.assetsDirectory + "js/datatable/TableTools/swf/copy_csv_xls_pdf.swf";
 }
@@ -1185,7 +1186,7 @@ if (typeof TableTools != 'undefined') {
             container: 'body'
         });
 
-        $instanceWrapper.find("select").not('.dataTables_length select').select2({
+        $instanceWrapper.find("select").select2({
             minimumResultsForSearch: -1
         });
 

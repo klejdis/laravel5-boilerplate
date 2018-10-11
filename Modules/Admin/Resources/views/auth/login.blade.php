@@ -28,7 +28,7 @@
 
                         <input type="email" name="email" class="form-control p10" value="" placeholder="{{ __('admin::admin.Email') }}">
 
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <span class="fa fa-envelope form-control-feedback"></span>
 
                         {!! $errors->has('email') ? '<small class="text-danger"> '.$errors->first("email").'</small>' : '' !!}
 
@@ -38,7 +38,7 @@
 
                         <input type="password" name="password" class="form-control p10" placeholder="{{ __('admin::admin.Password') }}">
 
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        <span class="fa fa-lock form-control-feedback"></span>
 
                         {!! $errors->has('password') ? '<small class="text-danger"> '.$errors->first("password").'</small>' : '' !!}
 

@@ -8,16 +8,14 @@
                 <h1>{{ $panel['name'] }}</h1>
 
                 <div class="title-button-group">
-
+                    {!! modal_anchor(route('admin.users.create') ,__('admin::admin.Create User') , ['class' => 'btn btn-default']) !!}
                 </div>
             </div>
-
-            <div class="panel-body">
-                <table id="users" class="table"></table>
+            <div class="table-responsive">
+                <table id="users" class="display" cellspacing="0" width="100%"></table>
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')
@@ -32,10 +30,9 @@
                    {  title : 'Surname' , data : 'last_name' },
                    {  title : 'Email' , data : 'email'},
                    {  title : 'Created At' , data : 'created_at' },
-                   {  data : 'actions', title: '<i class="fa fa-bars"></i>', "class": "text-center option w150" , orderable: false},
+                   {  data : 'actions', title: '<i class="fa fa-bars"></i>', "class": "text-left option w250" , orderable: false },
                ],
             });
-
 
         });
     </script>

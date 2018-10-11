@@ -46,7 +46,26 @@ class User extends EloquentUser implements Authenticatable
 
     protected $appends = ['actions'];
 
+    /**
+     * ------------------------------------------------------------------------
+     * MODEL VALIDATION RULES
+     * ------------------------------------------------------------------------
+     */
 
+    public static function getValidationRules(){
+        return [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+        ];
+    }
+
+
+    /**
+     * ------------------------------------------------------------------------
+     * ACCESSORS
+     * ------------------------------------------------------------------------
+     */
     public function getActionsAttribute(){
         $actions_html = '';
 

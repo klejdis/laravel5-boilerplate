@@ -22,7 +22,7 @@ Route::get('/users/{user}/show', [
     'middleware' => 'permission:read-users'
 ]);
 
-Route::get('/users/create', [
+Route::post('/users/create', [
     'as'     => 'users.create',
     'uses'   => 'UsersController@create',
     'middleware' => 'permission:create-users'

@@ -7,5 +7,7 @@
     "/admin/js/all.js": "/admin/js/all.js",
     "/admin/js/vendor.js": "/admin/js/vendor.js",
     "/admincss/vendor.css": "/admincss/vendor.css",
-    "/admin/css/vendor.css": "/admin/css/vendor.css"
+    "/admin/css/vendor.css": "/admin/css/vendor.css",
+    "/admin/css/select2.png": "/admin/css/select2.png",
+    "/admin/css/select2-spinner.gif": "/admin/css/select2-spinner.gif"
 }

@@ -1182,6 +1182,7 @@ datatable-search:focus{
 }
 .datatable-tools .select2-container .select2-choice{
     background-color: #fff !important;
+    border-radius: 0px;
 }
 table.dataTable thead th:first-child,
 table.dataTable tbody td:first-child{
