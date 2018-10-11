@@ -34,7 +34,7 @@ Route::post('/users', [
     'middleware' => 'permission:create-users'
 ]);
 
-Route::get('/users/{user}/edit', [
+Route::post('/users/{user}/edit', [
     'as'     => 'users.edit',
     'uses'   => 'UsersController@edit',
     'middleware' => 'permission:edit-users'

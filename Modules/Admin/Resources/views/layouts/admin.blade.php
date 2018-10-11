@@ -97,6 +97,8 @@
             </div>
         </div>
     </div>
+
+    @include('admin::modals.ajax-modal')
 @endsection
 
 

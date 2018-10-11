@@ -1243,7 +1243,7 @@ html.print-peview #content{
     max-width: 100%;
     border: none !important;
 }
-td.option a{
+td.option > a, td.option > .dropdown > a{
     cursor: pointer;
     min-width: 28px;
     background:#fff;
@@ -1257,20 +1257,20 @@ td.option a{
     padding: 4px 0px;
     border:1px solid #e2e7f1;
 }
-td.option a:hover{
+td.option > a:hover{
     background:#2ac2d4;
     color: #fff;
     border:1px solid #2ac2d4;
 }
-td.option a.delete:hover{
+td.option > a.delete:hover{
     background:#d9534f;
     color: #fff;
     border:1px solid #d9534f;
 }
-td.option .dropdown {
+td.option > .dropdown {
    display: inline-block;
 }
-td.option .dropdown button{
+td.option > .dropdown button{
     border-radius: 50%;
     min-width: 28px;
 }

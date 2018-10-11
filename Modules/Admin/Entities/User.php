@@ -54,7 +54,7 @@ class User extends EloquentUser implements Authenticatable
             $actions_html .= HtmlFacade::link(
                 route('admin.users.show', ['user' => $this->id]),
                 app('laravel-font-awesome')->icon('fa-search'),
-                ['class' => 'edit' , 'title' => 'User Detail'],
+                ['title' => 'User Detail'],
                 false,
                 false
             );
@@ -64,18 +64,23 @@ class User extends EloquentUser implements Authenticatable
             $actions_html .= modal_anchor(
                 route('admin.users.edit', ['user' => $this->id]),
                 app('laravel-font-awesome')->icon('fa-pencil'),
-                [ 'class' => 'edit' ,  'title' => 'Edit User']
+                ['class' => 'edit' , 'title' => 'Edit User']
             );
         }
-
 
 
         $dtDropdownListItems = [];
 
         if (Sentinel::hasAccess('delete-users')) {
-            $dtDropdownListItems[] = HtmlFacade::link('#' , 'Delete', ['data-id'=> $this->id ] );
+            $dtDropdownListItems[] = HtmlFacade::link(
+                '#',
+                'Delete',
+                ['data-id'=> $this->id]
+                ,
+                false,
+                false
+            );
         }
-
 
         $actions_html .= '<div class="dropdown">
 								<a class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -83,7 +88,9 @@ class User extends EloquentUser implements Authenticatable
                                 </a>
 							 ';
 
-        $actions_html .= HtmlFacade::ul([ $dtDropdownListItems ], [
+
+
+        $actions_html .= HtmlFacade::ul( $dtDropdownListItems, [
             'class' => 'dropdown-menu',
             'aria-labelledby' => 'dropdownMenu1'
         ]);

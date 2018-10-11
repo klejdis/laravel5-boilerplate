@@ -217,7 +217,6 @@ $(document).ready(function () {
     });
 });
 
-
 //custom app form controller
 (function ($) {
     $.fn.appForm = function (options) {
@@ -366,10 +365,10 @@ $(document).ready(function () {
         }
     };
 })(jQuery);
+
 if (typeof TableTools != 'undefined') {
     TableTools.DEFAULTS.sSwfPath = AppHelper.assetsDirectory + "js/datatable/TableTools/swf/copy_csv_xls_pdf.swf";
 }
-
 
 //app table with datatable
 (function ($) {
@@ -1539,7 +1538,6 @@ if (typeof TableTools != 'undefined') {
     window['appAlert'] = f(window['jQuery']);
 }));
 
-
 (function (define) {
     define(['jquery'], function ($) {
         return (function () {
@@ -1598,7 +1596,6 @@ function encodeAjaxPostData(html) {
 function replaceAll(find, replace, str) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
-
 
 (function (define) {
     define(['jquery'], function ($) {
@@ -1805,7 +1802,6 @@ function replaceAll(find, replace, str) {
         });
     };
 })(jQuery);
-
 
 
 //find and replace all search string
