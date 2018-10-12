@@ -68,6 +68,9 @@
 
         <div id="sidebar" class="box-content ani-width">
             <div id="sidebar-scroll">
+
+                {!! Menu::get('AdminMenu') !!}
+
                 <ul class="" id="sidebar-menu">
                     <li class="main">
                         <a href="{{route('admin.dashboard.index')}}">

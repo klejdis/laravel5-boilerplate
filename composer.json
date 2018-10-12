@@ -12,6 +12,7 @@
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.7",
+        "nwidart/laravel-menus": "^3.0",
         "nwidart/laravel-modules": "^3.3",
         "pendonl/laravel-fontawesome": "^1.0",
         "tymon/jwt-auth": "^0.5.12",

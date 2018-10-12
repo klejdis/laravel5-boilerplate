@@ -4,6 +4,7 @@ namespace Modules\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Admin\Http\Middleware\AdminMenu;
 use Modules\Admin\Http\Middleware\Authenticated;
 use Modules\Admin\Http\Middleware\Permission;
 
@@ -126,5 +127,6 @@ class AdminServiceProvider extends ServiceProvider
         $router = $this->app['router'];
         $router->aliasMiddleware('authenticated', Authenticated::class);
         $router->aliasMiddleware('permission', Permission::class);
+        $router->aliasMiddleware('adminmenu', AdminMenu::class);
     }
 }

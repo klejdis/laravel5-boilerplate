@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f57d0579df4c910a6a4034947f26b09a",
+    "content-hash": "af8151783c99766499c1aff7834b1fce",
     "packages": [
         {
             "name": "cartalyst/sentinel",
@@ -1238,6 +1238,76 @@
                 "php"
             ],
             "time": "2018-09-18T07:03:24+00:00"
+        },
+        {
+            "name": "nwidart/laravel-menus",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nWidart/laravel-menus.git",
+                "reference": "65a052af4d88ec1f23b3ea92863c1dfa0fd6c832"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nWidart/laravel-menus/zipball/65a052af4d88ec1f23b3ea92863c1dfa0fd6c832",
+                "reference": "65a052af4d88ec1f23b3ea92863c1dfa0fd6c832",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "5.7.*",
+                "illuminate/support": "5.7.*",
+                "illuminate/view": "5.7.*",
+                "laravelcollective/html": "5.7.*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "3.7.*",
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Nwidart\\Menus\\MenusServiceProvider"
+                    ],
+                    "aliases": {
+                        "Menu": "Nwidart\\Menus\\Facades\\Menu"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nwidart\\Menus\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pingpong Labs",
+                    "email": "pingpong.labs@gmail.com"
+                },
+                {
+                    "name": "Nicolas Widart",
+                    "email": "n.widart@gmail.com"
+                }
+            ],
+            "description": "Laravel Menu management",
+            "keywords": [
+                "bootstrap",
+                "laravel",
+                "menus",
+                "nav",
+                "navigation"
+            ],
+            "time": "2018-09-30T09:58:42+00:00"
         },
         {
             "name": "nwidart/laravel-modules",
