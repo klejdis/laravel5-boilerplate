@@ -3,6 +3,7 @@
 namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Modules\Admin\Entities\Role;
 use Modules\Admin\Entities\User;
 use Modules\Admin\Http\Requests\StoreUserRequest;
@@ -41,6 +42,10 @@ class UsersController extends Controller
 
     public function show(User $user){
         return view('admin::users.show', compact('user'));
+    }
+
+    public function generalInfoTab(Request $request, User $user){
+        return View::make('admin::users.general-info',compact('user'));
     }
 
     public function create(Request $request, PermissionRepository $permissionRepository){

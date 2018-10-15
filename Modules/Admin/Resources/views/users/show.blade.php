@@ -1,7 +1,6 @@
 @extends('admin::layouts.admin')
 
 @section('page')
-
     <div class="bg-success clearfix">
             <div class="col-md-6">
                 <div class="row p20">
@@ -14,7 +13,9 @@
                             </div>
                             <input type="hidden" id="profile_image" name="profile_image" value=""  />
 
-                            <span class="avatar avatar-lg"><img id="profile-image-preview" src="" alt="..."></span>
+                            <span class="avatar avatar-lg">
+                                {!! $user->present()->profileImage  !!}
+                            </span>
                             <h4 class="">{{ $user->present()->fullName  }}</h4>
                         </div>
                         <div class="box-content pl15">
@@ -32,15 +33,22 @@
 
             <div class="col-md-6 text-center cover-widget">
                 <div class="row p20">
-
                 </div>
             </div>
         </div>
 
+    <ul data-toggle="ajax-tab" class="nav nav-tabs" role="tablist">
+        <li>
+            <a  role="presentation" class="active" href="{{route('admin.users.show.general_info_tab', [ 'user' => $user->id ])}}" data-target="#tab-details"> General Details </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade" id="tab-details"></div>
+    </div>
 
     @include('admin::modals.crop-modal')
 @endsection
-
 
 @push('scripts')
 <script type="text/javascript">

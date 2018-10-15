@@ -22,6 +22,12 @@ Route::get('/users/{user}/show', [
     'middleware' => 'permission:read-users'
 ]);
 
+Route::get('/users/{user}/show/general-info/tab', [
+    'as'     => 'users.show.general_info_tab',
+    'uses'   => 'UsersController@generalInfoTab',
+    'middleware' => 'permission:read-users'
+]);
+
 Route::post('/users/create', [
     'as'     => 'users.create',
     'uses'   => 'UsersController@create',

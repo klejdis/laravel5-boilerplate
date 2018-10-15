@@ -5,7 +5,6 @@ namespace Modules\Admin\Http\ViewComposers;
 use Illuminate\View\View;
 use Unisharp\Setting\SettingFacade as Setting;
 
-
 class LogoComposer
 {
     /**

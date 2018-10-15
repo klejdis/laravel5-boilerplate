@@ -14,7 +14,12 @@ class UserPresenter extends Presenter {
 
     public function firstRoleLabeled(){
         $role = $this->entity->roles()->first();
-        return ($role !== null) ? '<label class="label label-info large"><strong> '.$role->name.' </strong></label>' : '-';
+        return ($role !== null) ? '<label class="label label-info large"><strong> '.$role->name.' </strong></label>' : '';
+    }
+
+    public function profileImage(){
+        $default = asset('admin/images/avatar.jpg');
+        return '<img id="profile-image-preview" src="'.$default.'" alt="">';
     }
 
 }
