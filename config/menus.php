@@ -14,6 +14,5 @@ return [
         'zurbmenu' => \Nwidart\Menus\Presenters\Foundation\ZurbMenuPresenter::class,
     ],
 
-    'ordering' => false,
-
+    'ordering' => true,
 ];

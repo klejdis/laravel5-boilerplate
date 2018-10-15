@@ -22,13 +22,9 @@ class AdminMenu
     {
             // Setup the admin menu
            Menu::create('AdminMenu', function ($menu) {
+
                $menu->setPresenter(AdminMenuPresenter::class);
-
-
-                $user = Sentinel::check();
-                $attr = ['icon' => 'fa fa-angle-double-right'];
-
-                $menu->style('adminlte');
+               $menu->style('adminlte');
 
                 // Dashboard
                 $menu->route(
@@ -36,7 +32,7 @@ class AdminMenu
                     __('admin::admin.Dashboard'),
                     null,
                     ['icon' => 'fa fa-desktop']
-                );
+                )->order(0);
 
                $menu->dropdown('Users', function ($sub){
                    $sub->route(
@@ -45,15 +41,14 @@ class AdminMenu
                        null,
                        ['icon' => 'dot fa fa-circle']
                    );
-               });
-               
+               }, ['icon' => 'fa fa-user'])->order(1);
+
                $menu->route(
                    'admin.setting.index',
                    __('admin::admin.Settings'),
                    null,
                    ['icon' => 'fa fa-wrench']
-               );
-
+               )->order(2);
 
 
 
