@@ -11,6 +11,7 @@ return [
 
 
     'Close' => 'Close',
+    'Settings' => 'Settings',
 
 
     /*
@@ -52,6 +53,7 @@ return [
     */
 
     'Users' => 'Users',
+    'All Users' => 'All Users',
     'Create User' => 'Create User',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',

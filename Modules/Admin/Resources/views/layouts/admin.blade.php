@@ -69,23 +69,8 @@
         <div id="sidebar" class="box-content ani-width">
             <div id="sidebar-scroll">
 
-                {!! Menu::get('AdminMenu') !!}
+                {!! Menu::render('AdminMenu','admin') !!}
 
-                <ul class="" id="sidebar-menu">
-                    <li class="main">
-                        <a href="{{route('admin.dashboard.index')}}">
-                            <i class="fa fa-desktop"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-
-                    <li class="main">
-                        <a href="{{route('admin.setting.index')}}">
-                            <i class="fa fa-wrench"></i>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div><!-- sidebar menu end -->
 

@@ -35,8 +35,26 @@ class AdminMenu
                     'admin.dashboard.index',
                     __('admin::admin.Dashboard'),
                     null,
-                    ['target' => 'blank']
+                    ['icon' => 'fa fa-desktop']
                 );
+
+               $menu->dropdown('Users', function ($sub){
+                   $sub->route(
+                       'admin.users.index',
+                       __('admin::admin.All Users'),
+                       null,
+                       ['icon' => 'dot fa fa-circle']
+                   );
+               });
+               
+               $menu->route(
+                   'admin.setting.index',
+                   __('admin::admin.Settings'),
+                   null,
+                   ['icon' => 'fa fa-wrench']
+               );
+
+
 
 
                 // Fire the event to extend the menu

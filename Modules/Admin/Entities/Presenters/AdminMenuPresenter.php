@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Entities\Presenters;
 
+use Nwidart\Menus\MenuItem;
 use Nwidart\Menus\Presenters\Presenter;
 
 class AdminMenuPresenter extends Presenter{
@@ -26,15 +27,15 @@ class AdminMenuPresenter extends Presenter{
      */
     public function getMenuWithoutDropdownWrapper($item)
     {
-        return '<li' . $this->getActiveState($item) . '><a href="' . $item->getUrl() . '" ' . $item->getAttributes() . '>' . $item->getIcon() . ' <span>' . $item->title . '</span></a></li>' . PHP_EOL;
+        return '<li' . $this->getActiveState($item)  . '><a href="' . $item->getUrl() . '" ' . $item->getAttributes() . '>' . $item->getIcon() . ' <span>' . $item->title . '</span></a></li>' . PHP_EOL;
     }
 
     /**
      * {@inheritdoc }.
      */
-    public function getActiveState($item, $state = ' class="active"')
+    public function getActiveState($item, $state = ' class="active main"')
     {
-        return $item->isActive() ? $state : null;
+        return $item->isActive() ? $state : ' class="main"';
     }
 
     /**
@@ -71,15 +72,12 @@ class AdminMenuPresenter extends Presenter{
      */
     public function getMenuWithDropDownWrapper($item)
     {
-        return '<li class="treeview' . $this->getActiveStateOnChild($item, ' active') . '">
+        return '<li class="expand main ' . $this->getActiveStateOnChild($item, 'open active') . '">
 		          <a href="#">
 					' . $item->getIcon() . ' <span>' . $item->title . '</span>
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
 			      </a>
-			      <ul class="treeview-menu">
-			      	' . $this->getChildMenuItems($item) . '
+			      <ul>
+			      	' . $this->getChildMenuItemsCustom($item) . '
 			      </ul>
 		      	</li>'
             . PHP_EOL;
@@ -101,10 +99,49 @@ class AdminMenuPresenter extends Presenter{
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
 			      </a>
-			      <ul class="treeview-menu">
+			      <ul>
 			      	' . $this->getChildMenuItems($item) . '
 			      </ul>
 		      	</li>'
             . PHP_EOL;
     }
+
+    /**
+     * Get child menu items.
+     *
+     * @param \Nwidart\Menus\MenuItem $item
+     *
+     * @return string
+     */
+    public function getChildMenuItemsCustom(MenuItem $item)
+    {
+        $results = '';
+        foreach ($item->getChilds() as $child) {
+            if ($child->hidden()) {
+                continue;
+            }
+
+            if ($child->hasSubMenu()) {
+                $results .= $this->getMultiLevelDropdownWrapper($child);
+            } elseif ($child->isHeader()) {
+                $results .= $this->getHeaderWrapper($child);
+            } elseif ($child->isDivider()) {
+                $results .= $this->getDividerWrapper();
+            } else {
+                $results .= $this->getMenuWithoutDropdownWrapperCustom($child);
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * {@inheritdoc }.
+     */
+    public function getMenuWithoutDropdownWrapperCustom($item)
+    {
+        return '<li><a href="' . $item->getUrl() . '" ' . $item->getAttributes() . '>' . $item->getIcon() . ' <span>' . $item->title . '</span></a></li>' . PHP_EOL;
+    }
+
+
 }
