@@ -53,7 +53,7 @@ Route::put('/users/{user}', [
     'middleware' => 'permission:edit-users'
 ]);
 
-Route::delete('/users/{user}', [
+Route::post('/users/delete', [
     'as'     => 'users.destroy',
     'uses'   => 'UsersController@delete',
     'middleware' => 'permission:delete-users'

@@ -45,18 +45,18 @@ class UsersController extends Controller
     }
 
     public function generalInfoTab(Request $request, User $user){
-        return View::make('admin::users.general-info',compact('user'));
+        $roles = Role::pluck('name', 'id');
+        return View::make('admin::users.general-info',compact('user','roles'))->render();
     }
 
     public function create(Request $request, PermissionRepository $permissionRepository){
         $roles = Role::pluck('name', 'id');
         $permissions = $permissionRepository->getPermissionsGroupped();
 
-        return view('admin::users.quick-create', compact($roles,$permissions) );
+        return View::make('admin::users.quick-create')->with(['roles'=>$roles])->render();
     }
 
     public function store(StoreUserRequest $request){
-
         $activate = $request->activate ? true : false;
         $user = Sentinel::register($request->all() , $activate);
 
@@ -64,8 +64,11 @@ class UsersController extends Controller
             $user->roles()->sync($request->roles);
         }
 
+        $user = User::find($user->id);
+
         return response()->json([
            'success' => true,
+           'newData' => $user
         ]);
     }
 
@@ -76,7 +79,6 @@ class UsersController extends Controller
         $selected_permissions = collect($user->getPermissions())->map(function($p,$k){
             return $k;
         });
-        //dd($selected_permissions);
 
         return view('backend.users.edit', compact('user','roles','permissions','activate','selected_permissions'));
     }
@@ -152,8 +154,16 @@ class UsersController extends Controller
         return redirect()->route('admin.users.index');
     }
 
-    public function delete(User $user){
-        $user->delete();
-        return redirect()->route('admin.users.index');
+    public function delete(Request $request){
+
+        if ($request->input('id')){
+            $user = User::find($request->input('id'));
+            $user->delete();
+        }
+
+        return response()->json([
+            'success' => 'success',
+
+        ]);
     }
 }

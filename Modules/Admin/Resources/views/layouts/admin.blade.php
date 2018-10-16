@@ -87,6 +87,7 @@
     </div>
 
     @include('admin::modals.ajax-modal')
+    @include('admin::modals.confirm-delete-modal')
 @endsection
 
 

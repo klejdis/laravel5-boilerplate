@@ -94,8 +94,11 @@ class User extends EloquentUser implements Authenticatable
             $dtDropdownListItems[] = HtmlFacade::link(
                 '#',
                 'Delete',
-                ['data-id'=> $this->id]
-                ,
+                [
+                    'data-id'=> $this->id,
+                    'data-action' => 'delete-confirmation',
+                    'data-action-url' => route('admin.users.destroy'),
+                ],
                 false,
                 false
             );

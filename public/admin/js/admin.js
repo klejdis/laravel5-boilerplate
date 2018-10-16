@@ -1747,7 +1747,7 @@ if (typeof TableTools != 'undefined') {
                 dataType: 'json',
                 data: { id: id },
                 success: function success(result) {
-                    if (result.code == 'OK') {
+                    if (result.success == 'success') {
                         var tr = $target.closest('tr').get(0),
                             table = $instance.DataTable();
 

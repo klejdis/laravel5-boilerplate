@@ -31,6 +31,14 @@
                     {!! Form::email('email' , null , ['class' => 'form-control', 'placeholder' => __('admin::admin.Email'), 'data-rule-required' => '1' ] ) !!}
                 </div>
             </div>
+
+            <div class="form-group row">
+                {!! Form::label('roles',  __('admin::admin.Roles') , ['class' => 'col-sm-2' ]) !!}
+
+                <div class="col-sm-10">
+                    {!! Form::select('roles' , $roles , null , ['class' => 'form-control', 'data-rule-required' => '1', "multiple"=>"multiple" ] ) !!}
+                </div>
+            </div>
         </div>
 
         <div class="panel-footer">

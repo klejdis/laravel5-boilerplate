@@ -35,6 +35,14 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        {!! Form::label('roles',  __('admin::admin.Roles') , ['class' => 'col-sm-4' ]) !!}
+
+        <div class="col-sm-8">
+            {!! Form::select('roles' , $roles , null , ['class' => 'form-control', 'data-rule-required' => '1', "multiple"=>"multiple" ] ) !!}
+        </div>
+    </div>
+
 </div>
 
 <div class="modal-footer">
@@ -51,6 +59,13 @@
         $('#create-user-form').appForm({
             onSuccess : function (result) {
                 console.log(result);
+
+                if(result.success){
+                    $('#users').appTable({
+                        newData : result.newData
+                    });
+                }
+
             },
             onError : function (result) {
                 console.log(result);

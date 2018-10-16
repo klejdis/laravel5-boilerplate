@@ -41,10 +41,20 @@
         <li>
             <a  role="presentation" class="active" href="{{route('admin.users.show.general_info_tab', [ 'user' => $user->id ])}}" data-target="#tab-details"> General Details </a>
         </li>
+
+        <li>
+            <a  role="presentation" href="#" data-target="#tab-permissions"> Permissions </a>
+        </li>
+
+        <li>
+            <a  role="presentation" href="#" data-target="#tab-password"> Change Password </a>
+        </li>
     </ul>
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade" id="tab-details"></div>
+        <div role="tabpanel" class="tab-pane fade" id="tab-permissions"></div>
+        <div role="tabpanel" class="tab-pane fade" id="tab-password"></div>
     </div>
 
     @include('admin::modals.crop-modal')
