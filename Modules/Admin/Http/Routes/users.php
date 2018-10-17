@@ -28,6 +28,18 @@ Route::get('/users/{user}/show/general-info/tab', [
     'middleware' => 'permission:read-users'
 ]);
 
+Route::get('/users/{user}/show/change-password/tab', [
+    'as'     => 'users.show.change_password',
+    'uses'   => 'UsersController@changePasswordTab',
+    'middleware' => 'permission:read-users'
+]);
+
+Route::post('/users/{user}/show/change-password', [
+    'as'     => 'users.show.change_password.post',
+    'uses'   => 'UsersController@changePassword',
+    'middleware' => 'permission:read-users'
+]);
+
 Route::post('/users/create', [
     'as'     => 'users.create',
     'uses'   => 'UsersController@create',

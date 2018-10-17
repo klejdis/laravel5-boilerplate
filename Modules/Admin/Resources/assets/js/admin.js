@@ -272,6 +272,20 @@ $(document).ready(function () {
                                     }
                                 }
                             }
+                        },
+                        error : function (response) {
+                            //The form contains errors
+                            if(response.status == 422 ){
+                                if (response.responseJSON.message !== undefined){
+                                    appAlert.error(response.responseJSON.message,{duration: 10000});
+                                }
+                                if(response.responseJSON.errors){
+                                    fieldErrors = response.responseJSON.errors;
+                                    for ( field in fieldErrors ){
+                                        $('input[name="'+field+'"]').parent().addClass('has-error');
+                                    }
+                                }
+                            }
                         }
                     });
                 });

@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Users\UserInterface;
 
-
 class UsersController extends Controller
 {
 
@@ -47,6 +46,29 @@ class UsersController extends Controller
     public function generalInfoTab(Request $request, User $user){
         $roles = Role::pluck('name', 'id');
         return View::make('admin::users.general-info',compact('user','roles'))->render();
+    }
+
+    public function changePasswordTab(Request $request,  User $user){
+        return View::make('admin::users.change-password-tab', compact('user'))->render();
+    }
+
+    public function changePassword(Request $request, User $user){
+        $this->validate($request, [
+            'password' => 'required|confirmed|min:8',
+            'password_confirmation' => 'required_if:password,present',
+        ]);
+
+        try{
+            Sentinel::update($user , $request->only('password'));//if password changes
+        }catch (\Exception $e){
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function create(Request $request, PermissionRepository $permissionRepository){

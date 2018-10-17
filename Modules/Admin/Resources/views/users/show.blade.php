@@ -47,7 +47,7 @@
         </li>
 
         <li>
-            <a  role="presentation" href="#" data-target="#tab-password"> Change Password </a>
+            <a  role="presentation" href="{{route('admin.users.show.change_password', [ 'user' => $user->id ])}}" data-target="#tab-password"> Change Password </a>
         </li>
     </ul>
 
