@@ -40,6 +40,18 @@ Route::post('/users/{user}/show/change-password', [
     'middleware' => 'permission:read-users'
 ]);
 
+Route::get('/users/{user}/show/permissions', [
+    'as'     => 'users.show.permission',
+    'uses'   => 'UsersController@permissionsTab',
+    'middleware' => 'permission:read-users'
+]);
+
+Route::post('/users/{user}/show/permissions', [
+    'as'     => 'users.show.permissions.post',
+    'uses'   => 'UsersController@permissionsTabPost',
+    'middleware' => 'permission:read-users'
+]);
+
 Route::post('/users/create', [
     'as'     => 'users.create',
     'uses'   => 'UsersController@create',

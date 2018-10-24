@@ -52,6 +52,31 @@ class UsersController extends Controller
         return View::make('admin::users.change-password-tab', compact('user'))->render();
     }
 
+    public function permissionsTab(Request $request, User $user, PermissionRepository $permissionRepository){
+        $permissions = $permissionRepository->getPermissionsGroupped();
+        $selected_permissions = collect($user->getPermissions())->map(function($p,$k){
+            return $k;
+        });
+        return View::make('admin::users.permissions-tab', compact('user','permissions','selected_permissions'))->render();
+    }
+
+    public function permissionsTabPost(Request $request, User $user, PermissionRepository $permissionRepository){
+        if ($request->permissions) {
+            $user->permissions = $permissionRepository->getPermissionsFromGroup($request->permissions);
+            try{
+                $user->save();
+            }catch (\Exception $exception){
+                return response()->json([
+                    'success'=> false
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success'=> true
+        ]);
+    }
+
     public function changePassword(Request $request, User $user){
         $this->validate($request, [
             'password' => 'required|confirmed|min:8',

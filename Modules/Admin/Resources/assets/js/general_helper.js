@@ -86,6 +86,12 @@ $(document).ready(function () {
         return false;
     });
 
+    /**
+     * ------------------------------------------------------------------------
+     * SELECT2 AUTOMATIC INITIALIZATION
+     * ------------------------------------------------------------------------
+     */
+
 
 });
 
@@ -148,7 +154,6 @@ getRndomString = function (length) {
     return result;
 };
 
-
 // getnerat random small alphabet 
 getRandomAlphabet = function (length) {
     var result = '',
@@ -157,7 +162,6 @@ getRandomAlphabet = function (length) {
         result += chars[Math.round(Math.random() * (chars.length - 1))];
     return result;
 };
-
 
 attachDropzoneWithForm = function (dropzoneTarget, uploadUrl, validationUrl, options) {
     var $dropzonePreviewArea = $(dropzoneTarget),
@@ -313,7 +317,6 @@ setTimePicker = function (element, options) {
     $(element).timepicker(settings);
 };
 
-
 initWYSIWYGEditor = function (element, options) {
     if (!options) {
         options = {};
@@ -356,4 +359,11 @@ combineCustomFieldsColumns = function (defaultFields, customFieldString) {
         }
     }
     return defaultFields;
+};
+
+setSelect2 = function (element, options) {
+    if (!options) {
+        options = {};
+    }
+    $(element).select2(options);
 };

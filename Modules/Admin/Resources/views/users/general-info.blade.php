@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group">
                 {!! Form::label('roles',  __('admin::admin.Roles') , ['class' => 'col-sm-2' ]) !!}
 
                 <div class="col-sm-10">
@@ -60,5 +60,7 @@
                 console.log(result);
             }
         });
+
+
     });
 </script>

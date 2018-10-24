@@ -477,6 +477,13 @@ combineCustomFieldsColumns = function combineCustomFieldsColumns(defaultFields, 
     return defaultFields;
 };
 
+setSelect2 = function setSelect2(element, options) {
+    if (!options) {
+        options = {};
+    }
+    $(element).select2(options);
+};
+
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {

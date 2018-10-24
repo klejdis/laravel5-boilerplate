@@ -43,7 +43,7 @@
         </li>
 
         <li>
-            <a  role="presentation" href="#" data-target="#tab-permissions"> Permissions </a>
+            <a  role="presentation" href="{{route('admin.users.show.permission', [ 'user' => $user->id ])}}" data-target="#tab-permissions"> Permissions </a>
         </li>
 
         <li>

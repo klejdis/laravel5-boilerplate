@@ -10,7 +10,6 @@
         </div>
     </div>
 
-
     <div class="form-group row">
         {!! Form::label('last_name', __('admin::admin.Last Name') , ['class' => 'col-sm-4' ]) !!}
 
