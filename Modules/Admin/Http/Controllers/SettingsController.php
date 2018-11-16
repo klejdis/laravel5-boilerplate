@@ -31,7 +31,7 @@ class SettingsController extends Controller
     }
 
     public function store(Request $request){
-        foreach ($request->except(['_token']) as $key => $value) {
+        foreach ($request->except(['_token']) as $key => $value){
 
             switch ($key) {
                 case 'activation-type':

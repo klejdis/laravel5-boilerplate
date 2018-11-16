@@ -1,0 +1,7 @@
+- redirect after login
+- settings seeder
+- user default avatar
+- notificatins setting and implementation
+- user crud
+- role crud
+- permission read only

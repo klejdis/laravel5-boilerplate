@@ -58,8 +58,6 @@ class LoginController extends Controller
     */
     public function logout(){
         Sentinel::logout();
-        Session::forget('ticket_count');
-
         return redirect()->route('admin.auth.login');
     }
 
