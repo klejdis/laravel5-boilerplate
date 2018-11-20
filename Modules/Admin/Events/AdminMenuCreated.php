@@ -8,7 +8,6 @@ class AdminMenuCreated
 {
     use SerializesModels;
 
-
     public $menu;
 
     /**

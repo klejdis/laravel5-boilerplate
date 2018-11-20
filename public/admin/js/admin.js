@@ -224,6 +224,12 @@ $(document).ready(function () {
         $gallery.magnificPopup('open');
         return false;
     });
+
+    /**
+     * ------------------------------------------------------------------------
+     * SELECT2 AUTOMATIC INITIALIZATION
+     * ------------------------------------------------------------------------
+     */
 });
 
 //set scrollbar on page
@@ -768,6 +774,9 @@ $(document).ready(function () {
                                         $('input[name="' + field + '"]').parent().addClass('has-error');
                                     }
                                 }
+                            } else if (response.status == 500) {
+                                console.log('error 500');
+                                unmaskModal();
                             }
                         }
                     });

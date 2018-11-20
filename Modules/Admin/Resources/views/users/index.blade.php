@@ -1,7 +1,6 @@
 @extends("admin::layouts.admin")
 
 @section('page')
-
     <div class="p20">
         <div class="panel panel-default">
             <div class="page-title clearfix">

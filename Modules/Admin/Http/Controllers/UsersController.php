@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Modules\Admin\Entities\Role;
 use Modules\Admin\Entities\User;
 use Modules\Admin\Http\Requests\StoreUserRequest;
+use Modules\Admin\Http\Requests\UpdateUserRequest;
 use Modules\Admin\Repositories\PermissionRepository;
 use Sentinel;
 use Activation;
@@ -18,7 +19,6 @@ use Cartalyst\Sentinel\Users\UserInterface;
 
 class UsersController extends Controller
 {
-
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -45,7 +45,8 @@ class UsersController extends Controller
 
     public function generalInfoTab(Request $request, User $user){
         $roles = Role::pluck('name', 'id');
-        return View::make('admin::users.general-info',compact('user','roles'))->render();
+        $activate = (Activation::completed($user)) ? true : false;
+        return View::make('admin::users.general-info',compact('user','roles','activate'))->render();
     }
 
     public function changePasswordTab(Request $request,  User $user){
@@ -105,7 +106,15 @@ class UsersController extends Controller
 
     public function store(StoreUserRequest $request){
         $activate = $request->activate ? true : false;
-        $user = Sentinel::register($request->all() , $activate);
+
+        try{
+            $user = Sentinel::register($request->all() , $activate);
+        }catch (\Exception $exception){
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong'
+            ]);
+        }
 
         if ($request->roles) {
             $user->roles()->sync($request->roles);
@@ -119,22 +128,20 @@ class UsersController extends Controller
         ]);
     }
 
-    public function edit(User $user){
+    public function edit(User $user, PermissionRepository $permissionRepository){
         $roles = Role::pluck('name', 'id');
-        $permissions = $this->permissionRepository->getPermissionsGroupped();
+        $permissions = $permissionRepository->getPermissionsGroupped();
         $activate = (Activation::completed($user)) ? true : false;
         $selected_permissions = collect($user->getPermissions())->map(function($p,$k){
             return $k;
         });
 
-        return view('backend.users.edit', compact('user','roles','permissions','activate','selected_permissions'));
+        return view('admin::users.edit', compact('user','roles','permissions','activate','selected_permissions'));
     }
 
-    public function update(UpdateUserRequest $request, User $user){
+    public function quickUpdate(UpdateUserRequest $request, User $user){
 
         $activate = $request->has('activate') ? true : false;
-
-        //dd($activate);
 
         $user->update($request->except(['password', 'password_confirmation']));
 
@@ -148,15 +155,6 @@ class UsersController extends Controller
         if ($request->password) {
             Sentinel::update($user , $request->only('email','password'));//if password changes
         }
-
-
-        /*
-         * Check if the user activation is checked
-         * If so, then activate the user if the activation code doesnt exists
-         * It it exists just update the complete to true
-         * B.B
-         *
-         * */
 
         if ($activate == true){
             $user_activation = Activation::where('user_id',$user->id)->first();
@@ -179,26 +177,52 @@ class UsersController extends Controller
             }
         }
 
-        //get the base-64 from data
-        $base64_str = substr($request->input('gravatar'), strpos($request->input('gravatar'), ",")+1);
+        return response()->json([
+            'success' => true,
+            'newData' => $user
+        ]);
+    }
 
-        //decode base64 string
-        $image = base64_decode($base64_str);
+    public function update(UpdateUserRequest $request, User $user){
+        $activate = $request->has('activate') ? true : false;
 
-        $public = 'public/';
+        $user->update($request->except(['password', 'password_confirmation']));
 
-        $save_dir = 'avatars/'.$user->id.'/';
+        $user->roles()->sync($request->roles);
 
-        $image_name = 'profile_image_'.$user->id.'.png';
+        if ($request->permissions) {
+            $user->permissions = $this->permissionRepository->getPermissionsFromGroup($request->permissions);
+            $user->save();
+        }
 
-        Storage::put($public.$save_dir.$image_name, $image);
+        if ($request->password) {
+            Sentinel::update($user , $request->only('email','password'));//if password changes
+        }
 
-        $path = $save_dir.$image_name;
+        if ($activate == true){
+            $user_activation = Activation::where('user_id',$user->id)->first();
+            /*dd($user_activation);*/
+            if ($user_activation){
+                $user_activation->completed = true;
+                $user_activation->update();
+            }else{
+                $activation = Activation::create($user);
+                $complete = Activation::complete($user, $activation->code);
+                if ($complete){
+                    $activation = Activation::completed($user);
+                }
+            }
+        }else if ($activate == false){
+            $user_activation = Activation::where('user_id',$user->id)->first();
+            if ($user_activation){
+                $user_activation->completed = 0;
+                $user_activation->update();
+            }
+        }
 
-        $user->gravatar = $path;
-        $user->save();
-
-        return redirect()->route('admin.users.index');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function delete(Request $request){
@@ -210,7 +234,6 @@ class UsersController extends Controller
 
         return response()->json([
             'success' => 'success',
-
         ]);
     }
 }

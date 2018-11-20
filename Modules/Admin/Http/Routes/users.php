@@ -3,7 +3,6 @@
 /**
  * User Routes
  */
-
 Route::get('/users', [
     'as'     => 'users.index',
     'uses'   => 'UsersController@index',
@@ -70,8 +69,13 @@ Route::post('/users/{user}/edit', [
     'middleware' => 'permission:edit-users'
 ]);
 
+Route::post('/users/{user}/quick-update', [
+    'as'     => 'users.quick_update',
+    'uses'   => 'UsersController@quickUpdate',
+    'middleware' => 'permission:edit-users'
+]);
 
-Route::put('/users/{user}', [
+Route::post('/users/{user}', [
     'as'     => 'users.update',
     'uses'   => 'UsersController@update',
     'middleware' => 'permission:edit-users'

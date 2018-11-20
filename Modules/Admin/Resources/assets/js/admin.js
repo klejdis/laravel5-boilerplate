@@ -242,7 +242,7 @@ $(document).ready(function () {
         var settings = $.extend({}, defaults, options);
         this.each(function () {
             if (settings.ajaxSubmit) {
-                validateForm($(this), function (form) {
+                validateForm($(this), function (form){
                     settings.onSubmit();
                     if (settings.isModal) {
                         maskModal($("#ajaxModalContent").find(".modal-body"));
@@ -265,7 +265,7 @@ $(document).ready(function () {
                                     if (settings.isModal) {
                                         unmaskModal();
                                         if (result.message) {
-                                            appAlert.error(result.message, {container: '.modal-body', animate: false});
+                                            appAlert.error(result.message, {container: '.modal-body',animate:false});
                                         }
                                     } else if (result.message) {
                                         appAlert.error(result.message);
@@ -285,6 +285,9 @@ $(document).ready(function () {
                                         $('input[name="'+field+'"]').parent().addClass('has-error');
                                     }
                                 }
+                            }else if(response.status == 500){
+                                console.log('error 500');
+                                unmaskModal();
                             }
                         }
                     });

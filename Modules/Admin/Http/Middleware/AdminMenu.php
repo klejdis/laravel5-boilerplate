@@ -20,7 +20,7 @@ class AdminMenu
      */
     public function handle(Request $request, Closure $next)
     {
-            // Setup the admin menu
+           // Setup the admin menu
            Menu::create('AdminMenu', function ($menu) {
 
                $menu->setPresenter(AdminMenuPresenter::class);
@@ -41,6 +41,14 @@ class AdminMenu
                        null,
                        ['icon' => 'dot fa fa-circle']
                    );
+
+                   $sub->route(
+                       'admin.roles.index',
+                       __('admin::admin.Roles'),
+                       null,
+                       ['icon' => 'dot fa fa-circle']
+                   );
+
                }, ['icon' => 'fa fa-user'])->order(1);
 
                $menu->route(
