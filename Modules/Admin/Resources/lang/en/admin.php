@@ -9,12 +9,14 @@ return [
     |
     */
 
-
     'Close' => 'Close',
     'Settings' => 'Settings',
     'Are You Sure' => 'Are You Sure',
     'Delete' => 'Delete',
     'Cancel' => 'Cancel',
+    'Activated' => 'Activated',
+    'Activate' => 'Activate',
+    'Permissions' => 'Permissions',
 
 
     /*
@@ -74,6 +76,21 @@ return [
     */
 
     'Roles' => 'Roles',
+
+    /*-----------------------------------------------------------------------*/
+
+    /*
+    |--------------------------------------------------------------------------
+    | POSTA Language Lines
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'POS' => 'POS',
+    'Reporting' => 'Reporting',
+    'Offices' => 'Offices',
+    'Sites' => 'Sites',
+    'Branches' => 'Branches',
 
     /*-----------------------------------------------------------------------*/
 

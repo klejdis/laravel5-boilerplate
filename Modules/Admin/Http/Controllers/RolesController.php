@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-
 class RolesController extends Controller
 {
     public function __construct( PermissionRepository $permissionRepository)
@@ -54,8 +53,8 @@ class RolesController extends Controller
             $role = Sentinel::getRoleRepository()->createModel()->create($request->only(['name','slug']));
             $role->permissions = $permissions;
             $role->save();
-        } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->back()->with([
+        } catch (\Illuminate\Database\QueryException $e){
+            return response()->json([
                 'success' => false,
                 'message' => 'Dublicated Slug'
             ]);
@@ -77,7 +76,6 @@ class RolesController extends Controller
     }
 
     public function update(StoreRoleRequest $request, Role $role){
-
         try {
             $role->update($request->only(['name', 'slug']));
         } catch (\Illuminate\Database\QueryException $e) {

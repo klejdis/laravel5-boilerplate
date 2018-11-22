@@ -16,7 +16,6 @@
         </div>
     </div>
 
-
     <div class="form-group row">
         <div class="col-sm-2">
             <b>Permissions</b>
@@ -62,7 +61,6 @@
             }
         });
 
-        setSelect2('.select2')
-
+        setSelect2('.select2');
     });
 </script>

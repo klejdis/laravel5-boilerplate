@@ -1,0 +1,16 @@
+{
+    "name": "Posta",
+    "alias": "posta",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Posta\\Providers\\PostaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}
