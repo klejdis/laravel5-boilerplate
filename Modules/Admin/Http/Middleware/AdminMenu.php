@@ -34,46 +34,6 @@ class AdminMenu
                     ['icon' => 'fa fa-desktop']
                 )->order(0);
 
-               $menu->dropdown('Posta', function ($sub){
-                   $sub->route(
-                       'admin.users.index',
-                       __('admin::admin.POS'),
-                       null,
-                       ['icon' => 'dot fa fa-circle']
-                   );
-
-                   $sub->route(
-                       'admin.users.index',
-                       __('admin::admin.Reporting'),
-                       null,
-                       ['icon' => 'dot fa fa-circle']
-                   );
-
-                   $sub->route(
-                       'admin.users.index',
-                       __('admin::admin.Branches'),
-                       null,
-                       ['icon' => 'dot fa fa-circle']
-                   );
-
-                   $sub->route(
-                       'admin.users.index',
-                       __('admin::admin.Sites'),
-                       null,
-                       ['icon' => 'dot fa fa-circle']
-                   );
-
-                   $sub->route(
-                       'admin.users.index',
-                       __('admin::admin.Offices'),
-                       null,
-                       ['icon' => 'dot fa fa-circle']
-                   );
-
-               }, ['icon' => 'fa fa-envelope-o'])->order(1);
-
-
-
                $menu->dropdown('Users', function ($sub){
                    $sub->route(
                        'admin.users.index',
