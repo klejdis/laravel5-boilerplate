@@ -17,7 +17,7 @@ class User extends EloquentUser implements Authenticatable
     use AuthenticableTrait;
     use Notifiable;
     use PresentableTrait;
-    
+
     protected $table = 'users';
 
     protected $presenter = UserPresenter::class;
@@ -27,11 +27,11 @@ class User extends EloquentUser implements Authenticatable
      *
      * @var array
      */
-    protected $fillable = 
+    protected $fillable =
     [
-        'first_name', 
-        'last_name', 
-        'email', 
+        'first_name',
+        'last_name',
+        'email',
         'password',
     ];
 
@@ -120,6 +120,10 @@ class User extends EloquentUser implements Authenticatable
         $actions_html .=  '</div>';
 
         return $actions_html;
+    }
+
+    function getFullNameAttribute(){
+        return $this->first_name .' '. $this->last_name;
     }
 
 }

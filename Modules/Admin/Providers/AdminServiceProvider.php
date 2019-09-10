@@ -2,8 +2,10 @@
 
 namespace Modules\Admin\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Admin\Guards\Sentinel;
 use Modules\Admin\Http\Middleware\AdminMenu;
 use Modules\Admin\Http\Middleware\Authenticated;
 use Modules\Admin\Http\Middleware\Permission;
@@ -31,6 +33,10 @@ class AdminServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->registerViewComposers();
         $this->registerMiddlewares();
+
+        Auth::extend('sentinel-guard', function () {
+            return new Sentinel();
+        });
     }
 
     /**
@@ -96,7 +102,7 @@ class AdminServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     * 
+     *
      * @return void
      */
     public function registerFactories()

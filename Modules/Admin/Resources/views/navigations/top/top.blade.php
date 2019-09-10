@@ -11,7 +11,7 @@
         </button>
 
         <a class="navbar-brand" href="">
-            <img src="{{ $brand }}" />
+            <img src="{{ getAppLogo() }}" />
         </a>
     </div>
 
@@ -45,8 +45,8 @@
             <li class="dropdown pr15 dropdown-user">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         <span class="avatar-xs avatar pull-left mt-5 mr10" >
-                            <img alt="..." src="">
-                        </span> Test Test <span class="caret"></span></a>
+                            <img alt="" src="{{getUserAvatar()}}">
+                        </span> {{ auth()->user()->fullName  }} <span class="caret"></span></a>
 
                 <ul class="dropdown-menu p0" role="menu">
                     <li class="divider"></li>

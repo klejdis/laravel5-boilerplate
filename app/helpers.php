@@ -156,3 +156,17 @@ if (!function_exists('getBase64ImageFromRequest')){
         }
     }
 }
+
+
+if(!function_exists('getUserAvatar')){
+    function getUserAvatar(){
+        return asset('/admin/images/avatar.jpg');
+    }
+}
+
+
+if(!function_exists('getAppLogo')){
+    function getAppLogo(){
+        return asset('/admin/images/logo.png');
+    }
+}
